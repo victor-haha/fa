@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>订单管理</title>
+		<link rel="stylesheet" href="../../ui/layui/css/layui.css" />
+		<link rel="stylesheet" href="../../css/users.css" />
+	</head>
+	<body>
+		<div id="div" style="margin-top: 10px;">
+			<form class="layui-form" lay-filter="searchForm" method="post">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">选择状态</label>
+						<div class="layui-input-inline">
+							<select name="usable" lay-filter="selectId">
+								<option value="">直接选择</option>
+								<option value="1">可用</option>
+								<option value="0">禁用</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">
+							<i class="layui-icon layui-icon-user" style="font-size:12px;">用户ID</i>
+						</label>
+						<div class="layui-input-inline">
+							<input id="search_userId" name="userId" class="layui-input" type="text" placeholder="输入您所检索的用户ID" autocomplete="off"/>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">
+							<i class="layui-icon layui-icon-user" style="font-size:12px;">用户名</i>
+						</label>
+						<div class="layui-input-inline">
+							<input id="userName" name="userName" class="layui-input" type="text" placeholder="输入您所检索的用户名" autocomplete="off"/>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn" lay-submit lay-filter="searchBtn">
+							<i class="layui-icon layui-icon-search"></i>查询
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!--数据表格-->
+		<table class="layui-hide" id="tb" lay-filter="tb_event"></table>
+
+		<!--添加用户弹出框-->
+		<div id="add" style="display: none;"><!---->
+			<form class="layui-form" method="post">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">用户名:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="userName" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">密码:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">手机号:</label>
+					<div class="layui-input-inline">
+						<input type="text" id="phone" name="phone" required lay-verify="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">是否可用</label>
+					<div class="layui-input-block">
+						<input type="checkbox" checked="" name="usable" lay-skin="switch" lay-filter="switchTest" lay-text="可用|禁用">
+					</div>
+				</div>
+			</form>
+		</div>
+		<!--性别按钮-->
+		<script type="text/html" id="sex">
+			<input type="checkbox" value="{{d.userId}}" {{d.usable == 1 ? 'checked':''}} name="usable" lay-skin="switch" lay-filter="sex_f" lay-text="可用|禁用">
+		</script>
+		<!--表头按钮-->
+		<script type="text/html" id="toolbar">
+			<button class="layui-btn layui-btn-xs" lay-event="add">添加</button>
+		</script>
+		<!--表行按钮-->
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		</script>
+		<script type="text/javascript" src="../../ui/layui/layui.all.js"></script>
+		<script type="text/javascript" src="../js/users.js"></script>
+
+	</body>
+
+	<!--修改弹出框-->
+	<div id="div3" style="display: none;"><!---->
+		<input type="hidden" id="update" value="2">
+		<!--<select id="update">
+            <option value="2">已发货</option>
+        </select>-->
+		<center>我已发货</center>
+	</div>
+
+
+
+</html>
