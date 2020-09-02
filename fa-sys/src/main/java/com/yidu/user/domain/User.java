@@ -1,5 +1,4 @@
-package com.yidu.domain;
-
+package com.yidu.user.domain;
 
 import com.yidu.utils.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;

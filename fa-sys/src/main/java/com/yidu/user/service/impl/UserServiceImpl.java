@@ -1,15 +1,16 @@
-package com.yidu.service.impl;
+package com.yidu.user.service.impl;
 
-import com.yidu.dao.UserDao;
-import com.yidu.domain.User;
 import com.yidu.format.LayuiFormat;
-import com.yidu.paging.UserPaging;
-import com.yidu.service.UserService;
+import com.yidu.user.dao.UserDao;
+import com.yidu.user.domain.User;
+import com.yidu.user.paging.UserPaging;
+import com.yidu.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+
 
 /**
  * 类的描述:

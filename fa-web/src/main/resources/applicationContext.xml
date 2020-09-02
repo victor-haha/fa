@@ -15,7 +15,7 @@
 	
 	
 	<!-- 开启注解扫描，管理service -->
-	<context:component-scan base-package="com.yidu.user.service">
+	<context:component-scan base-package="com.yidu.*.service">
 	</context:component-scan>
 	<!-- 开启注解扫描，管理format -->
 	<context:component-scan base-package="com.yidu.format">
@@ -35,7 +35,7 @@
 		<!--设置映射文件-->
 		<property name="mapperLocations" value="classpath*:mapper/*/*.xml"/>
 		<!--给映射文件中resultType设置别名-->
-		<property name="typeAliasesPackage" value="com.yidu.domain,com.yidu.paging"/>
+		<property name="typeAliasesPackage" value="com.yidu" />
    		<!-- 传入PageHelper的插件
    		<property name="plugins">
    			<array>

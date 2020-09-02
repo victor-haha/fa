@@ -1,7 +1,7 @@
 package com.yidu.test;
 
-import com.yidu.domain.User;
-import com.yidu.service.UserService;
+import com.yidu.user.domain.User;
+import com.yidu.user.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

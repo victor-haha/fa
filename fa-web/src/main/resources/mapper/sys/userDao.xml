@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yidu.dao.UserDao">
+<mapper namespace="com.yidu.user.dao.UserDao">
 
     <sql id="userColumns">
        select userId,userName,password,telephone,gender,userPic,usable,createTime,description from t_user

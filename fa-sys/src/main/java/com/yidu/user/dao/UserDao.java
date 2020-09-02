@@ -1,12 +1,12 @@
-package com.yidu.dao;
+package com.yidu.user.dao;
 
 
-
-import com.yidu.domain.User;
-import com.yidu.paging.UserPaging;
+import com.yidu.user.domain.User;
+import com.yidu.user.paging.UserPaging;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 
 /**
  * 类的描述:用户数据操作层接口

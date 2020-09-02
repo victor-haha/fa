@@ -1,9 +1,8 @@
-package com.yidu.service;
+package com.yidu.user.service;
 
-
-import com.yidu.domain.User;
 import com.yidu.format.LayuiFormat;
-import com.yidu.paging.UserPaging;
+import com.yidu.user.domain.User;
+import com.yidu.user.paging.UserPaging;
 
 /**
  * 类的描述: 用户业务逻辑接口类

@@ -1,4 +1,4 @@
-package com.yidu.paging;
+package com.yidu.user.paging;
 
 /**
  * 类的描述: 用户分页+搜索查询，获取参数的模板
