@@ -52,11 +52,7 @@ public class User implements Serializable{
 	/**
 	 * 是否可用  1：可用  0:不可用
 	 */
-	private Integer usable;
-	/**
-	 * 是否可用 Str格式
-	 */
-	private String usableStr;
+	private String usable;
 
 	/**
 	 * 创建时间
@@ -127,13 +123,12 @@ public class User implements Serializable{
 		this.userPic = userPic;
 	}
 
-	public Integer getUsable() {
+	public String getUsable() {
 		return usable;
 	}
 
-	public void setUsable(Integer usable) {
+	public void setUsable(String usable) {
 		this.usable = usable;
-		this.usableStr = usable == 1 ? "可用" : "不可用";
 	}
 
 	public Date getCreateTime() {
@@ -158,9 +153,6 @@ public class User implements Serializable{
 		return genderStr;
 	}
 
-	public String getUsableStr() {
-		return usableStr;
-	}
 
 	public String getCreateTimeStr() {
 		return createTimeStr;
@@ -178,7 +170,6 @@ public class User implements Serializable{
                 ", genderStr='" + genderStr + '\'' +
                 ", userPic='" + userPic + '\'' +
                 ", usable=" + usable +
-                ", usableStr='" + usableStr + '\'' +
                 ", createTime=" + createTime +
                 ", createTimeStr='" + createTimeStr + '\'' +
                 ", description='" + description + '\'' +

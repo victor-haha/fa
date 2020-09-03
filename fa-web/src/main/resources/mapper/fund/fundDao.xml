@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.fund.dao.FundDao">
+    <sql id="allCloumn">
+        fundNo, fundName, fundCompanyId, comShortName, trusteeBank, fundScale, nav, trusteeFee, managementFee, billingDays, manangerId, managerName, estDate, description
+    </sql>
+    <sql id="dynamicQuery">
+        <where>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="trusteeBank != null and trusteeBank != ''">
+                and trusteeBank = #{trusteeBank}
+            </if>
+            <if test="managementFeeMin != null and managementFeeMax != null">
+                and between (#{managementFeeMin},#{managementFeeMax})
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName = #{managerName}
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName = #{managerName}
+            </if>
+        </where>
+    </sql>
+    <sql id="dynamicUpdate">
+        <set>
+            <if test="gender != null and gender != ''">
+                gender=#{gender},
+            </if>
+            <if test="usable != null and usable != ''">
+                usable=#{usable},
+            </if>
+            <if test="userName != null and userName != ''">
+                userName = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="telephone != null and telephone != ''">
+                telephone = #{telephone},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+        </set>
+    </sql>
+    <sql id="pagingQuery">
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </sql>
+    <select id="findAllFundWithPage" parameterType="fundPaging" resultType="fund">
+
+    </select>
+</mapper>
