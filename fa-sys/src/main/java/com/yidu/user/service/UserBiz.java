@@ -1,4 +1,4 @@
-package com.yidu.user.dao;
+package com.yidu.user.service;
 
 
 import com.yidu.user.domain.User;
@@ -12,19 +12,13 @@ import java.util.Map;
  * @Author 李昊林
  * @Date 2020/8/26 16:15
  */
-public interface UserDao {
+public interface UserBiz {
     /**
      * 查询所有用户
      * @return 用户对象集合
      */
     List<User> findAllUser();
 
-    /**
-     * 根据条件统统用户数量
-     * @param paramMap 查询条件map集合
-     * @return 返回用户数量
-     */
-    Long countUserByCondition(Map<String, Object> paramMap);
 
     /**
      * 根据条件查询
@@ -55,8 +49,15 @@ public interface UserDao {
     boolean updateUser(User user);
     /**
      * 修改用户可用状态
-     * @param paramMap 带有用户Id和用户可用状态的map参数集合
+     * @param userIds 用户Id
+     * @param useable 修改状态
      * @return 成功修改返回true,否则返回false
      */
-    boolean updateUserStatus(Map<String, Object> paramMap);
+    boolean updateUserStatus(String userIds, String useable);
+    /**
+     * 根据条件统统用户数量
+     * @param paramMap 查询条件map集合
+     * @return 返回用户数量
+     */
+    Long countUserByCondition(Map<String, Object> paramMap);
 }

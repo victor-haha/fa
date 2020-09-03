@@ -1,55 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yidu.user.dao.UserDao">
-
-    <sql id="userColumns">
-       select userId,userName,password,telephone,gender,userPic,usable,createTime,description from t_user
+    <!--用户Id除外的所有字段-->
+    <sql id="allColumn">
+      userName, password, telephone, gender, userPic, usable, createTime, description
     </sql>
-    <!--查询所有用户-->
-    <select id="findAll" resultType="User" parameterType="UserPaging">
-         <include refid="userColumns"/>
-         <where>
-             <if test="userId != null and userId != ''">
-                and userId like #{userId}
-             </if>
-             <if test="userName != null and userName != ''">
-                 and userName like #{userName}
-             </if>
-             <if test="usable != null and usable != ''">
-                 and usable = #{usable}
-             </if>
-
-         </where>
-        group by createTime desc limit #{page},#{limit}
-    </select>
-    <!--模糊查询的用户数-->
-    <select id="findCount" resultType="Long" parameterType="UserPaging">
-        select count(userId) from t_user
+    <!--添加用户信息字段-->
+    <sql id="addUserColumn">
+      userName, password, telephone, gender, userPic,createTime, description
+    </sql>
+    <!--条件查询-->
+    <sql id="conditionQuery">
         <where>
-            <if test="userId != null and userId != ''">
-                and userId like #{userId}
-            </if>
             <if test="userName != null and userName != ''">
-                and userName like #{userName}
+                and userName like '%${userName}%'
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
             </if>
             <if test="usable != null and usable != ''">
                 and usable = #{usable}
             </if>
-
+            <if test="telephone != null and telephone != ''">
+                and telephone = #{telephone}
+            </if>
         </where>
+    </sql>
+    <!--动态添加分页查询-->
+    <sql id="pagingQuery">
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </sql>
+    <!--根据条件动态修改-->
+    <sql id="dynamicUpdate">
+        <set>
+          <if test="gender != null and gender != ''">
+            gender=#{gender},
+          </if>
+          <if test="usable != null and usable != ''">
+            usable=#{usable},
+          </if>
+          <if test="userName != null and userName != ''">
+            userName = #{userName},
+          </if>
+          <if test="password != null and password != ''">
+              password = #{password},
+          </if>
+          <if test="telephone != null and telephone != ''">
+              telephone = #{telephone},
+          </if>
+          <if test="description != null and description != ''">
+              description = #{description},
+          </if>
+        </set>
+    </sql>
+    <!--查询所有用户-->
+    <select id="findAllUser" resultType="user">
+        select <include refid="allColumn"/> from t_user order by createTime desc
     </select>
-
-    <!--按id查询单个用户-->
-
-    <select id="findById" resultType="User" parameterType="Long">
-       <include refid="userColumns"/>
-       where userId = #{userId}
+    <!--根据条件统计用户数量-->
+    <select id="countUserByCondition" parameterType="map" resultType="Long">
+        select count(1) from t_user <include refid="conditionQuery"/>
     </select>
-
-    <update id="editUsable" parameterType="String">
-        update t_user set usable=#{usable} where userId = #{userId}
+    <!--根据用户指定的条件查询用户-->
+    <select id="findUserByCondition" parameterType="map" resultType="user">
+        select userId,<include refid="allColumn"/> from t_user
+         <include refid="conditionQuery"/> order by createTime desc  <include refid="pagingQuery"/>
+    </select>
+    <!--添加用户-->
+    <insert id="addUser" parameterType="user">
+        insert into t_user(<include refid="addUserColumn"/>) values(#{userName},#{password},#{telephone},#{gender},#{userPic},#{createTime},#{description})
+    </insert>
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="String">
+        delete FROM t_user where userId = #{userId}
+    </delete>
+    <!--修改用户-->
+    <update id="updateUser" parameterType="user">
+        update  t_user <include refid="dynamicUpdate"/> where userId = #{userId}
     </update>
-
+    <!--修改用户可用状态-->
+    <update id="updateUserStatus" parameterType="map">
+        update  t_user <include refid="dynamicUpdate"/> where userId = #{userId}
+    </update>
 </mapper>
