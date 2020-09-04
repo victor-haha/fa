@@ -38,7 +38,7 @@ public class User implements Serializable{
 	/**
 	 * 性别 1 :男|Male, 0 :女|Female
 	 */
-	private Integer gender;
+	private int gender;
     /**
      * 性别 str格式
      */
@@ -106,11 +106,11 @@ public class User implements Serializable{
 		this.telephone = telephone;
 	}
 
-	public Integer getGender() {
+	public int getGender() {
 		return gender;
 	}
 
-	public void setGender(Integer gender) {
+	public void setGender(int gender) {
 		this.gender = gender;
 	   	this.genderStr = gender == 1 ? "男" : "女";
 	}

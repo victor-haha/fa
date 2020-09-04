@@ -36,7 +36,7 @@
     <!--根据条件动态修改-->
     <sql id="dynamicUpdate">
         <set>
-          <if test="gender != null and gender != ''">
+          <if test="gender != null">
             gender=#{gender},
           </if>
           <if test="usable != null and usable != ''">

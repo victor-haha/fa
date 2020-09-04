@@ -91,6 +91,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/updateUser")
     public Map<String,Object> updateUser(User user){
+        System.out.println(user.getGender());
         Map<String, Object> returnMap = new HashMap<String, Object>();
         if (userBiz.updateUser(user)) {
             returnMap.put("result", 1);
@@ -99,18 +100,6 @@ public class UserController {
         }
         return returnMap;
     }
-//    @ResponseBody
-//    @RequestMapping("/updateUserStatus")
-//    public Map<String,Object> updateUserStatus(String userId,String useable){
-//        System.out.println("无Restful风格控制器方法userId = " + userId);
-//        Map<String, Object> returnMap = new HashMap<String, Object>();
-//        if (userBiz.updateUserStatus(userId,useable)) {
-//            returnMap.put("result", 1);
-//        } else {
-//            returnMap.put("result", 0);
-//        }
-//        return returnMap;
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/updateUserStatus/{userIds}/{usable}",method = RequestMethod.DELETE)

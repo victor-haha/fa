@@ -20,7 +20,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	//----1.用户数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#userTable',
-		url: '/findAllUser', //后期改回获取用户列表的后端程序的url
+		url: '../findAllUser', //后期改回获取用户列表的后端程序的url
 		method: 'get',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#userToolbar', // 开启头部工具栏，并为其绑定左侧模板
@@ -139,7 +139,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	form.on('submit(userSearchBtn)', function(data) {
 		// 执行后台代码
 		table.reload('userTable', {
-			url: '/findUserByCondition',
+			url: '../findUserByCondition',
 			where: { // 设定异步数据接口的额外参数，任意设
 				userName: $("#queryUserName").val(),
 				gender: $("#queryUserSex").val(),
@@ -255,7 +255,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			type: 'POST',  //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE 
 			async: false,
-			url: '/saveUser', //后期改为添加用户的后台程序的url
+			url: '../saveUser', //后期改为添加用户的后台程序的url
 			data: data.field,
 			success: function(data) {
 				// 关闭页面上所有类型的所有弹框
@@ -273,7 +273,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 		// 刷新数据表格
 		table.reload('userTable', {
-			url: '/findUserByCondition' //后期改为查询用户的后台程序的url
+			url: '../findUserByCondition' //后期改为查询用户的后台程序的url
 		});
 		return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
@@ -284,7 +284,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			type: 'POST', //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE
 			async: false,
-			url: '/updateUser',  //后期改为修改用户的后台程序url
+			url: '../updateUser',  //后期改为修改用户的后台程序url
 			data: data.field,//data.field
 			success: function(data) {
 			    console.log(data.result)
@@ -303,7 +303,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 		//刷新数据表格
 		table.reload('userTable', {
-			url: '/findUserByCondition' //
+			url: '../findUserByCondition' //
 		});
 		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
@@ -330,7 +330,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			async: false, // 默认为true，false表示同步，如果当前请求没有返回则不执行后续代码
 			type: "DELETE",
-			url:'/updateUserStatus/' + userId + "/" + usable,//  /updateUser   '/updateUserStatus/' + userIds + "/" + usable
+			url:'../updateUserStatus/' + userId + "/" + usable,//  /updateUser   '/updateUserStatus/' + userIds + "/" + usable
 			data: {
 			    // userId:userId,
                 // usable:usable,
@@ -349,7 +349,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 刷新数据表格
 				table.reload('userTable', {
-					url: '/findUserByCondition'
+					url: '../findUserByCondition'
 				});
 			}
 		});
@@ -449,7 +449,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 			var msg;
 			$.ajax({
 				type: "POST",
-				url: '/verifyTelephone',//system/toVerifyUserPhone
+				url: '../verifyTelephone',//system/toVerifyUserPhone
 				async: false, // 使用同步的方法
 				data: {
 					'telephone': value

@@ -38,6 +38,7 @@ public class UserBizImpl implements UserBiz {
     }
 
     public boolean updateUser(User user) {
+        System.out.println("业务层user.getGender() = " + user.getGender());
         return userDao.updateUser(user);
     }
 
