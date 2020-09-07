@@ -100,7 +100,7 @@
     <!-- 侧边菜单 -->
     <div class="layui-side layui-side-menu">
       <div class="layui-side-scroll">
-        <div class="layui-logo" lay-href="static/page/console.html">
+        <div class="layui-logo" lay-href="static/index/page/console.html">
           <span>基金估值核算系统</span>
         </div>
 
@@ -180,6 +180,136 @@
               </dd>
             </dl>
           </li>
+            <li data-name="template" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="交易数据" lay-direction="2">
+                    <i class="layui-icon layui-icon-tabs"></i>
+                    <cite>交易数据</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">股票交易数据</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/bond/page/bond_trade.html">债券交易数据</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">银行存款数据</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">基金交易数据表</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">权益数据</a>
+                    </dd>
+                </dl>
+            </li>
+            <li data-name="template" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="库存数据" lay-direction="2">
+                    <i class="layui-icon layui-icon-templeate-1"></i>
+                    <cite>库存数据</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">基金库存</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">证券库存</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">现金库存</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">证券应收应付库存</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">现金应收应付库存</a>
+                    </dd>
+                </dl>
+            </li>
+            <li data-name="template" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="资金数据" lay-direction="2">
+                    <i class="layui-icon layui-icon-rmb"></i>
+                    <cite>资金数据</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">资金调拨</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">证券应收应付发生表</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">现金应收应付发生表</a>
+                    </dd>
+                </dl>
+            </li>
+            <li data-name="template" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="经营管理报表" lay-direction="2">
+                    <i class="layui-icon layui-icon-table"></i>
+                    <cite>经营管理报表</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">净值统计报表</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">现金头寸报表</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">交易数据分析统计报表</a>
+                    </dd>
+                </dl>
+            </li>
+            <li data-name="template" class="layui-nav-item">
+                <a href="javascript:;" lay-tips="财务管理报表" lay-direction="2">
+                    <i class="layui-icon layui-icon-rmb"></i>
+                    <cite>财务管理报表</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">余额表</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">明细账簿</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">汇总账簿</a>
+                    </dd>
+                </dl>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a lay-href="static/base/page/demo.html">财务净值统计报表</a>
+                    </dd>
+                </dl>
+            </li>
         </ul>
       </div>
     </div>
@@ -206,12 +336,10 @@
         </ul>
       </div>
     </div>
-
-
     <!-- 主体内容 -->
     <div class="layui-body" id="LAY_app_body">
       <div class="layadmin-tabsbody-item layui-show">
-        <iframe src="static/page/index/console.html" frameborder="0" class="layadmin-iframe"></iframe>
+        <iframe src="static/index/page/console.html" frameborder="0" class="layadmin-iframe"></iframe>
       </div>
     </div>
 

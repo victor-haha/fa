@@ -1,9 +1,10 @@
 package com.yidu.bond.domain;
 
 import com.yidu.utils.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 证券-债券信息表
@@ -17,7 +18,7 @@ public class Bond implements Serializable{
 	/**
 	 * 债券Id
 	 */
-	private int bondId;
+	private String bondId;
 
 	/**
 	 * 债券代码
@@ -57,6 +58,7 @@ public class Bond implements Serializable{
 	/**
 	 * 起息日期,计息起始日期
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date valueDate;
 	/**
 	 * 起息日期,计息起始日期（字符串表示）
@@ -66,6 +68,7 @@ public class Bond implements Serializable{
 	/**
 	 * 到期日期,计息结束日期
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expireDate;
 	/**
 	 * 到期日期,计息结束日期（字符串表示）
@@ -86,7 +89,10 @@ public class Bond implements Serializable{
 	 * 备注
 	 */
 	private String description;
-
+	/**
+	 * 是否可用 1:可用，0:弃用
+	 */
+	private String usable;
 
 
 	public Bond() {
@@ -94,11 +100,11 @@ public class Bond implements Serializable{
 	}
 
 
-	public int getBondId() {
+	public String getBondId() {
 		return bondId;
 	}
 
-	public void setBondId(int bondId) {
+	public void setBondId(String bondId) {
 		this.bondId = bondId;
 	}
 
@@ -213,10 +219,18 @@ public class Bond implements Serializable{
 		return expireDateStr;
 	}
 
+	public String getUsable() {
+		return usable;
+	}
+
+	public void setUsable(String usable) {
+		this.usable = usable;
+	}
+
 	@Override
 	public String toString() {
 		return "Bond{" +
-				"bondId=" + bondId +
+				"bondId='" + bondId + '\'' +
 				", bondCode='" + bondCode + '\'' +
 				", bondShortName='" + bondShortName + '\'' +
 				", actualIssuance=" + actualIssuance +
@@ -231,6 +245,7 @@ public class Bond implements Serializable{
 				", couponRate=" + couponRate +
 				", bondFullName='" + bondFullName + '\'' +
 				", description='" + description + '\'' +
+				", usable='" + usable + '\'' +
 				'}';
 	}
 }

@@ -39,20 +39,6 @@
 			com.yidu.user.domain,com.yidu.user.paging,
 			com.yidu.bond.domain,com.yidu.bond.paging
 		"/>
-   		<!-- 传入PageHelper的插件
-   		<property name="plugins">
-   			<array>
-   				&lt;!&ndash; 传入插件的对象 &ndash;&gt;
-   				<bean class="com.github.pagehelper.PageInterceptor">
-   					<property name="properties">
-   						<props>
-   							<prop key="helperDialect">oracle</prop>
-   							<prop key="reasonable">true</prop>
-   						</props>
-   					</property>
-   				</bean>
-   			</array>
-   		</property>-->
    	</bean>
 	
 	<!-- 扫描dao接口 -->

@@ -16,13 +16,6 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	var laydate = layui.laydate;
 	var util = layui.util;
 	var upload = layui.upload;
-	//判断点击的”添加“操作还是“修改”操作
-	var addAndEdit = "";
-	// 全局的对象，存放选中行的dom元素
-	var checkElem;
-
-
-
 
 
 	//下拉搜索框设置
@@ -53,7 +46,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	//----1.用户数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#bondTable',
-		url: '../bond/list', //后期改回获取用户列表的后端程序的url
+		url: '../bond/trade/list', //后期改回获取用户列表的后端程序的url
 		method: 'post',
 		height: 'full-10',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
@@ -79,103 +72,187 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					fixed:'left', //钉在左侧
 				}, //复选框
                 {
-					field:'bondId',
-					title:'债券Id',
+					field:'bondTradeId',
+					title:'债券交易Id',
 					fixed:'left', //钉在左侧
-					hide: true, //一般情况下不显示用户ID
+					hide: true, //一般情况下不显示ID
                     align:'center',
-					width: 100
+					width: 200
                 },
 				{
-					field: 'bondCode',
-					title: '债券代码',
+					field: 'bondTradeNo',
+					title: '债券交易编号',
 					fixed:'left', //钉在左侧
 					align: "center",
-					width: 100
+					width: 200
 				},
 				{
-					field: 'bondShortName',
-					title: '债券简称',
+					field: 'fundId',
+					title: '基金Id',
 					fixed:'left',
+					hide: true,
 					align: "center",
 					width: 100
 				},
 				{
-					field: 'actualIssuance',
-					title: '发行量(亿元)',
+					field: 'fundCode',
+					title: '基金代码',
 					sort: true,
 					align: "center",
 					width: 160
 				},
 				{
-					field: 'issuePrice',
-					title: '发行价格',
+					field: 'fundName',
+					title: '基金名称',
 					sort: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'par',
-					title: '票面价值',
+					field: 'bondId',
+					title: '债券Id',
+					sort: true,
+					hide: true,
+					align: "center",
+					width: 130
+				},
+				{
+					field: 'bondCode',
+					title: '债券代码',
 					sort: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'term',
-					title: '期限(年)',
-					sort: true,
-					align: "center",
-					width: 130
-				},
-				{
-					field: 'paymentFrequency',
-					title: '付息方式',
+					field: 'bondName',
+					title: '债券名称',
                     align: "center",
 					width: 140
 				},
 				{
-					field: 'valueDateStr',
-					title: '起息日期',
+					field: 'managerId',
+					title: '基金经理Id',
+					align: "center",
+					hide: true,
+					width: 130
+				},
+				{
+					field: 'managerName',
+					title: '基金经理',
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'expireDateStr',
-					title: '到期日期',
+					field: 'brokerId',
+					title: '券商Id',
+					sort: true,
+					hide: true,
 					align: "center",
-					width: 130
+					width: 150
+				},
+				{
+					field: 'brokerName',
+					title: '券商名',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'tradeTypeStr',
+					title: '交易方式',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'tradeFlagStr',
+					title: '交易标识',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'tradePrice',
+					title: '交易价格(单价)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'tradeDateStr',
+					title: '交易日期',
+					align: "center",
+					width: 200
+				},
+				{
+					field: 'share',
+					title: '交易数量(份额)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'turnover',
+					title: '交易额(总)',
+					align: "center",
+					width: 120
+				},
+				{
+					field: 'stampTax',
+					title: '印花费(国家)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'managementFees',
+					title: '征管费(国家)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'transferFee',
+					title: '过户费(交易所)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'commission',
+					title: '佣金费用(券商)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'brokerage',
+					title: '经手费(交易所)',
+					align: "center",
+					width: 150
+				},
+				{
+					field: 'total',
+					title: '总金额',
+					align: "center",
+					width: 120
 				},
 				{
 					field: 'couponRate',
-					title: '票面利率',
-					sort: true,
+					title: '债券利息',
 					align: "center",
-					width: 150
-				},
-				{
-					field: 'bondFullName',
-					title: '债券全称',
-					align: "center",
-					width: 150
+					width: 120
 				},
 				{
 					field: 'description',
 					title: '备注',
 					align: "center",
-					width: 150
+					width: 120
 				},
 				{
-					field: 'usable',
-					title: '是否可用',
-					fixed:'right',
+					field: 'tradeStatus',
+					title: '交易状态',
 					align: "center",
-					width: 95,
-					templet: function (data) {
-						if(data.usable == "1"){
-							return '<span class="useable font-color  my-bg-green">可用</span>';
+					fixed:'right',
+					width: 100,
+					templet:function (data) {
+						if(data.tradeStatus =='1'){
+							return '<span style="color: #3acc37">已结算</span>'
+						}else if(data.tradeStatus =='0'){
+							return '<span style="color: #ff9960">未结算</span>'
 						}else {
-							return '<span class="useable font-color  my-bg-red1">弃用</span>';
+							return '<span style="color: #ff0800">数据有误</span>'
 						}
 					}
 				}
@@ -183,14 +260,14 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 			]
 		]
 	});
-	//----1.用户数据表格渲染------------------------------------------------------------------
+	//----1.数据表格渲染------------------------------------------------------------------
 	
-	//----2.添加用户入职时间选择器--------------------------------------------------------------------
+	//----2.时间选择器--------------------------------------------------------------------
 	laydate.render({
 		elem: '#addExpireDate'
 	});
 
-	//修改用户入职时间选择器
+	//时间选择器
 	laydate.render({
 		elem: '#addValueDate'
 	});
@@ -213,7 +290,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		}
 		// 搜索并刷新数据表格
 		table.reload('bondTable', {
-			url: '../bond/list', //
+			url: '../bond/trade/list', //
 			where: data.field,
 			page: {
 				curr: 1 //从第一页开始
@@ -222,61 +299,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 		return false; // 阻止表单跳转。
 	});
-	//债券添加或修改按钮时间
-	form.on('submit(addBtn)', function(data) {
-		//通知进行的操作是添加“操作”
-		if(addAndEdit == "add"){
-			$.ajax({
-				url:'../bond/add',//
-				type: 'post',
-				data: data.field,
-				success:function (obj) {
-					layer.closeAll();
-					if(obj == 1){
-						addOpen.close();
-						layer.msg("添加成功！", {
-							icon: 1 // 图标，可输入范围0~6
-						});
 
-					}else{
-						layer.msg("添加出错！", {
-							icon: 2 // 图标，可输入范围0~6
-						});
-					}
-				}
-
-			});
-			// 刷新数据表格
-			table.reload('bondTable', {
-				url: '../bond/list' //
-			});
-		}
-		if(addAndEdit == "edit"){
-			$.ajax({
-				type: 'POST',  //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE
-				async: false,
-				url: '../bond/update', //后期改为添加用户的后台程序的url
-				data: data.field,
-				success: function(obj) {
-					// 关闭页面上所有类型的所有弹框
-					layer.closeAll();
-					if(obj == 1) {
-						layer.msg("修改成功！", {
-							icon: 1 // 图标，可输入范围0~6
-						});
-						//	修改行数据
-					  let a = checkElem.children("[data-field='bondCode']").children().html();
-					  alert(a);
-					} else {
-						layer.msg("修改失败！", {
-							icon: 2 // 图标，可输入范围0~6
-						});
-					}
-				}
-			});
-		}
-		return false; // 阻止表单跳转
-	});
 
 	//----3.处理表行修改------------------------------------------------------------------
 	table.on("tool(bondTableEvent)",function (obj) {
@@ -327,30 +350,30 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					initUpdateUserModal(checkStatus.data[0]);
 				}
 				break;
-			case 'frozenRecord':
+			case 'settlements':  //结算
 				// 当前选中行的数据
 				var data = checkStatus.data;
 				//判断是否有选中
 				if(checkStatus.data.length < 1) {
-					layer.msg("请选择你要弃用的债券！！", {
+					layer.msg("请选择你要结算的数据行！！", {
 						icon: 4 //图标，可输入范围0~6
 					});
 					return;
 				}
-				// 遍历传递过来的要删除的数据
+				// 遍历传递过来的要结算的数据
 				for(var i = 0; i < data.length; i++) {
-					if(data[i].usable == '0') {
-						layer.msg("所选的债券已经被弃用！", {
+					if(data[i].tradeStatus == '1') {
+						layer.msg("所选的数据有已结算的！", {
 							icon: 4 // 图标，可输入范围0~6
 						});
 						return;
 					}
 					// 拿出用户ID进行拼接
-					idStr += data[i].bondId + ",";
+					idStr += data[i].bondTradeId + ",";
 				}
 				// 截取掉因为拼接产生的多余的一个逗号
 				idStr = idStr.substring(0, idStr.length - 1);
-				frozenORrecoverArchives(idStr, '0');
+				settlements(idStr, '1');
 				break;
 			case 'restoreRecord':
 				// 当前选中行的数据
@@ -360,7 +383,6 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					layer.msg("请选择你要还原的债券！！", {
 						icon: 4 //图标，可输入范围0~6
 					});
-					return;
 				}
 				// 遍历传递过来的要删除的数据
 				for(var i = 0; i < data.length; i++) {
@@ -375,33 +397,34 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 截取掉因为拼接产生的多余的一个逗号
 				idStr = idStr.substring(0, idStr.length - 1);
-				frozenORrecoverArchives(idStr, '1');
+				settlements(idStr, '1');
 				break;
 		};
 	});
 	
 	// 监听锁定操作
 	form.on('switch(usable)', function(obj) {
-		frozenORrecoverArchives(obj.value, this.checked == true ? 'Y' : 'N');
+		settlements(obj.value, this.checked == true ? 'Y' : 'N');
 	});
 
 	// 定义弃用或还原的方法
-	var frozenORrecoverArchives = function(bondIds, usable) {
+	var settlements = function(bondTradeIds, tradeStatus) {
 		// 定义提示信息, 状态
 		var msg;
-		if(usable == '1') {
-			msg = "还原";
+		if(tradeStatus == '1') {
+			msg = "结算";
 		} else {
 			msg = "弃用";
 		}
+		layer.msg("发送结算请求");
 		// 发送异步请求冻结或还原资源
 		$.ajax({
 			async: false, // 默认为true，false表示同步，如果当前请求没有返回则不执行后续代码
 			type: "post",
-			url:'../bond/updateUsable' ,//  /updateUser   '/updateUserStatus/' + userIds + "/" + usable
+			url:'../bond/trade/settlements' ,//  /
 			data: {
-			    bondIds:bondIds,
-                usable:usable
+				bondTradeIds:bondTradeIds,
+				tradeStatus:tradeStatus
 			},
 			success: function(data) {
 				if(data == "1") {
@@ -415,97 +438,12 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 刷新数据表格
 				table.reload('bondTable', {
-					url: '../bond/list'
+					url: '../bond/trade/list'
 				});
 			}
 		});
 	};
-	// var hiddeDisable = function(){
-	//
-    // }
 
-	// 初始化新增模态框
-	var initAddModal = function() {
-		// 弹出一个页面层
-		addAndEdit = "add";
-		layer.open({
-			type: 1, // 基本层类型0~4，1为页面层
-			title: '添加债券', // 标题
-			skin: "layui-layer-molv",
-			anim: 2, // 弹出动画
-			area: ["100%","100%"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
-			content: $("#addModal"), // 文本、html都行
-			resize: false, // 是否允许拉伸
-			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
-				// 清空表单
-				$("#addForm")[0].reset();
-			}
-		});
-
-	}
-
-	// 初始化修改模态框
-	var initUpdateUserModal = function(data) {
-		//通知进行的操作是修改“操作”
-		addAndEdit = "edit";
-		// 弹出一个页面层
-		layer.open({
-			type: 1, // 基本层类型0~4，1为页面层
-			title: '修改用户', // 标题
-			skin: "layui-layer-molv",
-			anim: 2, // 弹出动画
-			area: ["100%","100%"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
-			content: $("#addModal"), // 文本、html都行
-			resize: false, // 是否允许拉伸
-			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
-				// 清空表单
-				$("#addForm")[0].reset();
-			}
-		});
-		// 表单赋值
-		form.val('addForm', {
-			bondId:data.bondId,
-			bondCode:data.bondCode,
-			bondShortName:data.bondShortName,
-			actualIssuance:data.actualIssuance,
-			issuePrice:data.issuePrice,
-			par:data.par,
-			term:data.term,
-			paymentFrequency:data.paymentFrequency,
-			valueDate:data.valueDateStr,
-			expireDate:data.expireDateStr,
-			couponRate:data.couponRate,
-			bondFullName:data.bondFullName,
-			description:data.description
-		});
-	};
-
-	// $.ajax({
-	// 	url: '/findUserByConditionuuuu',//system/org',
-	// 	dataType: 'json',
-	// 	type: 'post',
-	// 	success: function(data) {
-	// 		$.each(data, function(index) {
-	// 			var orgName = data[index].orgName;
-	// 			var orgId = data[index].orgId;
-	// 			/* var sdSdd = data[index].sdSdd; */
-	// 			// 头部的搜索
-	// 			$("#queryOrgName").append(
-	// 				"<option value='" + orgName + "'>" + orgName +
-	// 				"</option>");
-	// 			// 添加
-	// 			$("#addOrgName").append(
-	// 				"<option value='" + orgId + "'>" + orgName +
-	// 				"</option>");
-	// 			// 修改
-	// 			$("#updateOrgName").append(
-	// 				"<option value='" + orgId + "'>" + orgName +
-	// 				"</option>");
-	// 			// form.render()渲染将option添加进去
-	// 			form.render();
-	// 		});
-	// 	}
-	// });
 
 	// 自定义表单校验
 	form.verify({

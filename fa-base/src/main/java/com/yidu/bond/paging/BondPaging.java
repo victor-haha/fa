@@ -3,7 +3,7 @@ package com.yidu.bond.paging;
 import org.springframework.stereotype.Component;
 
 /**
- * 类的描述:
+ * 类的描述: 债券搜索分页字段
  *
  * @author wh
  * @since 2020/9/3 17:44
