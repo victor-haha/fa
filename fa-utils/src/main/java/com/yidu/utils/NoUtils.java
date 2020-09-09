@@ -2,6 +2,7 @@ package com.yidu.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 类的描述:编号生成，工具类
@@ -16,10 +17,10 @@ public class NoUtils {
      * @return 加工后的编号  如：JJKC-yyyy-MM-dd-HHmmss
      */
     public static String getNo(String prefix){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss"+ UUID.randomUUID().toString().replace("-","").substring(0,6));
         String format = sdf.format(new Date());
 
-        return prefix+"-"+format;
+        return prefix + format;
     }
 
     public static void main(String[] args) {
