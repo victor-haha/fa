@@ -39,19 +39,4 @@ public interface BondService {
      */
     int updateUsable(String usable, String bondIds);
 
-    /**
-     * 搜索查询所有债券交易数据并分页
-     * @param bondTradePaging 搜索分页参数
-     * @return  债券交易集合的layui格式数据
-     */
-    LayuiFormat findBondTrade(BondTradePaging bondTradePaging);
-
-
-    /**
-     *
-     * @param bondTradeId 债券交易数据id
-     * @param tradeStatus 交易状态
-     * @return 1:修改成功，0：修改失败
-     */
-    int updateTradeStatus(String bondTradeId, String tradeStatus);
 }

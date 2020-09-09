@@ -1,7 +1,7 @@
 package com.yidu.capital.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 资金调拨表

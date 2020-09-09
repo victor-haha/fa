@@ -43,10 +43,10 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		}
 		search_header.css("top",-height);*/
 	});
-	//----1.用户数据表格渲染------------------------------------------------------------------
+	//----1.数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#bondTable',
-		url: '../bond/trade/list', //后期改回获取用户列表的后端程序的url
+		url: '../bondTrade/list', //后期改回获取用户列表的后端程序的url
 		method: 'post',
 		height: 'full-10',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
@@ -57,7 +57,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		limit: 10, // 每页显示的条数
 		limits: [5,10, 20, 50, 100], // 每页条数的选择项
 		loading: true, // 是否显示加载条(切换分页的时候显示）
-		title: '用户表', // 定义 table 的大标题（在文件导出等地方会用到）
+		title: '债券交易表', // 定义 table 的大标题（在文件导出等地方会用到）
 		id: 'bondTable', // 设定容器唯一 id
 		// 隔行变色
 		even: false,
@@ -106,7 +106,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					title: '基金名称',
 					sort: true,
 					align: "center",
-					width: 130
+					width: 200
 				},
 				{
 					field: 'bondId',
@@ -154,7 +154,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'brokerName',
 					title: '券商名',
 					align: "center",
-					width: 150
+					width: 200
 				},
 				{
 					field: 'tradeTypeStr',
@@ -260,8 +260,24 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 			]
 		]
 	});
-	//----1.数据表格渲染------------------------------------------------------------------
-	
+	//拖拽上传
+	upload.render({
+		elem: '#addBondTrader'
+		,url: '../bondTrade/poi' //改成您自己的上传接口https://httpbin.org/post
+		,accept: 'file' //普通文件
+		,done: function(data){
+			if(data == 1){
+				layer.closeAll(); //导入数据成功关闭弹出层
+				layer.msg('导入数据成功！');
+				// 刷新数据表格
+				table.reload('bondTable', {
+					url: '../bondTrade/list'
+				});
+			}else{
+				layer.msg("导入数据出错(检查文件格式是否正确)！！");
+			}
+		}
+	});
 	//----2.时间选择器--------------------------------------------------------------------
 	laydate.render({
 		elem: '#addExpireDate'
@@ -272,6 +288,24 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		elem: '#addValueDate'
 	});
 
+// 初始化新增模态框
+	var addBondTrader = function() {
+		// 弹出一个页面层
+		layer.open({
+			type: 1, // 基本层类型0~4，1为页面层
+			title: 'Excel导入数据', // 标题
+			skin: "layui-layer-molv",
+			anim: 2, // 弹出动画
+			area: ["100%","100%"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
+			content: $("#addBondTrader"), // 文本、html都行
+			resize: false, // 是否允许拉伸
+			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
+				//发送请求查询所有数据
+
+			}
+		});
+
+	};
 
 	//----3.处理头部条件组合搜素------------------------------------------------------------------
 	form.on('submit(SearchBtn)', function(data) {
@@ -290,7 +324,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		}
 		// 搜索并刷新数据表格
 		table.reload('bondTable', {
-			url: '../bond/trade/list', //
+			url: '../bondTrade/list', //
 			where: data.field,
 			page: {
 				curr: 1 //从第一页开始
@@ -327,9 +361,10 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		// 定义一个要删除的所有资源ID的字符串
 		let idStr = "";
 		switch(obj.event) {
-			case 'addUser':
+			case 'sd':
 				// 弹出新增模态框
-				initAddModal();
+				alert("sd");
+				// addBondTrader();
 				break;
 			case 'updateUser':
 				// 选择的数据数量
@@ -360,8 +395,16 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					});
 					return;
 				}
+				for(let i = 0; i < data.length; i++) {
+					if (new Date(data[i].tradeDateStr).getTime() >= (new Date().getTime()-1000*60*60*24)) {
+						layer.msg("操作被限制(T+1日才能结算！！)", {
+							icon: 4 //图标，可输入范围0~6
+						});
+						return;
+					}
+				}
 				// 遍历传递过来的要结算的数据
-				for(var i = 0; i < data.length; i++) {
+				for(let i = 0; i < data.length; i++) {
 					if(data[i].tradeStatus == '1') {
 						layer.msg("所选的数据有已结算的！", {
 							icon: 4 // 图标，可输入范围0~6
@@ -375,37 +418,17 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				idStr = idStr.substring(0, idStr.length - 1);
 				settlements(idStr, '1');
 				break;
-			case 'restoreRecord':
-				// 当前选中行的数据
-				var data = checkStatus.data;
-				//判断是否有选中
-				if(checkStatus.data.length < 1) {
-					layer.msg("请选择你要还原的债券！！", {
-						icon: 4 //图标，可输入范围0~6
-					});
-				}
-				// 遍历传递过来的要删除的数据
-				for(var i = 0; i < data.length; i++) {
-					if(data[i].usable == '1') {
-						layer.msg("所选债券是可用的，无需修改！", {
-							icon: 4 // 图标，可输入范围0~6
-						});
-						return;
-					}
-					// 拿出资源ID进行拼接
-					idStr += data[i].bondId + ",";
-				}
-				// 截取掉因为拼接产生的多余的一个逗号
-				idStr = idStr.substring(0, idStr.length - 1);
-				settlements(idStr, '1');
-				break;
+			case 'addBondTrader':
+				addBondTrader();
 		};
 	});
-	
+
+
 	// 监听锁定操作
 	form.on('switch(usable)', function(obj) {
 		settlements(obj.value, this.checked == true ? 'Y' : 'N');
 	});
+
 
 	// 定义弃用或还原的方法
 	var settlements = function(bondTradeIds, tradeStatus) {
@@ -421,7 +444,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			async: false, // 默认为true，false表示同步，如果当前请求没有返回则不执行后续代码
 			type: "post",
-			url:'../bond/trade/settlements' ,//  /
+			url:'../bondTrade/settlements' ,//  /
 			data: {
 				bondTradeIds:bondTradeIds,
 				tradeStatus:tradeStatus
@@ -438,7 +461,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 刷新数据表格
 				table.reload('bondTable', {
-					url: '../bond/trade/list'
+					url: '../bondTrade/list'
 				});
 			}
 		});

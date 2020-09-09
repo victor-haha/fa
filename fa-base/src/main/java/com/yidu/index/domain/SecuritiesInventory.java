@@ -1,5 +1,4 @@
-package com.xxx.xxx;
-
+package com.yidu.index.domain;
 
 import java.io.Serializable;
 import java.sql.Date;

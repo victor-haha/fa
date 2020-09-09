@@ -51,7 +51,10 @@
 				animation-delay:0.5s;
 				-webkit-animation-delay:0.5s; /* Safari 和 Chrome */
 			}
-
+			.align-center{
+				width: 100%;
+				height: 90%;
+			}
 		</style>
 	</head>
 
@@ -131,12 +134,26 @@
 				</table>
 			</div>
 
+			<div class="layui-upload-drag align-center" id="addBondTrader" style="display: none">
+
+				<i class="layui-icon"></i>
+				<p>点击上传，或将文件拖拽到此处</p>
+				<div class="layui-hide" id="uploadDemoView">
+				</div>
+                <!--<h3>SpringMvc文件上传</h3>
+                <form action="../bond/poi" method="post" enctype="multipart/form-data">
+                    选择文件上传：<input type="file" name="upload"/><br>
+                    <input type="submit" value="上传">
+                </form>-->
+			</div>
+
 			<!-- 头部工具栏 -->
 			<script type="text/html" id="userToolbar">
 				<div class="layui-btn-container">
 					<span class="btnCont">
-	 					 <!--<button type="button" title="添加"  lay-event="addUser" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe61f;</i>添加</button> -->
+
 						<button type="button" title="结算"  lay-event="settlements" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe605;</i>结算</button>
+						<button type="button" title="上传Excel导入"  lay-event="addBondTrader" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe681;</i>上传Excel导入</button>
 						<!--<button type="button" title="弃用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>弃用</button>-->
 						<!--<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>-->
 					</span>

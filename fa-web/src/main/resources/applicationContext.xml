@@ -37,7 +37,8 @@
 		<!--给映射文件中resultType设置别名-->
 		<property name="typeAliasesPackage" value="
 			com.yidu.user.domain,com.yidu.user.paging,
-			com.yidu.bond.domain,com.yidu.bond.paging
+			com.yidu.bond.domain,com.yidu.bond.paging,
+			com.yidu.capital.domain,com.yidu.index.domain
 		"/>
    	</bean>
 	

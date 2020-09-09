@@ -1,6 +1,9 @@
 package com.yidu.bond.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.yidu.bond.Listener.DataListener;
 import com.yidu.bond.domain.Bond;
+import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondPaging;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.bond.service.BondService;
@@ -9,11 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
- * 类的描述:
+ * 类的描述: 债券基础操作
  *
  * @author wh
  * @since 2020/9/3 13:16
@@ -70,32 +78,4 @@ public class BondController {
         return flag == 1 ? "1" : "0";
     }
 
-
-    /**
-     * 搜索查询所有债券交易数据并分页
-     * @param bondTradePaging 搜索分页参数
-     * @return  债券交易集合的layui格式数据
-     */
-    @RequestMapping("/trade/list")
-    public LayuiFormat findBondTrade(BondTradePaging bondTradePaging){
-        return bondService.findBondTrade(bondTradePaging);
-    }
-
-    /**
-     *
-     * @param bondTradeIds 债券交易数据ids
-     * @param tradeStatus 交易状态
-     * @return 1:修改成功，0：修改失败
-     */
-    @RequestMapping("/trade/settlements")
-    public String tradeStatus(String bondTradeIds , String tradeStatus){
-        //将传来的多个id转换为String数组
-        String[] ids = bondTradeIds.split(",");
-        //循环ids数组，进行业务处理
-        int flag = 0;
-        for(String bondTradeId : ids){
-           flag =  bondService.updateTradeStatus(bondTradeId,tradeStatus);
-        }
-        return flag==1 ? "1": "0";
-    }
 }

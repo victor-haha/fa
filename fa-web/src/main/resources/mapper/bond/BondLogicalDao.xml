@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.bond.dao.BondLogicalDao">
+    <!--资金调拨表字段模板-->
+    <sql id="capitalTransferColumn">
+        capitalTransferId,capitalTransferNo,fundId,fundCode,fundName,accountId,accountNo,accountName,transferAmount,transferDate,transferFlag,transferType
+    </sql>
+
+    <!--资金调拨表插入数据‘占位符’ 字段模板-->
+    <sql id="insertCapitalTransfer">
+        #{capitalTransferId},
+        #{capitalTransferNo},
+        #{fundId},
+        #{fundCode},
+        #{fundName},
+        #{accountId},
+        #{accountNo},
+        #{accountName},
+        #{transferAmount},
+        #{transferDate},
+        #{transferFlag},
+        #{transferType}
+    </sql>
+    <!--债券交易数据表字段模板-->
+    <sql id="bondTradeColumn">
+        bondTradeId,bondTradeNo,fundId,fundCode,fundName,bondId,bondCode,bondName,managerId,managerName,brokerId,brokerName,tradeType,tradeFlag,tradePrice,tradeDate,share,turnover,stampTax,managementFees,transferFee,commission,brokerage,total,couponRate,tradeStatus,description
+    </sql>
+    <!--债券交易数据表插入数据‘占位符’ 字段模板-->
+    <sql id="insertColumn">
+        #{bondTradeId},
+        #{bondTradeNo},
+        #{fundId},
+        #{fundCode},
+        #{fundName},
+        #{bondId},
+        #{bondCode},
+        #{bondName},
+        #{managerId},
+        #{managerName},
+        #{brokerId},
+        #{brokerName},
+        #{tradeType},
+        #{tradeFlag},
+        #{tradePrice},
+        #{tradeDate},
+        #{share},
+        #{turnover},
+        #{stampTax},
+        #{managementFees},
+        #{transferFee},
+        #{commission},
+        #{brokerage},
+        #{total},
+        #{couponRate},
+        #{tradeStatus},
+        #{description}
+    </sql>
+    <resultMap id="capitalMap" type="CapitalTransfer">
+        <id column="capitalTransferId" property="capitalTransferId"/>
+        <result column="capitalTransferNo" property="capitalTransferNo"/>
+        <result column="fundId" property="fundId"/>
+        <result column="fundCode" property="fundCode"/>
+        <result column="fundName" property="fundName"/>
+        <result column="accountId" property="accountId"/>
+        <result column="accountNo" property="accountNo"/>
+        <result column="accountName" property="accountName"/>
+        <result column="turnover" property="transferAmount"/>
+        <result column="transferDate" property="transferDate"/>
+        <result column="tradeType" property="transferFlag"/>
+        <result column="transferType" property="transferType"/>
+    </resultMap>
+    
+    <!--按条件查询债券交易数据查询-->
+    <select id="findBondTrade" resultType="BondTrade" parameterType="BondTradePaging">
+        select * from t_bond_trade
+        <where>
+            <if test="bondTradeNo != null and bondTradeNo != ''">
+                and bondTradeNo like concat('%',#{bondTradeNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="bondName != null and bondName != ''">
+                and bondName like concat('%',#{bondName},'%')
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName like concat('%',#{managerName},'%')
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                and brokerName like concat('%',#{brokerName},'%')
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+    <!--搜索查询所有债券交易数据条数-->
+    <select id="findBondTradeCount" resultType="Long" parameterType="BondTradePaging">
+        select count(bondId) from t_bond_trade
+        <where>
+            <if test="bondTradeNo != null and bondTradeNo != ''">
+                and bondTradeNo like concat('%',#{bondTradeNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="bondName != null and bondName != ''">
+                and bondName like concat('%',#{bondName},'%')
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName like concat('%',#{managerName},'%')
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                and brokerName like concat('%',#{brokerName},'%')
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+        </where>
+    </select>
+
+    <!--添加债券交易数据-->
+    <insert id="addBondTrade" parameterType="BondTrade">
+        insert into t_bond_trade(<include refid="bondTradeColumn"/>) value(<include refid="insertColumn"/> );
+    </insert>
+    <!--修改债券交易状态-->
+    <update id="updateTradeStatus" parameterType="String">
+        update t_bond_trade set tradeStatus = #{tradeStatus} where bondTradeId = #{bondTradeId}
+    </update>
+    <!--按bondTradeId 联表t_capital_transfer,t_account,t_bond_trade 查询 ，返回资金调度对象-->
+    <select id="findCapitalTransferByBondTradeId" resultMap="capitalMap" parameterType="String">
+        select bt.fundId,bt.fundCode,bt.fundName,bt.turnover,bt.tradeType,act.accountId,act.accountNo,act.accountName
+        from t_account as act,t_bond_trade as bt
+        where  act.fundId  = bt.fundId
+        and bt.bondTradeId = #{bondTradeId}
+    </select>
+
+
+    <!--向资金调拨表中插入数据-->
+    <insert id="addCapitalTransfer" parameterType="CapitalTransfer">
+        insert into t_capital_transfer(<include refid="capitalTransferColumn"/>) value(<include refid="insertCapitalTransfer"/>)
+    </insert>
+
+</mapper>

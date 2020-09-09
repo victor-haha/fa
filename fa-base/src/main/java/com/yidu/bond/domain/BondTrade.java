@@ -1,9 +1,10 @@
 package com.yidu.bond.domain;
 
 import com.yidu.utils.DateUtils;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 债券交易数据表
@@ -11,6 +12,7 @@ import java.sql.Date;
  * @author wh
  * @since 2020-09-06
  */
+@Data
 public class BondTrade implements Serializable{
 
 	private static final long serialVersionUID =  228366830405396394L;
@@ -77,19 +79,13 @@ public class BondTrade implements Serializable{
 	/**
 	 * 交易方式，1买入，2卖出
 	 */
-	private short tradeType;
-	/**
-	 * 交易方式字符串格式，1买入，2卖出
-	 */
-	private String tradeTypeStr;
+	private int tradeType;
+
 	/**
 	 * 交易标识1.流入、2.流出   买入股票，资金调拨流出；卖出股票，资金调拨流入
 	 */
-	private short tradeFlag;
-	/**
-	 * 交易标识字符串格式  1.流入、2.流出   买入股票，资金调拨流出；卖出股票，资金调拨流入
-	 */
-	private String tradeFlagStr;
+	private int tradeFlag;
+
 
 	/**
 	 * 交易价格(单价),买入或卖出时股票单价
@@ -100,10 +96,7 @@ public class BondTrade implements Serializable{
 	 * 交易日期
 	 */
 	private Date tradeDate;
-	/**
-	 * 交易日期 字符串格式
-	 */
-	private String tradeDateStr;
+
 	/**
 	 * 交易数量(份额)，单位：份
 	 */
@@ -150,18 +143,33 @@ public class BondTrade implements Serializable{
 	private double couponRate;
 
 	/**
-	 * 交易状态 已结算1  未结算 2
+	 * 交易状态 已结算1  未结算 0
 	 */
-	private short tradeStatus;
-	/**
-	 * 交易状态字符串格式 已结算1  未结算 0
-	 */
-	private String tradeStatusStr;
+	private int tradeStatus;
+
 
 	/**
 	 * 备注
 	 */
 	private String description;
+
+    /**
+     * 交易日期 字符串格式
+     */
+    private String tradeDateStr;
+    /**
+     * 交易状态字符串格式 已结算1  未结算 0
+     */
+    private String tradeStatusStr;
+    /**
+     * 交易标识字符串格式  1.流入、2.流出   买入股票，资金调拨流出；卖出股票，资金调拨流入
+     */
+    private String tradeFlagStr;
+
+    /**
+     * 交易方式字符串格式，1买入，2卖出
+     */
+    private String tradeTypeStr;
 
 	public BondTrade() {
 
@@ -268,10 +276,10 @@ public class BondTrade implements Serializable{
 		return tradeType;
 	}
 
-	public void setTradeType(short tradeType) {
+	public void setTradeType(int tradeType) {
 		this.tradeType = tradeType;
 		if(tradeType != 0){
-			this.tradeDateStr = tradeType==1?"买入":"卖出";
+			this.tradeTypeStr = tradeType==1?"买入":"卖出";
 		}
 	}
 
@@ -279,7 +287,7 @@ public class BondTrade implements Serializable{
 		return tradeFlag;
 	}
 
-	public void setTradeFlag(short tradeFlag) {
+	public void setTradeFlag(int tradeFlag) {
 		this.tradeFlag = tradeFlag;
 		if(tradeFlag != 0){
 			this.tradeFlagStr = tradeFlag==1?"流入":"流出";
@@ -300,7 +308,7 @@ public class BondTrade implements Serializable{
 
 	public void setTradeDate(Date tradeDate) {
 		this.tradeDate = tradeDate;
-		if(null == tradeDate){
+		if(null != tradeDate){
 			this.tradeDateStr = DateUtils.dataToString(tradeDate,"yyyy-MM-dd HH:mm:ss");
 		}
 	}
@@ -381,9 +389,9 @@ public class BondTrade implements Serializable{
 		return tradeStatus;
 	}
 
-	public void setTradeStatus(short tradeStatus) {
+	public void setTradeStatus(int tradeStatus) {
 		this.tradeStatus = tradeStatus;
-		if(tradeStatus != 0){
+		if(tradeStatus == 0 || tradeStatus == 1){
 			this.tradeStatusStr = tradeStatus==1?"已结算":"未结算";
 		}
 	}
