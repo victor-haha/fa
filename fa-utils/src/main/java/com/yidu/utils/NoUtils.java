@@ -17,8 +17,8 @@ public class NoUtils {
      * @return 加工后的编号  如：JJKC-yyyy-MM-dd-HHmmss
      */
     public static String getNo(String prefix){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss"+ UUID.randomUUID().toString().replace("-","").substring(0,6));
-        String format = sdf.format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String format = sdf.format(new Date())+ UUID.randomUUID().toString().replace("-","").substring(0,6);
 
         return prefix + format;
     }
