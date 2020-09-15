@@ -46,13 +46,11 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	//----1.数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#bondTable',
-		url: '../bondTrade/list', //后期改回获取用户列表的后端程序的url
+		url: '../capital/list', //后期改回获取用户列表的后端程序的url
 		method: 'post',
 		height: 'full-10',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#userToolbar', // 开启头部工具栏，并为其绑定左侧模板
-		// cellMinWidth: 80, // 全局定义所有常规单元格的最小宽度（默认：60）
-		cellMaxWidth: 200,
 		page: true, // 开启分页
 		limit: 10, // 每页显示的条数
 		limits: [5,10, 20, 50, 100], // 每页条数的选择项
@@ -72,16 +70,16 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					fixed:'left', //钉在左侧
 				}, //复选框
                 {
-					field:'bondTradeId',
-					title:'债券交易Id',
+					field:'cachInventoryId',
+					title:'现金库存Id',
 					fixed:'left', //钉在左侧
 					hide: true, //一般情况下不显示ID
                     align:'center',
 					width: 200
                 },
 				{
-					field: 'bondTradeNo',
-					title: '债券交易编号',
+					field: 'cachInventoryNo',
+					title: '现金库存编号',
 					// fixed:'left', //钉在左侧
 					align: "center",
                     minWidth: 150
@@ -109,175 +107,50 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					width: 200
 				},
 				{
-					field: 'bondId',
-					title: '债券Id',
+					field: 'accountId',
+					title: '账户Id',
 					sort: true,
 					hide: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'bondCode',
-					title: '债券代码',
+					field: 'accountNo',
+					title: '账号',
 					sort: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'bondName',
-					title: '债券名称',
+					field: 'accountName',
+					title: '账户名',
                     align: "center",
 					width: 140
 				},
 				{
-					field: 'managerId',
-					title: '基金经理Id',
+					field: 'cashBalance',
+					title: '现金余额',
 					align: "center",
-					hide: true,
-					width: 130
-				},
-				{
-					field: 'managerName',
-					title: '基金经理',
-					align: "center",
-					width: 130
-				},
-				{
-					field: 'brokerId',
-					title: '券商Id',
 					sort: true,
-					hide: true,
-					align: "center",
-					width: 150
+					width: 130
 				},
 				{
-					field: 'brokerName',
-					title: '券商名',
+					field: 'statisticalDateStr',
+					title: '统计日期',
 					align: "center",
-					width: 200
-				},
-				{
-					field: 'tradeTypeStr',
-					title: '交易方式',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'tradeFlagStr',
-					title: '交易标识',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'tradePrice',
-					title: '交易价格(单价)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'tradeDateStr',
-					title: '交易日期',
-					align: "center",
-					width: 200
-				},
-				{
-					field: 'share',
-					title: '交易数量(份额)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'turnover',
-					title: '交易额(总)',
-					align: "center",
-					width: 120
-				},
-				{
-					field: 'stampTax',
-					title: '印花费(国家)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'managementFees',
-					title: '征管费(国家)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'transferFee',
-					title: '过户费(交易所)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'commission',
-					title: '佣金费用(券商)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'brokerage',
-					title: '经手费(交易所)',
-					align: "center",
-					width: 150
-				},
-				{
-					field: 'total',
-					title: '总金额',
-					align: "center",
-					width: 120
-				},
-				{
-					field: 'couponRate',
-					title: '债券利息',
-					align: "center",
-					width: 120
+					width: 130
 				},
 				{
 					field: 'description',
-					title: '备注',
+					title: '描述',
 					align: "center",
-                    minWidth: 120
-				},
-				{
-					field: 'tradeStatus',
-					title: '交易状态',
-					align: "center",
-					fixed:'right',
-					width: 100,
-					templet:function (data) {
-						if(data.tradeStatus =='1'){
-							return '<span style="color: #3acc37">已结算</span>'
-						}else if(data.tradeStatus =='0'){
-							return '<span style="color: #ff9960">未结算</span>'
-						}else {
-							return '<span style="color: #ff0800">数据有误</span>'
-						}
-					}
+					width: 150
 				}
 
 			]
 		]
 	});
-	//拖拽上传
-	upload.render({
-		elem: '#addBondTrader'
-		,url: '../bondTrade/poi' //改成您自己的上传接口https://httpbin.org/post
-		,accept: 'file' //普通文件
-		,done: function(data){
-			if(data == 1){
-				layer.closeAll(); //导入数据成功关闭弹出层
-				layer.msg('导入数据成功！');
-				// 刷新数据表格
-				table.reload('bondTable', {
-					url: '../bondTrade/list'
-				});
-			}else{
-				layer.msg("导入数据出错(检查文件格式是否正确)！！");
-			}
-		}
-	});
+
 	//----2.时间选择器--------------------------------------------------------------------
 	laydate.render({
 		elem: '#addExpireDate'
@@ -324,7 +197,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		}
 		// 搜索并刷新数据表格
 		table.reload('bondTable', {
-			url: '../bondTrade/list', //
+			url: '../capital/list', //
 			where: data.field,
 			page: {
 				curr: 1 //从第一页开始
@@ -396,7 +269,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					return;
 				}
 				for(let i = 0; i < data.length; i++) {
-					if (new Date(data[i].tradeDateStr).getTime() >= (new Date(new Date().toLocaleDateString()).getTime())) {
+					if (new Date(data[i].tradeDateStr).getTime() >= (new Date().getTime()-1000*60*60*24)) {
 						layer.msg("操作被限制(T+1日才能结算！！)", {
 							icon: 4 //图标，可输入范围0~6
 						});

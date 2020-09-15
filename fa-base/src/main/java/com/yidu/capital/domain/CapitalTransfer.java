@@ -13,7 +13,7 @@ public class CapitalTransfer implements Serializable{
 
 	private static final long serialVersionUID =  9170496776657570411L;
 	/**
-	 * 资金调拨Id
+	 * 资金调拨
 	 */
 	private String capitalTransferId;
 
@@ -30,7 +30,7 @@ public class CapitalTransfer implements Serializable{
 	/**
 	 * 基金代码
 	 */
-	private String fundCode;
+	private String fundNo;
 
 	/**
 	 * 基金名
@@ -102,12 +102,12 @@ public class CapitalTransfer implements Serializable{
 		this.fundId = fundId;
 	}
 
-	public String getFundCode() {
-		return fundCode;
+	public String getFundNo() {
+		return fundNo;
 	}
 
-	public void setFundCode(String fundCode) {
-		this.fundCode = fundCode;
+	public void setFundNo(String fundNo) {
+		this.fundNo = fundNo;
 	}
 
 	public String getFundName() {
@@ -182,7 +182,7 @@ public class CapitalTransfer implements Serializable{
 				"capitalTransferId='" + capitalTransferId + '\'' +
 				"capitalTransferNo='" + capitalTransferNo + '\'' +
 				"fundId='" + fundId + '\'' +
-				"fundCode='" + fundCode + '\'' +
+				"fundNo='" + fundNo + '\'' +
 				"fundName='" + fundName + '\'' +
 				"accountId='" + accountId + '\'' +
 				"accountNo='" + accountNo + '\'' +

@@ -38,15 +38,17 @@
 		<property name="typeAliasesPackage" value="
 			com.yidu.user.domain,com.yidu.user.paging,
 			com.yidu.bond.domain,com.yidu.bond.paging,
-			com.yidu.capital.domain,com.yidu.index.domain
+			com.yidu.capital.domain,com.yidu.index.domain,
+			com.yidu.capital.paging,com.yidu.account.domain,
+			com.yidu.index.domain,com.yidu.index.paging
 		"/>
    	</bean>
 	
 	<!-- 扫描dao接口 -->
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
    		<property name="basePackage" value="
-   		com.yidu.user.dao,
-   		com.yidu.bond.dao
+   		com.yidu.user.dao,com.yidu.bond.dao,
+   		com.yidu.capital.dao,com.yidu.index.dao
 	"/>
    	</bean>
 	

@@ -38,7 +38,7 @@ public class BondLogicalController {
     }
 
     /**
-     *
+     * 结算
      * @param bondTradeIds 债券交易数据ids
      * @param tradeStatus 交易状态
      * @return 1:修改成功，0：修改失败

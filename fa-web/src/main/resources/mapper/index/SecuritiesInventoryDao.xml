@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yidu.index.dao.SecuritiesInventoryDao">
+    <sql id="allColumn">
+        securitiesInventoryId
+        sechuritiesInventoryNo,
+        securitiesId,
+        securitiesNo,
+        securitiesName,
+        fundId,
+        fundNo,
+        fundName,
+        accountId,
+        accountNo,
+        accountName,
+        price,
+        share,
+        turnover,
+        securitiesType,
+        statisticalDate,
+        description
+    </sql>
+    <!--条件查询债券并分页-->
+    <select id="findAll" resultType="SecuritiesInventory" parameterType="SecuritiesInventoryPaging">
+        select <include refid="allColumn"/> from t_securities_inventory
+        <where>
+            <if test="securitiesNo != null and securitiesNo != ''">
+                and securitiesNo like concat('%',#{securitiesNo},'%')
+            </if>
+            <if test="securitiesName != null and securitiesName != ''">
+                and securitiesName like concat('%',#{securitiesName},'%')
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo like concat('%',#{fundNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="securitiesType != null and securitiesType != ''">
+                and securitiesType = #{securitiesType}
+            </if>
+            <if test="startStatisticalDate != null and endStatisticalDate != null">
+                and statisticalDate between #{startStatisticalDate} and #{endStatisticalDate}
+            </if>
+
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="findCount" resultType="Long" parameterType="SecuritiesInventoryPaging">
+        select count(securitiesInventoryId) from t_securities_inventory
+        <where>
+            <if test="securitiesNo != null and securitiesNo != ''">
+                and securitiesNo like concat('%',#{securitiesNo},'%')
+            </if>
+            <if test="securitiesName != null and securitiesName != ''">
+                and securitiesName like concat('%',#{securitiesName},'%')
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo like concat('%',#{fundNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="securitiesType != null and securitiesType != ''">
+                and securitiesType = #{securitiesType}
+            </if>
+            <if test="startStatisticalDate != null and endStatisticalDate != null">
+                and statisticalDate between #{startStatisticalDate} and #{endStatisticalDate}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>
