@@ -1,0 +1,164 @@
+/* 设置layui下拉框的最大长度，一条数据占36px * 显示数量，加12px */
+.layui-form-select dl {
+	max-height:228px;
+}
+/* 让超出的下拉框不会被弹出层覆盖 慎用！慎用！慎用！ */
+/* body .layui-layer-page .layui-layer-content {
+	overflow: visible;
+} */
+
+/*linear-gradient(270deg,#ff0c53,#e51422)*/
+
+.popFormModal{
+	display:none;
+	width: 580px;
+	padding:20px 50px;
+}
+
+.popFormModal .layui-inline{
+	padding: 10px;
+}
+
+#search-header{
+	padding-top: 10px;/*修改过*/
+	height: auto;
+	background: rgb(250,250,250);
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px #ddd;
+	transition: all 0.2s;
+	z-index: 999;
+}
+#search-header .layui-inline{
+	margin-right:0;
+}
+#search-header .layui-input-inline{
+	/*margin-right:0;*/
+	width: 192px;
+}
+.layui-btn:hover {
+	opacity: 1;
+	filter: alpha(opacity=80);
+	color: #FFFFFF;
+	border-radius: 50px !important;
+	transition: border-radius 1s ease-in-out;
+}
+
+/*  */
+body {
+	background: rgb(255,255,255);
+}
+#content {
+	width: 98%;
+	margin: 10px auto 0px;
+}
+#dataTable {
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px #ddd;
+	background: #eee;
+	transition: all 0.2s;
+}
+.layui-btn-container .layui-btn-normal{
+	background-image: linear-gradient(434deg,limegreen,#9dff00) !important
+}
+.layui-btn-container .layui-btn-danger{
+	background-image: linear-gradient(288deg,#ff1d1d,#fb00ff) !important
+}
+.layui-btn-container .layui-btn-warm{
+	background-image: linear-gradient(168deg,#fbff00,#e47f17) !important
+}
+.layui-table-view {
+    margin: 0px 0 !important;
+}
+#search-header:hover {
+	box-shadow: 0px 0px 15px #ccc;
+}
+#dataTable:hover {
+	box-shadow: 0px 0px 15px #ccc;
+}
+.layui-btn {
+    border-radius: 6px !important;
+}
+.layui-layer {
+    border-radius: 15px !important;
+    overflow: hidden;
+}
+.layui-layer-btn a {
+    border-radius: 20px !important;
+}
+.my-bg-blue {
+	background-color: rgb(28,132,198) !important;
+}
+.my-bg-red {
+	background-color: #FF0018B8 !important;
+}
+.my-bg-red1 {
+	background-image: linear-gradient(288deg,#ff1d1d,#fb00ff) !important
+}
+.my-bg-pink {
+	background-color: rgb(245,156,166) !important;
+}
+.my-bg-gray {
+	background-color: #393D49B3 !important;
+}
+.my-bg-green {
+	background-image: linear-gradient(434deg,limegreen,#9dff00) !important
+}
+.my-bg-green1 {
+	background-color: rgb(108,217,195) !important;
+}
+.my-bg-green2 {
+	background-image: linear-gradient(270deg,#0aad3c,limegreen) !important;
+}
+.my-bg-green3 {
+	background-image: linear-gradient(270deg,limegreen,#0aad3c) !important;
+}
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+	background-image: linear-gradient(270deg,limegreen,#0aad3c) !important;
+}
+.font-color {
+	color: #FFFFFF !important;
+}
+.font-size {
+	font-size: 12px !important;
+}
+.layui-table td, .layui-table th {
+	font-size: 16px;
+}
+@keyframes shake {
+	10%, 90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+	20%, 80% {
+		transform: translate3d(2px, 0, 0);
+	}
+	30%, 50%, 70% {
+		transform: translate3d(-4px, 0, 0);
+	}
+	40%, 60% {
+		transform: translate3d(4px, 0, 0);
+	}
+}
+.useable {
+	line-height: 20px !important;
+	display: inline-flex;
+	padding: 0px 10px;
+	border-radius: 10px;
+}
+/* 解决图片展示表格框样式问题，如显示不完整，优先级等...*/
+.layui-table-cell {
+	text-align: center;
+	height: auto;
+	white-space: normal;
+}
+.layui-btn-container .layui-btn-bgcolor{
+	background-image: linear-gradient(0deg,#fd3ca7,#000000) !important;
+	animation: foo-top 200ms ease-in-out infinite, foo-left 200ms linear infinite;
+	position: relative;
+}
+
+.layui-input-block{
+	padding: 30px 135px;
+}
+
+

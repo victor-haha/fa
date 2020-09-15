@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.stock.dao.StockDao">
+    <!--用户Id除外的所有字段-->
+    <sql id="allColumn">
+        stockId,stockCode,stockShortName,issueDate,issuer,plate,industry,exchange,description,usable
+    </sql>
+
+    <!--添加股票所需字段-->
+    <sql id="addStockColumn">
+        stockId,stockCode,stockShortName,issueDate,issuer,plate,industry,exchange,description,usable
+    </sql>
+
+    <!--修改股票所需字段-->
+    <sql id="updateStockColumn">
+        stockId,stockCode,stockShortName,issueDate,issuer,plate,industry,exchange
+    </sql>
+
+
+    <!--根据条件动态修改-->
+    <sql id="dynamicUpdate">
+        <set>
+            <!--<if test="stockId != null and stockId != ''">
+                stockId=#{stockId},
+            </if>-->
+            <if test="stockCode != null and stockCode != ''">
+                stockCode=#{stockCode},
+            </if>
+            <if test="stockShortName != null and stockShortName != ''">
+                stockShortName = #{stockShortName},
+            </if>
+            <if test="issueDate != null">
+                issueDate = #{issueDate},
+            </if>
+            <if test="issuer != null and issuer != ''">
+                issuer = #{issuer},
+            </if>
+            <if test="plate != null and plate != ''">
+                plate = #{plate},
+            </if>
+            <if test="industry != null and industry != ''">
+                industry = #{industry},
+            </if>
+            <if test="exchange != null and exchange != ''">
+                exchange = #{exchange},
+            </if>
+            <if test="usable != null and usable != ''">
+                usable = #{usable},
+            </if>
+        </set>
+    </sql>
+
+    <!--条件查询-->
+    <sql id="conditionQuery">
+        <where>
+            <if test="stockCode != null and stockCode != ''">
+                and stockCode = #{stockCode}
+            </if>
+            <if test="stockShortName != null and stockShortName != ''">
+                and stockShortName = #{stockShortName}
+            </if>
+            <if test="plate != null and plate != ''">
+                and plate = #{plate}
+            </if>
+            <if test="industry != null and industry != ''">
+                and industry like '%${industry}%'
+            </if>
+            <if test="exchange != null and exchange != ''">
+                and exchange = #{exchange}
+            </if>
+            <if test="usable != null and usable != ''">
+                usable = #{usable},
+            </if>
+        </where>
+    </sql>
+
+    <!--动态添加分页查询-->
+    <sql id="pagingQuery">
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </sql>
+
+
+    <select id="findAllStock" resultType="Stock">
+        select <include refid="allColumn"/> from t_stock
+    </select>
+
+    <!--根据股票指定的条件查询股票-->
+    <select id="findStockByCondition" parameterType="map" resultType="Stock">
+        select <include refid="allColumn"/> from t_stock
+        <include refid="conditionQuery"/><include refid="pagingQuery"/>
+    </select>
+
+
+    <!--根据条件统计股票数量-->
+    <select id="countStockByCondition" parameterType="map" resultType="Long">
+        select count(1) from t_stock <include refid="conditionQuery"/>
+    </select>
+
+    <!--添加股票-->
+    <insert id="addStock" parameterType="Stock">
+        insert into t_stock(<include refid="addStockColumn"/>) values(#{stockId},#{stockCode},#{stockShortName},#{issueDate},#{issuer},#{plate},#{industry},#{exchange},#{description},#{usable})
+    </insert>
+
+    <!--修改股票-->
+    <update id="updateStock" parameterType="Stock">
+        update  t_stock <include refid="dynamicUpdate"/> where stockCode = #{stockCode}
+    </update>
+
+
+    <!--修改用户可用状态-->
+    <update id="updateStockStatus" parameterType="map">
+        update  t_stock set usable=#{usable} where stockCode = #{stockCode}
+    </update>
+</mapper>

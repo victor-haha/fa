@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.stock.dao.StockLogicalDao">
+    <!--股票交易数据表字段模板-->
+    <sql id="stockTradeColumn">
+        stockTradeId,stockTradeNo,fundId,fundCode,fundName,stockId,stockCode,stockName,managerId,managerName,brokerId,brokerName,tradeType,tradeFlag,tradePrice,tradeDate,share,turnover,stampTax,managementFees,transferFee,commission,brokerage,total,tradeStatus,description
+    </sql>
+    <!--股票交易数据表插入数据‘占位符’ 字段模板-->
+    <sql id="insertColumn">
+        #{stockTradeId},
+        #{stockTradeNo},
+        #{fundId},
+        #{fundCode},
+        #{fundName},
+        #{stockId},
+        #{stockCode},
+        #{stockName},
+        #{managerId},
+        #{managerName},
+        #{brokerId},
+        #{brokerName},
+        #{tradeType},
+        #{tradeFlag},
+        #{tradePrice},
+        #{tradeDate},
+        #{share},
+        #{turnover},
+        #{stampTax},
+        #{managementFees},
+        #{transferFee},
+        #{commission},
+        #{brokerage},
+        #{total},
+        #{tradeStatus},
+        #{description}
+    </sql>
+
+    <sql id="whereCaulse">
+        <where>
+            <if test="stockTradeNo != null and stockTradeNo != ''">
+                and stockTradeNo like concat('%',#{stockTradeNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="stockName != null and stockName != ''">
+                and stockName like concat('%',#{stockName},'%')
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName like concat('%',#{managerName},'%')
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                and brokerName like concat('%',#{brokerName},'%')
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+        </where>
+    </sql>
+
+    <!--资金调拨表字段模板-->
+    <sql id="capitalTransferColumn">
+        capitalTransferId,capitalTransferNo,fundId,fundCode,fundName,accountId,accountNo,accountName,transferAmount,transferDate,transferFlag,transferType
+    </sql>
+
+    <!--资金调拨表插入数据‘占位符’ 字段模板-->
+    <sql id="insertCapitalTransfer">
+        #{capitalTransferId},
+        #{capitalTransferNo},
+        #{fundId},
+        #{fundCode},
+        #{fundName},
+        #{accountId},
+        #{accountNo},
+        #{accountName},
+        #{transferAmount},
+        #{transferDate},
+        #{transferFlag},
+        #{transferType}
+    </sql>
+
+    <resultMap id="capitalMap" type="CapitalTransfer">
+        <id column="capitalTransferId" property="capitalTransferId"/>
+        <result column="capitalTransferNo" property="capitalTransferNo"/>
+        <result column="fundId" property="fundId"/>
+        <result column="fundCode" property="fundCode"/>
+        <result column="fundName" property="fundName"/>
+        <result column="accountId" property="accountId"/>
+        <result column="accountNo" property="accountNo"/>
+        <result column="accountName" property="accountName"/>
+        <result column="turnover" property="transferAmount"/>
+        <result column="transferDate" property="transferDate"/>
+        <result column="tradeType" property="transferFlag"/>
+        <result column="transferType" property="transferType"/>
+    </resultMap>
+
+    <!--按条件查询股票交易数据查询-->
+    <select id="findStockTrade" resultType="StockTrade" parameterType="StockTradePaging">
+        select * from t_stock_trade
+        <include refid="whereCaulse"></include>
+        limit #{page},#{limit}
+    </select>
+
+    <!--根据stockTradeId查询stockTrade对象-->
+    <select id="findStockTradeByStock" resultType="StockTrade" parameterType="String">
+        select * from t_stock_trade
+        where stockTradeId=#{stockTradeId}
+    </select>
+
+    <!--搜索查询所有股票交易数据条数-->
+    <select id="findStockTradeCount" resultType="Long" parameterType="StockTradePaging">
+        select count(stockId) from t_stock_trade
+        <include refid="whereCaulse"></include>
+    </select>
+
+    <!--添加股票交易数据-->
+    <insert id="addStockTrade" parameterType="StockTrade">
+        insert into t_stock_trade(<include refid="stockTradeColumn"/>) value(<include refid="insertColumn"/> );
+    </insert>
+
+    <!--修改股票交易状态-->
+    <update id="updateTradeStatus" parameterType="String">
+        update t_stock_trade set tradeStatus = #{tradeStatus} where stockTradeId = #{stockTradeId}
+    </update>
+
+    <!--按stockTradeId 联表t_capital_transfer,t_account,t_stock_trade 查询 ，返回资金调度对象-->
+    <select id="findCapitalTransferByStockTradeId" resultMap="capitalMap" parameterType="String">
+        select st.fundId,st.fundCode,st.fundName,st.turnover,st.tradeType,act.accountId,act.accountNo,act.accountName
+        from t_account act,t_stock_trade st
+        where  act.fundId  = st.fundId
+          and st.stockTradeId = #{stockTradeId}
+    </select>
+    <!--向资金调拨表中插入数据-->
+    <insert id="addCapitalTransfer" parameterType="CapitalTransfer">
+        insert into t_capital_transfer(<include refid="capitalTransferColumn"/>) value(<include refid="insertCapitalTransfer"/>)
+    </insert>
+
+</mapper>
