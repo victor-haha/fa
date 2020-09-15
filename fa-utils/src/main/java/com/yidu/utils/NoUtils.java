@@ -18,11 +18,11 @@ public class NoUtils {
      */
     public static String getNo(String prefix){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String format = sdf.format(new Date())+ UUID.randomUUID().toString().replace("-","").substring(0,6);
-
-        return prefix + format;
+        StringBuilder stringBuilder = new StringBuilder(prefix);
+        stringBuilder.append(sdf.format(new Date()));
+        stringBuilder.append(UUID.randomUUID().toString().replace("-","").substring(0,6));
+        return stringBuilder.toString();
     }
-
     public static void main(String[] args) {
         String str = getNo("JJKC");
         System.out.println(str);

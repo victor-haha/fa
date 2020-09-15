@@ -39,7 +39,7 @@ public class BondServiceImpl implements BondService {
             layuiFormat.setCode(1);  //状态码0为查询到数据
             layuiFormat.setCount(0L);
             layuiFormat.setMsg("未查询到指定数据哦!");
-
+            layuiFormat.setData(null);
         }else{
             layuiFormat.setCode(0);  //状态码0为查询到数据
             layuiFormat.setCount(bondDao.findCount(bondPaging));

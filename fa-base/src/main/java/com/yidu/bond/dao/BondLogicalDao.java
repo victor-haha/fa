@@ -3,6 +3,8 @@ package com.yidu.bond.dao;
 import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.capital.domain.CapitalTransfer;
+import com.yidu.capital.domain.CashInventory;
+import com.yidu.index.domain.SecuritiesInventory;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -54,4 +56,62 @@ public interface BondLogicalDao {
      * @return 是否插入成功 1：成功，0：失败
      */
     int addCapitalTransfer(CapitalTransfer capitalTransfer);
+
+    /**
+     *  通过bondTradeId查询交易记录
+     * @param bondTradeId 债券交易id
+     * @return 债券交易对象
+     */
+    BondTrade findBondTradeById(String bondTradeId);
+
+    /**
+     * 根据基金id 和 债券id 查询证券库存数据 (用于判断是否有同一支基金的同一支债券)
+     * @param fundId 基金id
+     * @param bondId 债券id
+     * @return 券库存对象
+     */
+    SecuritiesInventory findBondInventory(@Param("fundId") String fundId, @Param("bondId") String bondId);
+
+    /**
+     * 查询到账户信息，及单位成本，赋值到证券库存对象中
+     * @param fundId 基金id
+     * @return 券库存对象
+     */
+    SecuritiesInventory findSIByFundId(@Param("fundId") String fundId, @Param("bondTradeId") String bondTradeId);
+
+    /**
+     * 添加证券库存数据
+     * @param securitiesInventory 债券库存对象
+     * @return 是否插入成功， 1：成功，0：失败
+     */
+    int addSecuritiesInventory(SecuritiesInventory securitiesInventory);
+
+    /**
+     * 修改证券（债券）库存数据
+     * @param securitiesInventory 债券库存对象
+     * @return 是否修改成功， 1：成功，0：失败
+     */
+    int updateSecuritiesInventory(SecuritiesInventory securitiesInventory);
+
+    /**
+     * 按债券交易中的fundId和bondId,联表查询出现金对应的现金库存数据对象
+     * @param fundId 基金id
+     * @param bondId 债券id
+     * @return 现金库存对象
+     */
+    CashInventory findCashInventory(@Param("fundId") String fundId,@Param("securitiesId") String bondId);
+
+    /**
+     * 将对应的现金账户更新
+     * @param cashInventory 现金库存对象
+     * @return 是否更新成功 1：成功，0：失败
+     */
+    int updateCashInventory(CashInventory cashInventory);
+
+    /**
+     * 添加今天新的现金库存数据
+     * @param cashInventory 现金库存对象
+     * @return 是否添加成功 1：成功，0：失败
+     */
+    int addCashInventory(CashInventory cashInventory);
 }
