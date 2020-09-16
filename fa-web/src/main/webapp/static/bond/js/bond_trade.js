@@ -82,9 +82,9 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				{
 					field: 'bondTradeNo',
 					title: '债券交易编号',
-					fixed:'left', //钉在左侧
+					// fixed:'left', //钉在左侧
 					align: "center",
-					width: 200
+                    minWidth: 150
 				},
 				{
 					field: 'fundId',
@@ -95,7 +95,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					width: 100
 				},
 				{
-					field: 'fundCode',
+					field: 'fundNo',
 					title: '基金代码',
 					sort: true,
 					align: "center",
@@ -238,7 +238,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'description',
 					title: '备注',
 					align: "center",
-					width: 120
+                    minWidth: 120
 				},
 				{
 					field: 'tradeStatus',
@@ -396,7 +396,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					return;
 				}
 				for(let i = 0; i < data.length; i++) {
-					if (new Date(data[i].tradeDateStr).getTime() >= (new Date().getTime()-1000*60*60*24)) {
+					if (new Date(data[i].tradeDateStr).getTime() >= (new Date(new Date().toLocaleDateString()).getTime())) {
 						layer.msg("操作被限制(T+1日才能结算！！)", {
 							icon: 4 //图标，可输入范围0~6
 						});

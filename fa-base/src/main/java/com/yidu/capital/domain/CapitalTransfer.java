@@ -15,7 +15,7 @@ public class CapitalTransfer implements Serializable{
 
 	private static final long serialVersionUID =  9170496776657570411L;
 	/**
-	 * 资金调拨Id
+	 * 资金调拨
 	 */
 	private String capitalTransferId;
 

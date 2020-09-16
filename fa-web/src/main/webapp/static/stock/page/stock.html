@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>股票管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- 设置项目基准路径 -->
+    <base href="/static/" />
+    <!-- 引入layui的css -->
+    <link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
+    <!-- 引入自定义工具css -->
+    <link rel="stylesheet" href="stock/css/stock.css" media="all">
+    <!-- 引入jqeury -->
+    <!--<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>-->
+
+    <!-- 引入layui的js -->
+    <script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- 引入用户js -->
+    <script src="stock/js/stock.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
+    <style type="text/css">
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            white-space: normal;
+        }
+    </style>
+</head>
+
+<body>
+<div id="content">
+    <!-- 头部搜索框 -->
+    <div id="search-header">
+        <form class="layui-form">
+            <div class="layui-form-item" style="">
+                <div class="layui-inline">
+                    <label class="layui-form-label">股票代码</label>
+                    <div class="layui-input-inline">
+                        <input id="queryStockCode" type="text" name="stockCode" placeholder="请输入股票代码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">股票简称</label>
+                    <div class="layui-input-inline">
+                        <input id="queryStockShortName" type="text" name="stockShortName" placeholder="请输入股票简称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属板块</label>
+                    <div class="layui-input-inline">
+                        <input id="queryPlate" type="text" name="plate" placeholder="请输入所属板块" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属行业</label>
+                    <div class="layui-input-inline">
+                        <input id="queryIndustry" type="text" name="industry" placeholder="请输入所属行业" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">交易所</label>
+                    <div class="layui-input-inline">
+                        <select name="exchange" id="queryExchange">
+                            <option value="">请选择</option>
+                            <option value="深交所">深交所</option>
+                            <option value="上交所">上交所</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否可用</label>
+                    <div class="layui-input-inline">
+                        <select name="usable" id="queryusable">
+                            <option value="">请选择</option>
+                            <option value="Y">可用</option>
+                            <option value="N">禁用</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-inline">
+                        <button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="stockSearchBtn">
+                            <i class="layui-icon layui-icon-search"></i>
+                            查询
+                        </button>
+                        <button class="layui-btn my-bg-green3 " type="reset">
+                            <i class="layui-icon layui-icon-refresh"></i>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 数据表格 -->
+    <div id="dataTable">
+        <table class="layui-hide" id="stockTable" lay-filter="stockTableEvent">
+        </table>
+    </div>
+
+    <!-- 添加模态框 -->
+    <div id="addStockModal" class="popFormModal">
+        <!-- 这里手动加表单样式 -->
+        <form id="addStockForm" lay-filter="addStockForm" class="layui-form layui-form-pane" action="">
+            <div class="layui-inline">
+                <label class="layui-form-label">股票代码</label>
+                <div class="layui-input-inline">
+                    <input id="addStockCode" type="text" name="stockCode" lay-verify="stockCode" placeholder="请输入股票代码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">股票简称</label>
+                <div class="layui-input-inline">
+                    <input id="addStockShortName" type="text" name="stockShortName" lay-verify="stockShortName" placeholder="请输入股票简称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">上市日期</label>
+                <div class="layui-input-inline">
+                    <input id="addStockHiredate" type="text" name="issueDate" lay-verify="issueDateStr" placeholder="请输入上市日期" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">发行人</label>
+                <div class="layui-input-inline">
+                    <input id="addissuer" type="text" name="issuer" lay-verify="issuer" placeholder="请输入发行人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">所属板块</label>
+                <div class="layui-input-inline">
+                    <input id="addPlate" type="text" name="plate" lay-verify="plate" placeholder="请输入所属板块" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">所属行业</label>
+                <div class="layui-input-inline">
+                    <input id="addIndustry" type="text" name="industry" lay-verify="industry" placeholder="请输入所属行业" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">交易所</label>
+                <div class="layui-input-inline" style="width: 156px">
+                    <select name="exchange" id="addExchange" lay-verify="exchange">
+                        <option value="">请选择</option>
+                        <option value="深交所">深交所</option>
+                        <option value="上交所">上交所</option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">股票描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>-->
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn my-bg-green" type="submit" lay-filter="addStockBtn" lay-submit>立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 修改模态框 -->
+    <div id="updateStockModal" class="popFormModal">
+        <!-- 这里手动加表单样式 -->
+        <form id="updateStockForm" lay-filter="updateStockForm" class="layui-form layui-form-pane" action="">
+            <div class="layui-inline">
+                <label class="layui-form-label">股票代码</label>
+                <div class="layui-input-inline">
+                    <input id="updateStockCode" type="text" name="stockCode" lay-verify="stockCode" placeholder="请输入股票代码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">股票简称</label>
+                <div class="layui-input-inline">
+                    <input id="updateStockShortName" type="text" name="stockShortName" lay-verify="stockShortName" placeholder="请输入股票简称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">上市日期</label>
+                <div class="layui-input-inline">
+                    <input id="updateStockHiredate" type="text" name="issueDate" lay-verify="issueDate" placeholder="请输入上市日期" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">发行人</label>
+                <div class="layui-input-inline">
+                    <input id="updateissuer" type="text" name="issuer" lay-verify="issuer" placeholder="请输入发行人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">所属板块</label>
+                <div class="layui-input-inline">
+                    <input id="updatePlate" type="text" name="plate" lay-verify="plate" placeholder="请输入所属板块" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">所属行业</label>
+                <div class="layui-input-inline">
+                    <input id="updateIndustry" type="text" name="industry" lay-verify="industry" placeholder="请输入所属行业" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">交易所</label>
+                <div class="layui-input-inline" style="width: 156px">
+                    <select name="exchange" id="updateExchange" lay-verify="exchange">
+                        <option value="">请选择</option>
+                        <option value="深交所">深交所</option>
+                        <option value="上交所">上交所</option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">股票描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>-->
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn my-bg-green" type="submit" lay-filter="updateStockBtn" lay-submit>立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 头部工具栏 -->
+    <script type="text/html" id="stockToolbar">
+
+        <div class="layui-btn-container">
+					<span class="btnCont">
+	 					<button type="button" title="添加"  lay-event="addStock" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe61f;</i>添加</button>
+						<button type="button" title="修改"  lay-event="updateStock" class=" layui-btn layui-btn-warm layui-btn-sm "><i class="layui-icon">&#xe642</i>修改 </button>
+						<button title="禁用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>禁用 </button>
+						<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>
+					</span>
+        </div>
+    </script>
+
+    <script type="text/html" id="checkboxTpl">
+        <span {{d.usable =='Y' ? 'class="useable font-color  my-bg-green"': 'class="useable font-color  my-bg-red1"'}} >
+        {{d.usable=='Y'?'可用':'禁用'}}
+        </span>
+    </script>
+
+</div>
+</body>
+
+</html>

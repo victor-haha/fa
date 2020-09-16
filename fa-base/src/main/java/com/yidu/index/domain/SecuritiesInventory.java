@@ -1,7 +1,9 @@
 package com.yidu.index.domain;
 
+import com.yidu.utils.DateUtils;
+
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 证劵库存表
@@ -13,7 +15,7 @@ public class SecuritiesInventory implements Serializable{
 
 	private static final long serialVersionUID =  2066767366243467631L;
 	/**
-	 * 证劵库存Id
+	 * 证劵库存Id securitiesInventoryId
 	 */
 	private String securitiesInventoryId;
 
@@ -45,7 +47,7 @@ public class SecuritiesInventory implements Serializable{
 	/**
 	 * 基金代码
 	 */
-	private String fundCode;
+	private String fundNo;
 
 	/**
 	 * 基金名
@@ -86,11 +88,21 @@ public class SecuritiesInventory implements Serializable{
 	 * 证劵类型，1股票   2债券   3 银行存款
 	 */
 	private int securitiesType;
+	/**
+	 * 证劵类型字符串格式
+	 */
+	private String securitiesTypeStr;
+
 
 	/**
 	 * 统计日期
 	 */
 	private Date statisticalDate;
+
+	/**
+	 * 统计日期字符串格式
+	 */
+	private String statisticalDateStr;
 
 	/**
 	 * 描述
@@ -165,12 +177,12 @@ public class SecuritiesInventory implements Serializable{
 		this.fundId = fundId;
 	}
 
-	public String getFundCode() {
-		return fundCode;
+	public String getFundNo() {
+		return fundNo;
 	}
 
-	public void setFundCode(String fundCode) {
-		this.fundCode = fundCode;
+	public void setFundNo(String fundNo) {
+		this.fundNo = fundNo;
 	}
 
 	public String getFundName() {
@@ -235,6 +247,13 @@ public class SecuritiesInventory implements Serializable{
 
 	public void setSecuritiesType(int securitiesType) {
 		this.securitiesType = securitiesType;
+		if(securitiesType == 1){
+			this.securitiesTypeStr = "股票";
+		}else if(securitiesType == 2){
+			this.securitiesTypeStr = "债券";
+		}else if(securitiesType == 3){
+			this.securitiesTypeStr = "银行存款";
+		}
 	}
 
 	public Date getStatisticalDate() {
@@ -243,6 +262,9 @@ public class SecuritiesInventory implements Serializable{
 
 	public void setStatisticalDate(Date statisticalDate) {
 		this.statisticalDate = statisticalDate;
+		if(null != statisticalDate){
+			this.statisticalDateStr = DateUtils.dataToString(statisticalDate,"yyyy-MM-dd HH:mm:ss");
+		}
 	}
 
 	public String getDescription() {
@@ -251,6 +273,14 @@ public class SecuritiesInventory implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getStatisticalDateStr() {
+		return statisticalDateStr;
+	}
+
+	public String getSecuritiesTypeStr() {
+		return securitiesTypeStr;
 	}
 
 	public String getRemark1() {
@@ -287,7 +317,7 @@ public class SecuritiesInventory implements Serializable{
 				"securitiesNo='" + securitiesNo + '\'' +
 				"securitiesName='" + securitiesName + '\'' +
 				"fundId='" + fundId + '\'' +
-				"fundCode='" + fundCode + '\'' +
+				"fundNo='" + fundNo + '\'' +
 				"fundName='" + fundName + '\'' +
 				"accountId='" + accountId + '\'' +
 				"accountNo='" + accountNo + '\'' +

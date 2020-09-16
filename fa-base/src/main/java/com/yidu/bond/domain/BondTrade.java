@@ -34,7 +34,7 @@ public class BondTrade implements Serializable{
 	/**
 	 * 基金代码，冗余字段
 	 */
-	private String fundCode;
+	private String fundNo;
 
 	/**
 	 * 基金名称，冗余字段
@@ -200,12 +200,12 @@ public class BondTrade implements Serializable{
 		this.fundId = fundId;
 	}
 
-	public String getFundCode() {
-		return fundCode;
+	public String getFundNo() {
+		return fundNo;
 	}
 
-	public void setFundCode(String fundCode) {
-		this.fundCode = fundCode;
+	public void setfundNo(String fundNo) {
+		this.fundNo = fundNo;
 	}
 
 	public String getFundName() {

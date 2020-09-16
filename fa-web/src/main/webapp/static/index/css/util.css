@@ -3,7 +3,7 @@
 	max-height:228px;
 }
 /* 让超出的下拉框不会被弹出层覆盖 慎用！慎用！慎用！ */
-/* body .layui-layer-page .layui-layer-content {
+/* body .layui-layer-paging .layui-layer-content {
 	overflow: visible;
 } */
 /** 弹出的表单模态框样式 */

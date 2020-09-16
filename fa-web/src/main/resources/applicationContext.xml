@@ -20,7 +20,7 @@
 	<!-- 开启注解扫描，管理format -->
 	<context:component-scan base-package="com.yidu.format">
 	</context:component-scan>
-
+	
 	<context:property-placeholder location="classpath:db.properties"/>
 	<!-- 配置连接池 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -40,6 +40,11 @@
 			com.yidu.fund.domain,com.yidu.fund.paging,
 			com.yidu.bond.domain,com.yidu.bond.paging,
 			com.yidu.capital.domain,com.yidu.index.domain,
+			com.yidu.capital.paging,com.yidu.account.domain,
+			com.yidu.index.domain,com.yidu.index.paging
+			com.yidu.capital.domain,com.yidu.index.domain,
+			com.yidu.stock.domain,com.yidu.stock.paging
+			com.yidu.capital.domain,com.yidu.index.domain,
 			com.yidu.deposit.domain,com.yidu.manage.domain
 		"/>
    	</bean>
@@ -47,7 +52,11 @@
 	<!-- 扫描dao接口 -->
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
    		<property name="basePackage" value="
+   		com.yidu.user.dao,com.yidu.bond.dao,
+   		com.yidu.capital.dao,com.yidu.index.dao
    		com.yidu.user.dao,
+   		com.yidu.bond.dao,
+   		com.yidu.stock.dao
    		com.yidu.fund.dao,
    		com.yidu.bond.dao
 	"/>

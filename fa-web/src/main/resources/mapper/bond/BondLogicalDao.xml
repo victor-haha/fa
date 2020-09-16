@@ -4,7 +4,7 @@
 <mapper namespace="com.yidu.bond.dao.BondLogicalDao">
     <!--资金调拨表字段模板-->
     <sql id="capitalTransferColumn">
-        capitalTransferId,capitalTransferNo,fundId,fundCode,fundName,accountId,accountNo,accountName,transferAmount,transferDate,transferFlag,transferType
+        capitalTransferId,capitalTransferNo,fundId,fundNo,fundName,accountId,accountNo,accountName,transferAmount,transferDate,transferFlag,transferType
     </sql>
 
     <!--资金调拨表插入数据‘占位符’ 字段模板-->
@@ -12,7 +12,7 @@
         #{capitalTransferId},
         #{capitalTransferNo},
         #{fundId},
-        #{fundCode},
+        #{fundNo},
         #{fundName},
         #{accountId},
         #{accountNo},
@@ -24,14 +24,14 @@
     </sql>
     <!--债券交易数据表字段模板-->
     <sql id="bondTradeColumn">
-        bondTradeId,bondTradeNo,fundId,fundCode,fundName,bondId,bondCode,bondName,managerId,managerName,brokerId,brokerName,tradeType,tradeFlag,tradePrice,tradeDate,share,turnover,stampTax,managementFees,transferFee,commission,brokerage,total,couponRate,tradeStatus,description
+        bondTradeId,bondTradeNo,fundId,fundNo,fundName,bondId,bondCode,bondName,managerId,managerName,brokerId,brokerName,tradeType,tradeFlag,tradePrice,tradeDate,share,turnover,stampTax,managementFees,transferFee,commission,brokerage,total,couponRate,tradeStatus,description
     </sql>
     <!--债券交易数据表插入数据‘占位符’ 字段模板-->
     <sql id="insertColumn">
         #{bondTradeId},
         #{bondTradeNo},
         #{fundId},
-        #{fundCode},
+        #{fundNo},
         #{fundName},
         #{bondId},
         #{bondCode},
@@ -56,11 +56,115 @@
         #{tradeStatus},
         #{description}
     </sql>
+    <!--证券库存数据表字段模板-->
+    <sql id="securitiesInventoryColumn1">
+        securitiesInventoryId,
+        sechuritiesInventoryNo,
+        securitiesId,
+        securitiesNo,
+        securitiesName,
+        fundId,
+        fundNo,
+        fundName,
+        accountId,
+        accountNo,
+        accountName,
+        price,
+        share,
+        turnover,
+        securitiesType,
+        statisticalDate,
+        description
+    </sql>
+    <!--证券库存数据表字段模板-->
+    <sql id="securitiesInventoryColumn2">
+        securitiesInventoryId,
+        sechuritiesInventoryNo,
+        securitiesId,
+        securitiesNo,
+        securitiesName,
+        fundId,
+        fundNo,
+        fundName,
+        accountId,
+        accountNo,
+        accountName,
+        price,
+        share,
+        turnover,
+        securitiesType,
+        statisticalDate,
+        description
+    </sql>
+    <!--证券库存插入数据‘占位符’ 字段模板-->
+    <sql id="insertSecuritiesInventory">
+        #{securitiesInventoryId},
+        #{sechuritiesInventoryNo},
+        #{securitiesId},
+        #{securitiesNo},
+        #{securitiesName},
+        #{fundId},
+        #{fundNo},
+        #{fundName},
+        #{accountId},
+        #{accountNo},
+        #{accountName},
+        #{price},
+        #{share},
+        #{turnover},
+        #{securitiesType},
+        #{statisticalDate},
+        #{description}
+    </sql>
+    <!--现金库存字段1-->
+    <sql id="cashInventoryColumn1">
+        ci.cachInventoryId,
+        ci.cachInventoryNo,
+        ci.fundId,
+        ci.fundNo,
+        ci.fundName,
+        ci.accountId,
+        ci.accountNo,
+        ci.accountName,
+        ci.cashBalance,
+        ci.statisticalDate,
+        ci.description
+    </sql>
+    <!--现金库存字段2-->
+    <sql id="cashInventoryColumn2">
+        cachInventoryId,
+        cachInventoryNo,
+        fundId,
+        fundNo,
+        fundName,
+        accountId,
+        accountNo,
+        accountName,
+        cashBalance,
+        statisticalDate,
+        description
+    </sql>
+
+    <!--现金库存添加占位符字段-->
+    <sql id="insertCashInventory">
+        #{cachInventoryId},
+        #{cachInventoryNo},
+        #{fundId},
+        #{fundNo},
+        #{fundName},
+        #{accountId},
+        #{accountNo},
+        #{accountName},
+        #{cashBalance},
+        #{statisticalDate},
+        #{description}
+    </sql>
+    <!--现金调拨单数据映射-->
     <resultMap id="capitalMap" type="CapitalTransfer">
         <id column="capitalTransferId" property="capitalTransferId"/>
         <result column="capitalTransferNo" property="capitalTransferNo"/>
         <result column="fundId" property="fundId"/>
-        <result column="fundCode" property="fundCode"/>
+        <result column="fundNo" property="fundNo"/>
         <result column="fundName" property="fundName"/>
         <result column="accountId" property="accountId"/>
         <result column="accountNo" property="accountNo"/>
@@ -70,7 +174,25 @@
         <result column="tradeType" property="transferFlag"/>
         <result column="transferType" property="transferType"/>
     </resultMap>
-    
+    <!--证券库存数据映射-->
+    <resultMap id="securitiesInventoryMap" type="SecuritiesInventory">
+        <id column="securitiesInventoryId" property="securitiesInventoryId"/>
+        <result column="sechuritiesInventoryNo" property="sechuritiesInventoryNo"/>
+        <result column="securitiesId" property="securitiesId"/>
+        <result column="securitiesName" property="securitiesName"/>
+        <result column="fundId" property="fundId"/>
+        <result column="fundNo" property="fundNo"/>
+        <result column="fundName" property="fundName"/>
+        <result column="accountId" property="accountId"/>
+        <result column="accountNo" property="accountNo"/>
+        <result column="accountName" property="accountName"/>
+        <result column="tradePrice" property="price"/>
+        <result column="share" property="share"/>
+        <result column="turnover" property="turnover"/>
+        <result column="securitiesType" property="securitiesType"/>
+        <result column="statisticalDate" property="statisticalDate"/>
+        <result column="description" property="description"/>
+    </resultMap>
     <!--按条件查询债券交易数据查询-->
     <select id="findBondTrade" resultType="BondTrade" parameterType="BondTradePaging">
         select * from t_bond_trade
@@ -124,24 +246,83 @@
 
     <!--添加债券交易数据-->
     <insert id="addBondTrade" parameterType="BondTrade">
-        insert into t_bond_trade(<include refid="bondTradeColumn"/>) value(<include refid="insertColumn"/> );
+        insert into t_bond_trade(<include refid="bondTradeColumn"/>)
+        value(<include refid="insertColumn"/> );
     </insert>
     <!--修改债券交易状态-->
     <update id="updateTradeStatus" parameterType="String">
-        update t_bond_trade set tradeStatus = #{tradeStatus} where bondTradeId = #{bondTradeId}
+        update t_bond_trade
+        set tradeStatus = #{tradeStatus}
+        where bondTradeId = #{bondTradeId}
     </update>
     <!--按bondTradeId 联表t_capital_transfer,t_account,t_bond_trade 查询 ，返回资金调度对象-->
     <select id="findCapitalTransferByBondTradeId" resultMap="capitalMap" parameterType="String">
-        select bt.fundId,bt.fundCode,bt.fundName,bt.turnover,bt.tradeType,act.accountId,act.accountNo,act.accountName
+        select bt.fundId,bt.fundNo,bt.fundName,bt.turnover,bt.tradeType,act.accountId,act.accountNo,act.accountName
         from t_account as act,t_bond_trade as bt
         where  act.fundId  = bt.fundId
         and bt.bondTradeId = #{bondTradeId}
     </select>
 
-
     <!--向资金调拨表中插入数据-->
     <insert id="addCapitalTransfer" parameterType="CapitalTransfer">
-        insert into t_capital_transfer(<include refid="capitalTransferColumn"/>) value(<include refid="insertCapitalTransfer"/>)
+        insert into t_capital_transfer(<include refid="capitalTransferColumn"/>)
+        value(<include refid="insertCapitalTransfer"/>)
     </insert>
 
+    <!--通过bondTradeId查询交易记录-->
+    <select id="findBondTradeById" resultType="BondTrade" parameterType="String">
+        select <include refid="bondTradeColumn"/>
+        from t_bond_trade
+        where bondTradeId = #{bondTradeId}
+    </select>
+
+    <!--按基金id和债券id查询证券库存数据-->
+    <select id="findBondInventory" resultType="SecuritiesInventory" parameterType="String">
+        select <include refid="securitiesInventoryColumn1"/>
+        from t_securities_inventory
+        where fundId = #{fundId}
+        and securitiesId = #{bondId}
+        having statisticalDate = max(statisticalDate)
+        limit 0,1
+    </select>
+    <!--查询到账户信息，及单位成本，赋值到证券库存对象中-->
+    <select id="findSIByFundId" resultMap="securitiesInventoryMap" parameterType="String">
+        select a.accountId,a.accountNo,a.accountName,bt.tradePrice
+        from t_bond_trade as bt,t_account as a
+        where bt.fundId = a.fundId
+        and bt.fundId = #{fundId}
+        and bt.bondTradeId = #{bondTradeId}
+    </select>
+    <!--添加证券库存数据-->
+    <insert id="addSecuritiesInventory" parameterType="SecuritiesInventory">
+        insert into t_securities_inventory(<include refid="securitiesInventoryColumn2"/>)
+        value(<include refid="insertSecuritiesInventory"/>)
+    </insert>
+    <!--修改证券库存数据-->
+    <update id="updateSecuritiesInventory" parameterType="SecuritiesInventory">
+        update t_securities_inventory
+        set statisticalDate = #{statisticalDate},share = #{share},turnover = #{turnover}
+        where securitiesInventoryId = #{securitiesInventoryId}
+    </update>
+    <!--按债券交易中的fundId和bondId,联表查询出现金对应的现金库存数据对象-->
+    <select id="findCashInventory" resultType="CashInventory" parameterType="String">
+        select <include refid="cashInventoryColumn1"/>
+        from t_securities_inventory as si,t_account as a,t_cash_inventory ci
+        where si.fundId = #{fundId}
+        and si.securitiesId = #{securitiesId}
+        and si.accountId = a.accountId
+        and a.accountId = ci.accountId
+        having ci.statisticalDate = max(ci.statisticalDate)
+        limit 0,1
+    </select>
+    <!--将对应的现金账户更新-->
+    <update id="updateCashInventory" parameterType="CashInventory">
+        update t_cash_inventory
+        set statisticalDate = #{statisticalDate},cashBalance = #{cashBalance}
+        where cachInventoryId = #{cachInventoryId}
+    </update>
+    <!--添加新的现金库存数据-->
+    <insert id="addCashInventory" parameterType="CashInventory">
+        insert into t_cash_inventory (<include refid="cashInventoryColumn2"/>)  value(<include refid="insertCashInventory" />)
+    </insert>
 </mapper>
