@@ -1,6 +1,8 @@
 package com.yidu.capital.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -30,7 +32,7 @@ public class CapitalTransfer implements Serializable{
 	/**
 	 * 基金代码
 	 */
-	private String fundCode;
+	private String fundNo;
 
 	/**
 	 * 基金名
@@ -55,7 +57,7 @@ public class CapitalTransfer implements Serializable{
 	/**
 	 * 调拨金额
 	 */
-	private double transferAmount;
+	private BigDecimal transferAmount;
 
 	/**
 	 * 调拨日期
@@ -65,7 +67,7 @@ public class CapitalTransfer implements Serializable{
 	/**
 	 * 调拨标识,1.流入 2.流出
 	 */
-	private int transferFlag;
+	private BigInteger transferFlag;
 
 	/**
 	 * 调拨类型,1申购调拨、2认购调拨、3赎回调拨、4清算调拨、5权益调拨
@@ -102,12 +104,12 @@ public class CapitalTransfer implements Serializable{
 		this.fundId = fundId;
 	}
 
-	public String getFundCode() {
-		return fundCode;
+	public String getFundNo() {
+		return fundNo;
 	}
 
-	public void setFundCode(String fundCode) {
-		this.fundCode = fundCode;
+	public void setFundNo(String fundNo) {
+		this.fundNo = fundNo;
 	}
 
 	public String getFundName() {
@@ -142,11 +144,11 @@ public class CapitalTransfer implements Serializable{
 		this.accountName = accountName;
 	}
 
-	public double getTransferAmount() {
+	public BigDecimal getTransferAmount() {
 		return transferAmount;
 	}
 
-	public void setTransferAmount(double transferAmount) {
+	public void setTransferAmount(BigDecimal transferAmount) {
 		this.transferAmount = transferAmount;
 	}
 
@@ -158,11 +160,11 @@ public class CapitalTransfer implements Serializable{
 		this.transferDate = transferDate;
 	}
 
-	public int getTransferFlag() {
+	public BigInteger getTransferFlag() {
 		return transferFlag;
 	}
 
-	public void setTransferFlag(int transferFlag) {
+	public void setTransferFlag(BigInteger transferFlag) {
 		this.transferFlag = transferFlag;
 	}
 
@@ -182,7 +184,7 @@ public class CapitalTransfer implements Serializable{
 				"capitalTransferId='" + capitalTransferId + '\'' +
 				"capitalTransferNo='" + capitalTransferNo + '\'' +
 				"fundId='" + fundId + '\'' +
-				"fundCode='" + fundCode + '\'' +
+				"fundNo='" + fundNo + '\'' +
 				"fundName='" + fundName + '\'' +
 				"accountId='" + accountId + '\'' +
 				"accountNo='" + accountNo + '\'' +

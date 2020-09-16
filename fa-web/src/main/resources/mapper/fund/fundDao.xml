@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.fund.dao.FundDao">
+    <!--基金表的所有字段-->
+    <sql id="allCloumn">
+        fundId,fundNo, fundName, fundCompanyId, comShortName, trusteeBank, fundScale, nav, trusteeFee, managementFee, billingDays, managerId, managerName, estDate,usable,description
+    </sql>
+    <!--基金库存表的所有字段-->
+    <sql id="fundInventoryCloumn">
+        fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description
+    </sql>
+    <!--现金库存表的所有字段-->
+    <sql id="cashInventoryCloumn">
+        cashInventoryId, cashInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, cashBalance, statisticalDate, description
+    </sql>
+    <sql id="dynamicQuery">
+        <where>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="trusteeBank != null and trusteeBank != ''">
+                and trusteeBank like '%${trusteeBank}%'
+            </if>
+            <if test="managementFeeMin != '' and managementFeeMin != null and managementFeeMax != '' and managementFeeMax != null">
+                and managementFee between #{managementFeeMin} and #{managementFeeMax}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and managerId = #{managerId}
+            </if>
+            <if test="usable != null and usable != ''">
+                and usable = #{usable}
+            </if>
+        </where>
+    </sql>
+    <sql id="dynamicUpdate">
+        <set>
+            <if test="trusteeFee != null ">
+                trusteeFee=#{trusteeFee},
+            </if>
+            <if test="managerName != null and managerName != ''">
+                managerName=#{managerName},
+            </if>
+            <if test="comShortName != null and comShortName != ''">
+                comShortName=#{comShortName},
+            </if>
+            <if test="fundCompanyId != null and fundCompanyId != ''">
+                fundCompanyId=#{fundCompanyId},
+            </if>
+            <if test="managerId != null and managerId != ''">
+                managerId=#{managerId},
+            </if>
+            <if test="description != null and description != ''">
+                description=#{description},
+            </if>
+            <if test="managementFee != null ">
+                managementFee=#{managementFee},
+            </if>
+            <if test="billingDays != null ">
+                billingDays = #{billingDays},
+            </if>
+            <if test="usable != null and usable != ''">
+                usable = #{usable},
+            </if>
+        </set>
+    </sql>
+    <sql id="pagingQuery">
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </sql>
+    <!--查询所有并分页-->
+    <select id="findAllFundWithPage" parameterType="fundPaging" resultType="fund">
+        select <include refid="allCloumn"/>
+        from t_fund <include refid="pagingQuery"/>
+    </select>
+    <!--按条件查询-->
+    <select id="findFundByCondition" parameterType="fundPaging" resultType="fund">
+        select <include refid="allCloumn"/>
+        from t_fund <include refid="dynamicQuery"/>
+        <include refid="pagingQuery"/>
+    </select>
+    <!--按条件统计基金信息数量-->
+    <select id="countFundByCondition" parameterType="fundPaging" resultType="Long">
+        select count(3) from t_fund <include refid="dynamicQuery"/>
+    </select>
+    <!--添加基金信息-->
+    <update id="addFund" parameterType="fund">
+        insert into t_fund(<include refid="allCloumn"/>)
+        values(#{fundId},#{fundNo},#{fundName}, #{fundCompanyId},#{comShortName},#{trusteeBank},#{fundScale},#{nav},#{trusteeFee},#{managementFee},#{billingDays},#{managerId},#{managerName},#{estDate},#{usable},#{description})
+    </update>
+    <!--修改基金信息-->
+    <update id="updateFund" parameterType="fund">
+        update t_fund <include refid="dynamicUpdate"/> where fundId = #{fundId}
+    </update>
+    <!--修改基金可用状态-->
+    <update id="updateFundStatus" parameterType="map">
+        update t_fund <include refid="dynamicUpdate"/> where fundId = #{fundId}
+    </update>
+    <!--添加基金库存-->
+    <insert id="addFundInventory" parameterType="fundInventory">
+        insert into t_fund_inventory(<include refid="fundInventoryCloumn"/> ) values (#{fundInventoryId},#{ fundInventoryNo},#{ fundId},#{ fundNo},#{ fundName},#{ share},#{ balance},#{ statisticalDate},#{ description})
+    </insert>
+    <!--根据基金Id查询对应的账户信息-->
+    <select id="findAccountByFundId" parameterType="String" resultType="account">
+        select accountId,accountNo,accountName from t_account where fundNo=#{fundNo}
+    </select>
+    <!--查询所有基金公司信息-->
+    <select id="findAllFundCompany" resultType="fundCompany">
+        select fundCompanyId, comShortName, comFullName, estDate, officeAddress, hotline, sebciteAddress
+        from  t_fund_company
+    </select>
+    <!--添加现金库存-->
+    <insert id="addCashInventory" parameterType="cashInventory" >
+        insert into t_cash_inventory(<include refid="cashInventoryCloumn"/>) values(#{cashInventoryId},#{ cashInventoryNo},#{ fundId},#{ fundNo},#{ fundName},#{ accountId},#{ accountNo},#{ accountName},#{ cashBalance},#{ statisticalDate},#{ description})
+    </insert>
+</mapper>

@@ -18,7 +18,7 @@ public class User implements Serializable{
 	/**
 	 * 用户Id
 	 */
-	private Long userId;
+	private String userId;
 
 	/**
 	 * 用户名
@@ -74,11 +74,11 @@ public class User implements Serializable{
 
 
 
-    public Long getUserId() {
+    public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

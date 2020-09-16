@@ -3,6 +3,7 @@ package com.yidu.user.service.impl;
 import com.yidu.user.dao.UserDao;
 import com.yidu.user.domain.User;
 import com.yidu.user.service.UserBiz;
+import com.yidu.utils.IDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 public class UserBizImpl implements UserBiz {
     @Autowired
     private UserDao userDao;
+
     public List<User> findAllUser() {
         return userDao.findAllUser();
     }
@@ -30,6 +32,8 @@ public class UserBizImpl implements UserBiz {
     }
 
     public boolean addUser(User user) {
+        user.setUserId(IDUtil.getUuid());
+        user.setUsable("N");
         return userDao.addUser(user);
     }
 
@@ -53,7 +57,7 @@ public class UserBizImpl implements UserBiz {
         for (String userId : ids) {
             paramMap.put("userId",userId);
             result = userDao.updateUserStatus(paramMap);
-            if (!result) throw new RuntimeException("");
+            if (!result) throw new RuntimeException("修改失败,请检查数据");
         }
         return result;
 

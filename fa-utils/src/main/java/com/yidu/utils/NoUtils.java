@@ -18,9 +18,10 @@ public class NoUtils {
      */
     public static String getNo(String prefix){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String format = sdf.format(new Date())+ UUID.randomUUID().toString().replace("-","").substring(0,6);
-
-        return prefix + format;
+        StringBuilder sb = new StringBuilder(prefix);
+        sb.append(sdf.format(new Date()));
+        sb.append(UUID.randomUUID().toString().replace("-","").substring(0,6));
+        return sb.toString() ;
     }
 
     public static void main(String[] args) {
