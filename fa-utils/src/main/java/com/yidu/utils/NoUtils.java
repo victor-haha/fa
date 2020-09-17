@@ -23,6 +23,7 @@ public class NoUtils {
         stringBuilder.append(UUID.randomUUID().toString().replace("-","").substring(0,6));
         return stringBuilder.toString();
     }
+
     public static void main(String[] args) {
         String str = getNo("JJKC");
         System.out.println(str);

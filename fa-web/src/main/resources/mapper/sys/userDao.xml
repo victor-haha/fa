@@ -4,11 +4,7 @@
 <mapper namespace="com.yidu.user.dao.UserDao">
     <!--用户Id除外的所有字段-->
     <sql id="allColumn">
-      userName, password, telephone, gender, userPic, usable, createTime, description
-    </sql>
-    <!--添加用户信息字段-->
-    <sql id="addUserColumn">
-      userName, password, telephone, gender, userPic,createTime, description
+      userId,userName, password, telephone, gender, userPic, usable, createTime, description
     </sql>
     <!--条件查询-->
     <sql id="conditionQuery">
@@ -71,7 +67,7 @@
     </select>
     <!--添加用户-->
     <insert id="addUser" parameterType="user">
-        insert into t_user(<include refid="addUserColumn"/>) values(#{userName},#{password},#{telephone},#{gender},#{userPic},#{createTime},#{description})
+        insert into t_user(<include refid="allColumn"/>) values(#{userId},#{userName},#{password},#{telephone},#{gender},#{userPic},#{usable},#{createTime},#{description})
     </insert>
     <!--删除用户-->
     <delete id="deleteUser" parameterType="String">

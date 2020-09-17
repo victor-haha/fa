@@ -1,6 +1,7 @@
 package com.yidu.format;
 
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 

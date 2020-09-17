@@ -16,15 +16,17 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	var laydate = layui.laydate;
 	var util = layui.util;
 	var upload = layui.upload;
+	var element = layui.element;
 
 	//----1.用户数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#fundTable',
-		url: '/findAllfund', //后期改回获取用户列表的后端程序的url
+		url: '../findAllFund', //后期改回获取用户列表的后端程序的url
 		method: 'get',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#fundToolbar', // 开启头部工具栏，并为其绑定左侧模板
 		cellMinWidth: 80, // 全局定义所有常规单元格的最小宽度（默认：60）
+		height:'full',
 		cols: [
 				[{
 					type: 'numbers'
@@ -38,12 +40,14 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					unresize: true,
 					hide: true, //一般情况下不显示用户ID
 					align: "center"
+
 				},
 				{
 					field: 'fundNo',
 					title: '基金代码',
 					unresize: true,
-					align: "center"
+					align: "center",
+                    sort:true
 				},
 				{
 					field: 'fundName',
@@ -95,19 +99,18 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'billingDays',
 					title: '计费有效天数',
 					unresize: true,
-					templet: '#checkboxTpl',
 					align: "center"
 				},
 				{
 					field: 'managementFee',
-					title: '管理费',
+					title: '管理费率',
 					unresize: true,
                     Width:'auto',
                     align: "center"
 				},
 				{
-					field: 'manangerId',
-					title: '基金经理',
+					field: 'managerId',
+					title: '基金经理Id',
 					unresize: true,
 					align: "center",
 				},
@@ -115,10 +118,18 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'managerName',
 					title: '基金经理名',
 					unresize: true,
+					hide:true,
 					align: "center",
 				},
 				{
-					field: 'estDate',
+					field: 'usable',
+					title: '是否可用',
+					unresize: true,
+                    templet: '#checkboxTpl',
+					align: "center",
+				},
+				{
+					field: 'estDateStr',
 					title: '成立时间',
 					unresize: true,
 					hide:true,
@@ -131,10 +142,13 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
                     hide:true,
 					align: "center",
 				}
-
-
 			]
 		],
+        defaultToolbar: [{
+            title: '搜索'
+            ,layEvent: 'LAYTABLE_SEARCH'
+            ,icon: 'layui-icon-search'
+        },'filter', 'exports', 'print' ],
 		page: true, // 开启分页
 		limit: 10, // 每页显示的条数
 		limits: [10, 20, 50, 100], // 每页条数的选择项
@@ -146,9 +160,10 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	});
 	//----1.用户数据表格渲染------------------------------------------------------------------
 	
-	//----2.添加用户入职时间选择器--------------------------------------------------------------------
+	//----2.添加基金成立时间选择器--------------------------------------------------------------------
 	laydate.render({
-		elem: '#addfundHiredate'
+		elem: '#estDate'
+        ,trigger: 'click'
 	});
 
 	//修改用户入职时间选择器
@@ -156,18 +171,20 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		elem: '#updatefundHiredate'
 	});
 
+    var ltips=layer.tips("为你定制的搜索^_^","[title='搜索']",{tips:[2,'#1211115e'],time:5000,shadeClose:true});
 
 	//----3.处理头部条件组合搜素------------------------------------------------------------------
 	form.on('submit(fundSearchBtn)', function(data) {
 		// 执行后台代码
 		table.reload('fundTable', {
-			url: '/findfundByCondition',
+			url: '../findFundByCondition',
 			where: { // 设定异步数据接口的额外参数，任意设
                 fundNo: $("#queryFundNo").val(),
                 trusteeBank: $("#queryTrusteeBank").val(),
                 managementFeeMin: $("#queryManagementFeeMin").val(),
                 managementFeeMax: $("#queryManagementFeeMax").val(),
-                manangerId: $("#queryManangerId").val(),
+                managerId: $("#queryManagerId").val(),
+                usable: $("#queryUsable").val(),
 			},
 			page: {
 				curr: 1 //从第一页开始
@@ -189,12 +206,17 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	table.on('toolbar(fundTableEvent)', function(obj) {
 		// 获取当前表格选中状态和选中的数据
 		var checkStatus = table.checkStatus(obj.config.id);
+
 		// 区分点击的按钮
 		switch(obj.event) {
 			case 'addfund':
 				// 弹出新增模态框
-				initAddfundModal();
+				initAddFundModal();
 				break;
+            case 'LAYTABLE_SEARCH':
+                laytablesearch();
+                layer.close(ltips);
+                break;
 			case 'updatefund':
 				// 选择的数据数量
 				if(checkStatus.data.length > 1) {
@@ -264,27 +286,102 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 截取掉因为拼接产生的多余的一个逗号
 				fundIdStr = fundIdStr.substring(0, fundIdStr.length - 1);
-				frozenORrecoverArchives(fundIdStr, 'Y');
+				frozenORrecoverArchives(fundIdStr,'Y');
 				break;
 		};
 	});
-	
-	
-	
-	
+
+
+    // 初始化修改模态框
+    var initUpdatefundModal = function(data) {
+        // 弹出一个页面层
+        layer.open({
+            type: 1, // 基本层类型0~4，1为页面层
+            title: '修改基金', // 标题
+            skin: "layui-layer-molv",
+            anim: 2, // 弹出动画
+            area: ["100%",'100%'], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
+            content: $("#updatefundModal"), // 文本、html都行
+            resize: false, // 是否允许拉伸
+            end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
+                // 清空表单
+                $("#addfundForm")[0].reset();
+                $("#demo1").attr("src", "");
+                $("#demoText").text("");
+            }
+        });
+
+        // 表单赋值
+        form.val('updateFundForm', {
+            "fundId": data.fundId,
+            "fundNo": data.fundNo,
+            "fundName": data.fundName, //layui.util.toDateString(data.commonStart, 'HH:mm:ss'),
+            "estDate": data.estDateStr,
+            "managerName": data.managerName,
+            "trusteeBank": data.trusteeBank,
+            "fundScale": data.fundScale,
+            "nav": data.nav,
+            "managementFee":data.managementFee,
+            "trusteeFee": data.trusteeFee,
+            "billingDays": data.billingDays,
+            "fundCompanyId": data.fundCompanyId,
+            "comShortName": data.comShortName,
+            "description": data.description,
+        });
+    };
+
+     //获取选中下拉列表的值
+     var managerIdVal;
+    form.on('select', function(data){
+        let obj = data.elem;
+        if($(data.elem).attr("id") == "updateManagerName")
+            managerIdVal = $(obj).children("[value='"+data.value+"']").attr("managerId");
+        if($(data.elem).attr("id") == "addManagerName")
+            managerIdVal = $(obj).children("[value='"+data.value+"']").attr("managerId");
+        console.log(managerIdVal);
+
+        //联动显示基金公司id
+        //根据父元素ID判断是否是添加模态框里的选择事件
+        if($(data.elem).attr("id") == "addComShortName")
+            $("#addFundCompanyId").val($(data.elem).children("[value='"+ data.value+"']").attr("fundCompanyId"));
+        //根据父元素ID判断是否是修改模态框里的选择事件
+        if($(data.elem).attr("id") == "updateComShortName")
+            $("#updateFundCompanyId").val($(data.elem).children("[value='"+ data.value+"']").attr("fundCompanyId"));
+        console.log($(data.elem).children("[value='"+ data.value+"']").attr("fundCompanyId"))
+    });
 	
 	//----4.处理新增用户表单提交--------------------------------------------------------------
-	form.on('submit(addfundBtn)', function(data) {
+	form.on('submit(addFundBtn)',function(data) {
+        let addFundForm = form.val("addFundForm");
+            // $("#fundCompanyId").val(data.value);
+		console.log(addFundForm.fundName);
 		// 执行后台代码
 		$.ajax({
-			type: 'POST',  //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE 
-			async: false,
-			url: '/savefund', //后期改为添加用户的后台程序的url
-			data: data.field,
+			type:'POST',  //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE
+			async:false,
+			url:'../saveFund', //后期改为添加用户的后台程序的url
+            data:{
+			    fundNo:addFundForm.fundNo,
+                fundName:addFundForm.fundName,
+                fundCompanyId:addFundForm.fundCompanyId,
+                trusteeBank:addFundForm.trusteeBank,
+                fundScale:addFundForm.fundScale,
+                nav:addFundForm.nav,
+                trusteeFee:addFundForm.trusteeFee,
+                managementFee:addFundForm.managementFee,
+                billingDays:addFundForm.billingDays,
+                managerId:managerIdVal,
+                managerName:addFundForm.managerName,
+                estDate:addFundForm.estDate,
+                comShortName:addFundForm.comShortName,
+                description:addFundForm.description,
+            },
+            // data:data.field,
 			success: function(data) {
+			    console.log(data.result)
 				// 关闭页面上所有类型的所有弹框
 				layer.closeAll();
-				if(data == 1) {
+				if(data.result == 1) {
 					layer.msg("添加成功！", {
 						icon: 1 // 图标，可输入范围0~6
 					});
@@ -295,26 +392,37 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 			}
 		});
+
 		// 刷新数据表格
 		table.reload('fundTable', {
-			url: '/findfundByCondition' //后期改为查询用户的后台程序的url
+			url: '../findFundByCondition' //后期改为查询用户的后台程序的url
 		});
 		return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
 
-	//----5.处理修改用户表单提交--------------------------------------------------------------
+	//----5.处理修改基金表单提交--------------------------------------------------------------
 	form.on('submit(updatefundBtn)', function(data) {
+        let updateFundForm = form.val("updateFundForm");
 		//执行后台代码
 		$.ajax({
 			type: 'POST', //适用RESTful风格的添加： 查询GET、添加POST、更新PUT、删除DELETE
 			async: false,
-			url: '/updatefund',  //后期改为修改用户的后台程序url
-			data: data.field,//data.field
+			url: '../updateFund',  //后期改为修改用户的后台程序url
+			data: {
+                fundId:updateFundForm.fundId,
+                fundCompanyId:updateFundForm.fundCompanyId,
+                trusteeFee:updateFundForm.trusteeFee,
+                managementFee:updateFundForm.managementFee,
+                billingDays:updateFundForm.billingDays,
+                managerId:managerIdVal,
+                managerName:updateFundForm.managerName,
+                comShortName:updateFundForm.comShortName,
+                description:updateFundForm.description,
+            },//data.field
 			success: function(data) {
-			    console.log(data.result)
 				//关闭页面上所有类型的所有弹框
 				layer.closeAll();
-				if(data.result == 1) {
+				if(data == 1) {
 					layer.msg("修改成功！", {
 						icon: 1 //图标，可输入范围0~6
 					});
@@ -327,12 +435,15 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 		//刷新数据表格
 		table.reload('fundTable', {
-			url: '/findfundByCondition' //
+			url: '../findFundByCondition' //
 		});
 		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
 
-	
+
+
+
+
 	
 	// 监听锁定操作
 	form.on('switch(usable)', function(obj) {
@@ -354,7 +465,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			async: false, // 默认为true，false表示同步，如果当前请求没有返回则不执行后续代码
 			type: "DELETE",
-			url:'/updatefundStatus/' + fundId + "/" + usable,//  /updatefund   '/updatefundStatus/' + fundIds + "/" + usable
+			url:'../updateFundStatus/' + fundId + "/" + usable,//  /updatefund   '/updatefundStatus/' + fundIds + "/" + usable
 			data: {
 			    // fundId:fundId,
                 // usable:usable,
@@ -373,29 +484,27 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				}
 				// 刷新数据表格
 				table.reload('fundTable', {
-					url: '/findfundByCondition'
+					url: '../findFundByCondition'
 				});
 			}
 		});
 	};
-	// var hiddeDisable = function(){
-	//
-    // }
 
 	// 初始化新增模态框
-	var initAddfundModal = function() {
+	var initAddFundModal = function() {
 		// 弹出一个页面层
 		layer.open({
 			type: 1, // 基本层类型0~4，1为页面层
-			title: '添加用户', // 标题
+			title: '添加基金', // 标题
 			skin: "layui-layer-molv",
 			anim: 2, // 弹出动画
-			area: ["500px"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
-			content: $("#addfundModal"), // 文本、html都行
+			area: ["100%",'100%'], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
+			content: $("#addFundModal"), // 文本、html都行
+			offset:'l',
 			resize: false, // 是否允许拉伸
 			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
 				// 清空表单
-				$("#addfundForm")[0].reset();
+				$("#addFundForm")[0].reset();
 				$("#demo1").attr("src", "");
 				$("#demoText").text("");
 			}
@@ -403,68 +512,42 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 
 	}
 
-	// 初始化修改模态框
-	var initUpdatefundModal = function(data) {
-		// 弹出一个页面层
-		layer.open({
-			type: 1, // 基本层类型0~4，1为页面层
-			title: '修改用户', // 标题
-			skin: "layui-layer-molv",
-			anim: 2, // 弹出动画
-			area: ["500px"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
-			content: $("#updatefundModal"), // 文本、html都行
-			resize: false, // 是否允许拉伸
-			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
-				// 清空表单
-				$("#addfundForm")[0].reset();
-				$("#demo1").attr("src", "");
-				$("#demoText").text("");
-			}
-		});
 
-		// 表单赋值
-		form.val('updatefundForm', {
-			"fundId": data.fundId,
-			"fundName": data.fundName, //layui.util.toDateString(data.commonStart, 'HH:mm:ss'),
-			"password": data.password,
-			"telephone": data.telephone,
-			// "orgId": data.orgId,
-			// "orgName": data.orgName,
-			"gender": data.gender,
-			// "fundBirthdate": data.fundBirthdate,
-			// "fundHiredate": data.fundHiredate,
-			"usable": data.usable,
-			"description": data.description,
-			// "headImage": data.file,
-		});
-	};
 
-	// $.ajax({
-	// 	url: '/findfundByConditionuuuu',//system/org',
-	// 	dataType: 'json',
-	// 	type: 'post',
-	// 	success: function(data) {
-	// 		$.each(data, function(index) {
-	// 			var orgName = data[index].orgName;
-	// 			var orgId = data[index].orgId;
-	// 			/* var sdSdd = data[index].sdSdd; */
-	// 			// 头部的搜索
-	// 			$("#queryOrgName").append(
-	// 				"<option value='" + orgName + "'>" + orgName +
-	// 				"</option>");
-	// 			// 添加
-	// 			$("#addOrgName").append(
-	// 				"<option value='" + orgId + "'>" + orgName +
-	// 				"</option>");
-	// 			// 修改
-	// 			$("#updateOrgName").append(
-	// 				"<option value='" + orgId + "'>" + orgName +
-	// 				"</option>");
-	// 			// form.render()渲染将option添加进去
-	// 			form.render();
-	// 		});
-	// 	}
-	// });
+	$.ajax({
+		url: '../findUserAndFundCompany',//system/org',
+		dataType: 'json',
+		type: 'get',
+		success: function(data) {
+			$.each(data.users, function(index) {
+                var managerId = data.users[index].userId;
+                var managerName = data.users[index].userName;
+				/* var sdSdd = data[index].sdSdd; */
+				// 添加模态框基金经理名动态添加下拉列表
+				$("#addManagerName").append(
+					"<option managerId='" + managerId + "' value='" + managerName + "'>" + managerName +
+					"</option>");
+                // 修改模态框基金经理名动态添加下拉列表
+				$("#updateManagerName").append(
+					"<option managerId='" + managerId + "' value='" + managerName + "'>" + managerName +
+					"</option>");
+			});
+            $.each(data.fundCompanies, function(index) {
+                var fundCompanyId = data.fundCompanies[index].fundCompanyId;
+                var comFullName = data.fundCompanies[index].comFullName;
+                // 添加模态框所属基金管理公司名下拉列表
+                $("#addComShortName").append(
+                    "<option fundCompanyId='" + fundCompanyId + "' value='" + comFullName + "'>" + comFullName +
+                    "</option>");
+                // 修改模态框所属基金管理公司名下拉列表
+                $("#updateComShortName").append(
+                    "<option fundCompanyId='" + fundCompanyId + "' value='" + comFullName + "'>" + comFullName +
+                    "</option>");
+            });
+            form.render();//渲染将option添加进去
+		}
+	});
+
 
 	// 自定义表单校验
 	form.verify({
@@ -473,7 +556,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 			var msg;
 			$.ajax({
 				type: "POST",
-				url: '/verifyTelephone',//system/toVerifyfundPhone
+				url: '../verifyTelephone',//system/toVerifyfundPhone
 				async: false, // 使用同步的方法
 				data: {
 					'telephone': value

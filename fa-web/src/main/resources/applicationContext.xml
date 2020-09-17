@@ -37,12 +37,15 @@
 		<!--给映射文件中resultType设置别名-->
 		<property name="typeAliasesPackage" value="
 			com.yidu.user.domain,com.yidu.user.paging,
+			com.yidu.fund.domain,com.yidu.fund.paging,
 			com.yidu.bond.domain,com.yidu.bond.paging,
 			com.yidu.capital.domain,com.yidu.index.domain,
 			com.yidu.capital.paging,com.yidu.account.domain,
 			com.yidu.index.domain,com.yidu.index.paging
 			com.yidu.capital.domain,com.yidu.index.domain,
 			com.yidu.stock.domain,com.yidu.stock.paging
+			com.yidu.capital.domain,com.yidu.index.domain,
+			com.yidu.deposit.domain,com.yidu.manage.domain
 		"/>
    	</bean>
 	
@@ -54,6 +57,8 @@
    		com.yidu.user.dao,
    		com.yidu.bond.dao,
    		com.yidu.stock.dao
+   		com.yidu.fund.dao,
+   		com.yidu.bond.dao
 	"/>
    	</bean>
 	

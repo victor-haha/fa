@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.fund.dao.FundTradeDao">
+    <sql id="allCloumn">
+        fundTradeId,fundTradeNo, fundId, fundNo, fundName, fundTradeType, accountId, accountNo, accountName, tradeFlag, tradePrice, tradeDate, share, turnover, fee, total, tradeStatus
+    </sql>
+
+    <sql id="dynamicQuery">
+        <where>
+            <if test="fundTradeId != null and fundTradeId != ''">
+                fundTradeId = #{fundTradeId}
+            </if>
+            <if test="fundTradeNo != null and fundTradeNo != ''">
+                and fundTradeNo = #{fundTradeNo}
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like #{fundName}
+            </if>
+            <if test="fundTradeType != null and fundTradeType != ''">
+                and fundTradeType = #{fundTradeType}
+            </if>
+            <if test="tradeFlag != null and tradeFlag != ''">
+                and tradeFlag = #{tradeFlag}
+            </if>
+            <if test="totalMin != null and totalMin != '' and totalMax != null and totalMax != ''">
+                and total between #{totalMin} and #{totalMax}
+            </if>
+            <if test="tradeDateStart != null and tradeDateStart != '' and tradeDateEnd != null and tradeDateEnd != ''">
+                and tradeDate between #{tradeDateStart} and #{tradeDateEnd}
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="queryPaging">
+        <if test="page != null and limit != ''">
+          limit #{page},#{limit}
+        </if>
+    </sql>
+
+    <!--根据条件查询基金交易数据-->
+    <select id="findFundTradeByCondition" parameterType="fundTradePaging" resultType="fundTrade">
+        select <include refid="allCloumn"/>
+        from t_fund_trade
+        <include refid="dynamicQuery"/>
+        <include refid="queryPaging"/>
+    </select>
+
+    <!--根据条件统计基金交易数据条数-->
+    <select id="findCountFundTradeByCondition" parameterType="fundTradePaging" resultType="Long">
+        select count(fundTradeId) from t_fund_trade  <include refid="dynamicQuery"/>
+    </select>
+
+    <!--导入基金交易数据-->
+    <insert id="addFundTrade" parameterType="fundTrade">
+        insert into t_fund_trade(<include refid="allCloumn"/>)
+        values(#{fundTradeId},#{fundTradeNo},#{fundId},#{ fundNo},#{ fundName},#{ fundTradeType},#{ accountId},#{ accountNo},#{ accountName},#{ tradeFlag},#{ tradePrice},#{ tradeDate},#{ share},#{ turnover},#{ fee},#{ total},#{ tradeStatus})
+    </insert>
+
+    <!--修改基金交易状态-->
+    <update id="updateTradeStatus" parameterType="map">
+        update t_fund_trade set  tradeStatus = #{tradeStatus} where fundTradeId = #{fundTradeId}
+    </update>
+
+    <!--根据基金交易Id查询基金交易数据-->
+    <select id="findFundTradeById" parameterType="String" resultType="FundTrade">
+        select <include refid="allCloumn"/> from t_fund_trade where fundTradeId = #{fundTradeId}
+    </select>
+
+    <!--添加资金调拨记录-->
+    <insert id="addCapitalTransfer" parameterType="CapitalTransfer">
+        insert into t_capital_transfer(capitalTransferId, capitalTransferNo, fundId, fundNo, fundName, accountId, accountNo, accountName, transferAmount, transferDate, transferFlag, transferType)
+        values(#{capitalTransferId},#{ capitalTransferNo},#{ fundId},#{ fundNo},#{ fundName},#{ accountId},#{ accountNo},#{ accountName},#{ transferAmount},#{ transferDate},#{ transferFlag},#{ transferType})
+    </insert>
+
+    <!--根据基金id和统计时间查询基金库存-->
+    <select id="findFundInventoryByIdAndStatisticalDate" parameterType="map" resultType="fundInventory">
+        select fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description
+        from t_fund_inventory
+        where fundId = #{fundId} and statisticalDate like #{statisticalDate}
+    </select>
+
+    <!--添加基金库存-->
+    <insert id="addFundInventory" parameterType="fundInventory">
+        insert into t_fund_inventory(fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description)
+        values (#{fundInventoryId},#{ fundInventoryNo},#{ fundId},#{ fundNo},#{ fundName},#{ share},#{ balance},#{ statisticalDate},#{ description})
+    </insert>
+
+    <!--修改基金库存-->
+    <update id="updateFundInventory" parameterType="fundInventory">
+        update t_fund_inventory set share = #{share}, balance = #{balance},statisticalDate=#{statisticalDate} where fundInventoryId = #{fundInventoryId}
+    </update>
+
+    <!--根据基金id查询基金库存中指定基金的最后一次库存数据-->
+    <select id="findLastFIByFundId" parameterType="string" resultType="fundInventory">
+        select fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description
+        from t_fund_inventory t1,(select  max(statisticalDate) maxdate
+                                  from t_fund_inventory
+                                  where fundId = #{fundId} ) t2
+        where t1.statisticalDate = t2.maxdate
+        and fundId = #{fundId}
+    </select>
+
+    <!--根据基金id和统计时间查询现金库存-->
+    <select id="findCashInventoryByIdAndStatisticalDate" parameterType="map" resultType="cashInventory">
+        select cashInventoryId, cashInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, cashBalance, statisticalDate, description
+        from t_cash_inventory
+        where fundId = #{fundId} and statisticalDate like #{statisticalDate}
+    </select>
+
+    <!--添加现金库存-->
+    <insert id="addCashInventory" parameterType="cashInventory" >
+        insert into t_cash_inventory(cashInventoryId, cashInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, cashBalance, statisticalDate, description)
+        values(#{cashInventoryId},#{ cashInventoryNo},#{ fundId},#{ fundNo},#{ fundName},#{ accountId},#{ accountNo},#{ accountName},#{ cashBalance},#{ statisticalDate},#{ description})
+    </insert>
+
+    <!--修改现金库存-->
+    <update id="updateCashInventory" parameterType="cashInventory">
+        update t_cash_inventory set cashBalance = #{cashBalance},statisticalDate=#{statisticalDate} where cashInventoryId = #{cashInventoryId}
+    </update>
+
+    <!--根据基金id查询现金库存中指定基金的最后一次库存数据-->
+    <select id="findLastCIByFundId" parameterType="string" resultType="cashInventory">
+        select cashInventoryId, cashInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, cashBalance, statisticalDate, description
+        from t_cash_inventory t1,(select  max(statisticalDate) maxdate
+                                  from t_cash_inventory
+                                  where fundId = #{fundId} ) t2
+        where t1.statisticalDate = t2.maxdate
+        and fundId = #{fundId}
+    </select>
+</mapper>

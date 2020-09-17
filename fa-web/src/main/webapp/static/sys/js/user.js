@@ -88,13 +88,6 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					}
 				},
 				{
-					field: 'usable',
-					title: '用户状态',
-					unresize: true,
-					templet: '#checkboxTpl',
-					align: "center"
-				},
-				{
 					field: 'description',
 					title: '用户描述',
 					unresize: true,
@@ -108,11 +101,23 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					unresize: true,
 					align: "center",
 					width: 160
-				}
+				},
+				{
+                    field: 'usable',
+                    title: '用户状态',
+                    unresize: true,
+                    align: "center",
+                    templet: '#checkboxTpl'
+                }
 
 
 			]
 		],
+        defaultToolbar: [{
+            title: '搜索'
+            ,layEvent: 'LAYTABLE_SEARCH'
+            ,icon: 'layui-icon-search'
+        },'filter', 'exports', 'print' ],
 		page: true, // 开启分页
 		limit: 10, // 每页显示的条数
 		limits: [10, 20, 50, 100], // 每页条数的选择项
@@ -171,6 +176,10 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				// 弹出新增模态框
 				initAddUserModal();
 				break;
+            case 'LAYTABLE_SEARCH':
+                laytablesearch();
+                layer.close(ltips);
+                break;
 			case 'updateUser':
 				// 选择的数据数量
 				if(checkStatus.data.length > 1) {
@@ -308,8 +317,8 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
 
-	
-	
+
+    var ltips=layer.tips("为你定制的搜索^_^",".layui-table-tool-self",{tips:[2,'#1211115e'],time:5000,shadeClose:true});
 	// 监听锁定操作
 	form.on('switch(usable)', function(obj) {
 		frozenORrecoverArchives(obj.value, this.checked == true ? 'Y' : 'N');
