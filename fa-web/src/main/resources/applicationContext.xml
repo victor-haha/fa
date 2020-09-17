@@ -36,25 +36,25 @@
 		<property name="mapperLocations" value="classpath*:mapper/*/*.xml"/>
 		<!--给映射文件中resultType设置别名-->
 		<property name="typeAliasesPackage" value="
-			com.yidu.user.domain,com.yidu.user.paging,
-			com.yidu.fund.domain,com.yidu.fund.paging,
-			com.yidu.bond.domain,com.yidu.bond.paging,
-			com.yidu.deposit.domain,com.yidu.deposit.paging,
-			com.yidu.account.domain,
-			com.yidu.index.domain,com.yidu.index.paging,
-			com.yidu.capital.domain,com.yidu.capital.paging
-			com.yidu.capital.domain,com.yidu.capital.paging,
-			com.yidu.stock.domain,com.yidu.stock.paging
+			com.yidu.user.domain,     com.yidu.user.paging,
+			com.yidu.fund.domain,     com.yidu.fund.paging,
+			com.yidu.bond.domain,     com.yidu.bond.paging,
+			com.yidu.deposit.domain,  com.yidu.deposit.paging,
+			com.yidu.index.domain,    com.yidu.index.paging,
+			com.yidu.stock.domain,    com.yidu.stock.paging,
+			com.yidu.account.domain,  com.yidu.account.paging,
+			com.yidu.capital.domain,
+			com.yidu.manage.domain,
 		"/>
    	</bean>
 	
 	<!-- 扫描dao接口 -->
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
    		<property name="basePackage" value="
-   		com.yidu.user.dao,com.yidu.bond.dao,
-   		com.yidu.deposit.dao,com.yidu.fund.dao,
-   		com.yidu.capital.dao,com.yidu.index.dao,
-   		com.yidu.stock.dao
+   		com.yidu.user.dao,    com.yidu.bond.dao,
+   		com.yidu.capital.dao, com.yidu.index.dao,
+   		com.yidu.stock.dao,   com.yidu.fund.dao,
+   		com.yidu.deposit.dao,
 	"/>
    	</bean>
 	
