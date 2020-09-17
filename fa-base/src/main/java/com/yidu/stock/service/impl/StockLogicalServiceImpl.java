@@ -1,7 +1,7 @@
 package com.yidu.stock.service.impl;
 
 import com.yidu.capital.domain.CapitalTransfer;
-import com.yidu.capital.domain.CashInventory;
+import com.yidu.deposit.domain.CashInventory;
 import com.yidu.format.LayuiFormat;
 import com.yidu.index.domain.SecuritiesInventory;
 import com.yidu.stock.dao.StockLogicalDao;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -75,9 +76,9 @@ public class StockLogicalServiceImpl implements StockLogicalService {
         //4.2 按债券交易中的fundId和bondId,联表查询出现金对应的现金库存数据对象
         CashInventory cashInventory = stockLogicalDao.findCashInventory(stockTrade.getFundId(),stockTrade.getStockId());
         if(stockTrade.getTradeFlag()==1){  //流入，现金库存+
-            cashInventory.setCashBalance(cashInventory.getCashBalance()+stockTrade.getTurnover());
+            cashInventory.setCashBalance(cashInventory.getCashBalance().add(stockTrade.getTurnover()));
         }else if(stockTrade.getTradeFlag() == 2){  //流出 现金库存-
-            cashInventory.setCashBalance(cashInventory.getCashBalance()-stockTrade.getTurnover());
+            cashInventory.setCashBalance(cashInventory.getCashBalance().subtract(stockTrade.getTurnover()));
         }
         //4.3 判断此数据是否是今天的数据
         //是今天的数据，修改此对象现金库存数据
@@ -88,9 +89,9 @@ public class StockLogicalServiceImpl implements StockLogicalService {
             flag = stockLogicalDao.updateCashInventory(cashInventory);
         }else{//不是今天的数据，添加今天新的现金库存数据
             //设置现金库存id
-            cashInventory.setCachInventoryId(IDUtil.getUuid());
+            cashInventory.setCashInventoryId(IDUtil.getUuid());
             //设置现金库存编号
-            cashInventory.setCachInventoryNo(NoUtils.getNo("XJKC"));
+            cashInventory.setCashInventoryNo(NoUtils.getNo("XJKC"));
             //修改更改账户统计日期
             cashInventory.setStatisticalDate(new Date());
             //4.3 添加今天新的现金库存数据
@@ -126,7 +127,7 @@ public class StockLogicalServiceImpl implements StockLogicalService {
             securitiesInventory.setFundNo(stockTrade.getFundNo());
             securitiesInventory.setFundName(stockTrade.getFundName());
             securitiesInventory.setShare(stockTrade.getShare());
-            securitiesInventory.setTurnover(securitiesInventory.getPrice()*stockTrade.getShare());  //注意计算的精度问题
+            securitiesInventory.setTurnover(securitiesInventory.getPrice().multiply(new BigDecimal(stockTrade.getShare())));  //注意计算的精度问题
             System.out.println(securitiesInventory);
             //3.4添加证券库存数据
             flag = stockLogicalDao.addSecuritiesInventory(securitiesInventory);
@@ -137,14 +138,14 @@ public class StockLogicalServiceImpl implements StockLogicalService {
             //判断是证券(债券)是  买入 or 卖出
             if(stockTrade.getTradeType() == 1){  //买入
                 //持有份额+
-                securitiesInventory.setShare(securitiesInventory.getShare()+stockTrade.getShare());
+                securitiesInventory.setShare(securitiesInventory.getShare().add(stockTrade.getShare()));
                 //总金额+
-                securitiesInventory.setTurnover(securitiesInventory.getTurnover()+stockTrade.getTurnover());//注意计算的精度问题
+                securitiesInventory.setTurnover(securitiesInventory.getTurnover().add(stockTrade.getTurnover()));//注意计算的精度问题
             }else{    //流出
                 //持有份额-
-                securitiesInventory.setShare(securitiesInventory.getShare()-stockTrade.getShare());
+                securitiesInventory.setShare(securitiesInventory.getShare().subtract(stockTrade.getShare()));
                 //总金额+
-                securitiesInventory.setTurnover(securitiesInventory.getTurnover()-stockTrade.getTurnover());//注意计算的精度问题
+                securitiesInventory.setTurnover(securitiesInventory.getTurnover().subtract(stockTrade.getTurnover()));//注意计算的精度问题
             }
             // 3.4 修改证券（债券）库存数据
             flag = stockLogicalDao.updateSecuritiesInventory(securitiesInventory);

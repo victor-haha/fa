@@ -1,5 +1,7 @@
 package com.yidu.stock.domain;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -68,7 +70,7 @@ public class StockTrade {
     /**
      * 交易价格（单价）
      */
-    private double tradePrice;
+    private BigDecimal tradePrice;
     /**
      * 交易日期
      */
@@ -76,35 +78,35 @@ public class StockTrade {
     /**
      * 交易数量(份额)
      */
-    private int share;
+    private BigInteger share;
     /**
      * 交易额(总)
      */
-    private double turnover;
+    private BigDecimal turnover;
     /**
      * 印花税（国家）
      */
-    private double stampTax;
+    private BigDecimal stampTax;
     /**
      * 征管费（国家）
      */
-    private double managementFees;
+    private BigDecimal managementFees;
     /**
      * 过户费（交易所）
      */
-    private double transferFee;
+    private BigDecimal transferFee;
     /**
      * 佣金费用（券商）
      */
-    private double commission;
+    private BigDecimal commission;
     /**
      * 经手费（交易所）
      */
-    private double brokerage;
+    private BigDecimal brokerage;
     /**
      * 总金额
      */
-    private double total;
+    private BigDecimal total;
     /**
      * 交易状态
      */
@@ -226,11 +228,11 @@ public class StockTrade {
         this.tradeFlag = tradeFlag;
     }
 
-    public double getTradePrice() {
+    public BigDecimal getTradePrice() {
         return tradePrice;
     }
 
-    public void setTradePrice(double tradePrice) {
+    public void setTradePrice(BigDecimal tradePrice) {
         this.tradePrice = tradePrice;
     }
 
@@ -242,67 +244,67 @@ public class StockTrade {
         this.tradeDate = tradeDate;
     }
 
-    public int getShare() {
+    public BigInteger getShare() {
         return share;
     }
 
-    public void setShare(int share) {
+    public void setShare(BigInteger share) {
         this.share = share;
     }
 
-    public double getTurnover() {
+    public BigDecimal getTurnover() {
         return turnover;
     }
 
-    public void setTurnover(double turnover) {
+    public void setTurnover(BigDecimal turnover) {
         this.turnover = turnover;
     }
 
-    public double getStampTax() {
+    public BigDecimal getStampTax() {
         return stampTax;
     }
 
-    public void setStampTax(double stampTax) {
+    public void setStampTax(BigDecimal stampTax) {
         this.stampTax = stampTax;
     }
 
-    public double getManagementFees() {
+    public BigDecimal getManagementFees() {
         return managementFees;
     }
 
-    public void setManagementFees(double managementFees) {
+    public void setManagementFees(BigDecimal managementFees) {
         this.managementFees = managementFees;
     }
 
-    public double getTransferFee() {
+    public BigDecimal getTransferFee() {
         return transferFee;
     }
 
-    public void setTransferFee(double transferFee) {
+    public void setTransferFee(BigDecimal transferFee) {
         this.transferFee = transferFee;
     }
 
-    public double getCommission() {
+    public BigDecimal getCommission() {
         return commission;
     }
 
-    public void setCommission(double commission) {
+    public void setCommission(BigDecimal commission) {
         this.commission = commission;
     }
 
-    public double getBrokerage() {
+    public BigDecimal getBrokerage() {
         return brokerage;
     }
 
-    public void setBrokerage(double brokerage) {
+    public void setBrokerage(BigDecimal brokerage) {
         this.brokerage = brokerage;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

@@ -2,7 +2,7 @@ package com.yidu.stock.dao;
 
 
 import com.yidu.capital.domain.CapitalTransfer;
-import com.yidu.capital.domain.CashInventory;
+import com.yidu.deposit.domain.CashInventory;
 import com.yidu.index.domain.SecuritiesInventory;
 import com.yidu.stock.domain.StockTrade;
 import com.yidu.stock.paging.StockTradePaging;

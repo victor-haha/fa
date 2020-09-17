@@ -33,9 +33,8 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public boolean addStock(Stock stock) {
-        IDUtil idUtil=new IDUtil();
         //添加id
-        stock.setStockId(idUtil.getUuid());
+        stock.setStockId(IDUtil.getUuid());
         stock.setUsable("Y");
         System.out.println(stock);
 
