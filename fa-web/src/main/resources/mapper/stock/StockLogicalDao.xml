@@ -160,8 +160,8 @@
 
     <!--现金库存字段1-->
     <sql id="cashInventoryColumn1">
-        ci.cachInventoryId,
-        ci.cachInventoryNo,
+        ci.cashInventoryId,
+        ci.cashInventoryNo,
         ci.fundId,
         ci.fundNo,
         ci.fundName,
@@ -175,8 +175,8 @@
 
     <!--现金库存字段2-->
     <sql id="cashInventoryColumn2">
-        cachInventoryId,
-        cachInventoryNo,
+        cashInventoryId,
+        cashInventoryNo,
         fundId,
         fundNo,
         fundName,
@@ -190,8 +190,8 @@
 
     <!--现金库存添加占位符字段-->
     <sql id="insertCashInventory">
-        #{cachInventoryId},
-        #{cachInventoryNo},
+        #{cashInventoryId},
+        #{cashInventoryNo},
         #{fundId},
         #{fundNo},
         #{fundName},
@@ -286,7 +286,7 @@
         and si.securitiesId = #{securitiesId}
         and si.accountId = a.accountId
         and a.accountId = ci.accountId
-        group by ci.cachInventoryId
+        group by ci.cashInventoryId
         having ci.statisticalDate = max(ci.statisticalDate)
         limit 0,1
     </select>
@@ -295,7 +295,7 @@
     <update id="updateCashInventory" parameterType="CashInventory">
         update t_cash_inventory
         set statisticalDate = #{statisticalDate},cashBalance = #{cashBalance}
-        where cachInventoryId = #{cachInventoryId}
+        where cashInventoryId = #{cashInventoryId}
     </update>
 
     <!--添加新的现金库存数据-->
