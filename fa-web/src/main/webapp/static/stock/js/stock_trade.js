@@ -91,7 +91,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					width: 100
 				},
 				{
-					field: 'fundCode',
+					field: 'fundNo',
 					title: '基金代码',
 					sort: true,
 					align: "center",
