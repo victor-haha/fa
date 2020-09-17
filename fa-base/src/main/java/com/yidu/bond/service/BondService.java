@@ -5,6 +5,8 @@ import com.yidu.bond.paging.BondPaging;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.format.LayuiFormat;
 
+import java.math.BigInteger;
+
 
 /**
  * 类的描述:

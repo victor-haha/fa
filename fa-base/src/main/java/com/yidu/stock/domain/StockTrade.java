@@ -24,7 +24,7 @@ public class StockTrade {
     /**
      * 基金代码
      */
-    private String fundCode;
+    private String fundNo;
     /**
      * 基金名
      */
@@ -60,11 +60,11 @@ public class StockTrade {
     /**
      * 交易方式
      */
-    private String tradeType;
+    private int tradeType;
     /**
      * 交易标识
      */
-    private String tradeFlag;
+    private int tradeFlag;
     /**
      * 交易价格（单价）
      */
@@ -138,12 +138,12 @@ public class StockTrade {
         this.fundId = fundId;
     }
 
-    public String getFundCode() {
-        return fundCode;
+    public String getFundNo() {
+        return fundNo;
     }
 
-    public void setFundCode(String fundCode) {
-        this.fundCode = fundCode;
+    public void setFundNo(String fundNo) {
+        this.fundNo = fundNo;
     }
 
     public String getFundName() {
@@ -210,19 +210,19 @@ public class StockTrade {
         this.brokerName = brokerName;
     }
 
-    public String getTradeType() {
+    public int getTradeType() {
         return tradeType;
     }
 
-    public void setTradeType(String tradeType) {
+    public void setTradeType(int tradeType) {
         this.tradeType = tradeType;
     }
 
-    public String getTradeFlag() {
+    public int getTradeFlag() {
         return tradeFlag;
     }
 
-    public void setTradeFlag(String tradeFlag) {
+    public void setTradeFlag(int tradeFlag) {
         this.tradeFlag = tradeFlag;
     }
 
@@ -328,7 +328,7 @@ public class StockTrade {
                 "stockTradeId='" + stockTradeId + '\'' +
                 ", stockTradeNo='" + stockTradeNo + '\'' +
                 ", fundId='" + fundId + '\'' +
-                ", fundCode='" + fundCode + '\'' +
+                ", fundNo='" + fundNo + '\'' +
                 ", fundName='" + fundName + '\'' +
                 ", stockId='" + stockId + '\'' +
                 ", stockCode='" + stockCode + '\'' +

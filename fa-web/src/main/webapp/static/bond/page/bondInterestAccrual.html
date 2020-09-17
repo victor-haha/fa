@@ -19,7 +19,7 @@
 		<script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
 
 		<!-- 引入用户js -->
-		<script src="capital/js/cashInventory.js" type="text/javascript" charset="utf-8"></script>
+		<script src="bond/js/bondInterestAccrual.js" type="text/javascript" charset="utf-8"></script>
 
 		<!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
 		<style type="text/css">
@@ -42,7 +42,7 @@
 				color: #fff;
 				font-size: 21px;
 				z-index: 1000;
-				cursor: pointer;
+				cursor: poBigIntegerer;
 			}
 			#search-header{
 				position: absolute;
@@ -54,6 +54,11 @@
 			.align-center{
 				width: 100%;
 				height: 90%;
+			}
+			.layui-table-cell {
+				text-overflow:ellipsis;
+				white-space:nowrap;
+				overflow:hidden;
 			}
 		</style>
 	</head>
@@ -67,29 +72,53 @@
 					<div class="layui-form-item layui-row" >
 						<div class="layui-col-md4">
 							<div class="layui-form-item">
+								<label class="layui-form-label">证券编号</label>
+								<div class="layui-input-inline">
+									<input  type="text" name="securitiesNo" placeholder="证券编号" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">证券名</label>
+								<div class="layui-input-inline">
+									<input  type="text" name="securitiesName" placeholder="证券名" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">证劵类型</label>
+								<div class="layui-input-inline">
+									<select name="securitiesType" lay-verify="required">
+										<option value="">请选择</option>
+										<option value="1">股票</option>
+										<option value="2">债券</option>
+										<option value="3">银行存款</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-col-md5">
+							<div class="layui-form-item">
 								<label class="layui-form-label">基金代码</label>
 								<div class="layui-input-inline">
 									<input  type="text" name="fundNo" placeholder="基金代码" autocomplete="off" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-form-item">
-								<label class="layui-form-label">基金名称</label>
+								<label class="layui-form-label">基金名</label>
 								<div class="layui-input-inline">
-									<input  type="text" name="fundName" placeholder="基金名称" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-						</div>
-						<div class="layui-col-md5">
-							<div class="layui-form-item">
-								<label class="layui-form-label">现金账号</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="accountNo" placeholder="现金账号" autocomplete="off" class="layui-input">
+									<input  type="text" name="fundName" placeholder="基金名" autocomplete="off" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-form-item">
-								<label class="layui-form-label">库存编号</label>
+								<label class="layui-form-label">起始日期</label>
 								<div class="layui-input-inline">
-									<input  type="text" name="cachInventoryNo" placeholder="现金库存编号" autocomplete="off" class="layui-input">
+									<!--<input type="text" name="valueDate"  lay-placeholder="请输入起息日期" autocomplete="off" class="layui-input">-->
+									<input type="text" id="addValueDate" lay-verify="required" name="startStatisticalDate" placeholder="选择起始日期" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">终止日期</label>
+								<div class="layui-input-inline">
+									<input type="text" id="addExpireDate" lay-verify="required" name="endStatisticalDate"  placeholder="选择终止日期" autocomplete="off" class="layui-input">
 								</div>
 							</div>
 						</div>
@@ -122,10 +151,7 @@
 			<script type="text/html" id="userToolbar">
 				<div class="layui-btn-container">
 					<span class="btnCont">
-						<button type="button" title="已结算"  lay-event="settlements" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe605;</i>已结算</button>
-						<button type="button" title="未结算"  lay-event="addBondTrader" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe681;</i>未结算</button>
-						<!--<button type="button" title="弃用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>弃用</button>-->
-						<!--<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>-->
+						<button type="button" title="计息"  lay-event="interestAccrual" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe605;</i>计息</button>
 					</span>
 				</div>
 			</script>

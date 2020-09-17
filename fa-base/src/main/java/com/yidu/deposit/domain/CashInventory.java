@@ -1,24 +1,27 @@
 package com.yidu.deposit.domain;
 
+import com.yidu.utils.DateUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 类的描述:现金库存POJO
- * @author 李昊林
- * @date 2020-09-11
+ * 现金库存表
+ * POJO_Description: CashInventory
+ * @author wh
+ * @since 2020-09-10
  */
 public class CashInventory implements Serializable{
 
-	private static final long serialVersionUID =  1996055074908653612L;
+	private static final long serialVersionUID =  2722386750596432148L;
 	/**
-	 * 现金库存Id
+	 * 现金库存Id UUID生成
 	 */
 	private String cashInventoryId;
 
 	/**
-	 * 现金库存编号
+	 * 现金库存编号 现金库存编号：XJKC-yyyy-MM-dd-hhmmss
 	 */
 	private String cashInventoryNo;
 
@@ -53,20 +56,38 @@ public class CashInventory implements Serializable{
 	private String accountName;
 
 	/**
-	 * 现金余额
+	 * 现金余额 当前基金账户表的余额
 	 */
 	private BigDecimal cashBalance;
 
 	/**
-	 * 统计日期
+	 * 统计日期，交易结算后进行统计的日期
 	 */
 	private Date statisticalDate;
+	/**
+	 * 统计日期字符串格式
+	 */
+	private String statisticalDateStr;
 
 	/**
 	 * 描述
 	 */
 	private String description;
 
+	/**
+	 * 备用字段
+	 */
+	private String remark1;
+
+	/**
+	 * 备用字段
+	 */
+	private String remark2;
+
+	/**
+	 * 备用字段
+	 */
+	private String remark3;
 
 	public CashInventory() {
 
@@ -151,6 +172,9 @@ public class CashInventory implements Serializable{
 
 	public void setStatisticalDate(Date statisticalDate) {
 		this.statisticalDate = statisticalDate;
+		if(null != statisticalDate){
+			this.statisticalDateStr = DateUtils.dataToString(statisticalDate,"yyyy-MM-dd HH:mm:ss");
+		}
 	}
 
 	public String getDescription() {
@@ -161,23 +185,52 @@ public class CashInventory implements Serializable{
 		this.description = description;
 	}
 
+	public String getRemark1() {
+		return remark1;
+	}
 
+	public void setRemark1(String remark1) {
+		this.remark1 = remark1;
+	}
+
+	public String getRemark2() {
+		return remark2;
+	}
+
+	public void setRemark2(String remark2) {
+		this.remark2 = remark2;
+	}
+
+	public String getRemark3() {
+		return remark3;
+	}
+
+	public void setRemark3(String remark3) {
+		this.remark3 = remark3;
+	}
+
+	public String getStatisticalDateStr() {
+		return statisticalDateStr;
+	}
 
 	@Override
 	public String toString() {
 		return "CashInventory{" +
 				"cashInventoryId='" + cashInventoryId + '\'' +
-				",cashInventoryNo='" + cashInventoryNo + '\'' +
-				",fundId='" + fundId + '\'' +
-				",fundNo='" + fundNo + '\'' +
-				",fundName='" + fundName + '\'' +
-				",accountId='" + accountId + '\'' +
-				",accountNo='" + accountNo + '\'' +
-				",accountName='" + accountName + '\'' +
-				",cashBalance='" + cashBalance + '\'' +
-				",statisticalDate='" + statisticalDate + '\'' +
-				",description='" + description + '\'' +
+				", cashInventoryNo='" + cashInventoryNo + '\'' +
+				", fundId='" + fundId + '\'' +
+				", fundNo='" + fundNo + '\'' +
+				", fundName='" + fundName + '\'' +
+				", accountId='" + accountId + '\'' +
+				", accountNo='" + accountNo + '\'' +
+				", accountName='" + accountName + '\'' +
+				", cashBalance=" + cashBalance +
+				", statisticalDate=" + statisticalDate +
+				", statisticalDateStr='" + statisticalDateStr + '\'' +
+				", description='" + description + '\'' +
+				", remark1='" + remark1 + '\'' +
+				", remark2='" + remark2 + '\'' +
+				", remark3='" + remark3 + '\'' +
 				'}';
 	}
-
 }

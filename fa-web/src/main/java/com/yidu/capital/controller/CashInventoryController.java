@@ -1,8 +1,8 @@
 package com.yidu.capital.controller;
 
 import com.yidu.capital.paging.CashInventoryPaging;
-import com.yidu.capital.domain.CashInventory;
-import com.yidu.capital.service.CashInventoryService;
+import com.yidu.deposit.domain.CashInventory;
+import com.yidu.deposit.service.CashInventoryService;
 import com.yidu.format.LayuiFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;

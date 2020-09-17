@@ -1,5 +1,6 @@
 package com.yidu.index.paging;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 /**

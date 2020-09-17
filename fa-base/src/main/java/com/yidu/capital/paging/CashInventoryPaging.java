@@ -1,5 +1,7 @@
 package com.yidu.capital.paging;
 
+import java.math.BigInteger;
+
 /**
  * 类的描述:现金库存搜索及分页所需参数分页
  *
@@ -10,7 +12,7 @@ public class CashInventoryPaging {
     /**
      * 现金库存编号
      */
-    private String cachInventoryNo;
+    private String cashInventoryNo;
     /**
      * 基金编号
      */
@@ -27,11 +29,11 @@ public class CashInventoryPaging {
     private int limit;
 
     public String getCachInventoryNo() {
-        return cachInventoryNo;
+        return cashInventoryNo;
     }
 
     public void setCachInventoryNo(String cachInventoryNo) {
-        this.cachInventoryNo = cachInventoryNo;
+        this.cashInventoryNo = cachInventoryNo;
     }
 
     public String getFundNo() {

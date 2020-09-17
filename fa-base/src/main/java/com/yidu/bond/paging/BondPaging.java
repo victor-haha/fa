@@ -2,6 +2,9 @@ package com.yidu.bond.paging;
 
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  * 类的描述: 债券搜索分页字段
  *
@@ -21,27 +24,27 @@ public class BondPaging {
     /**
      * 发行量下限值（亿元）
      */
-    private Double startActualIssuance;
+    private BigDecimal startActualIssuance;
     /**
      * 发行量上限值（亿元）
      */
-    private Double endActualIssuance;
+    private BigDecimal endActualIssuance;
     /**
      * 期限上限值(年)
      */
-    private Double startTerm;
+    private BigDecimal startTerm;
     /**
      * 期限下限值（年）
      */
-    private Double endTerm;
+    private BigDecimal endTerm;
     /**
      * 票面利率下限值
      */
-    private Double startCouponRate;
+    private BigDecimal startCouponRate;
     /**
      * 票面利率上限值
      */
-    private Double endCouponRate;
+    private BigDecimal endCouponRate;
     /**
      * 付息方式：付息方式可分为：按半年付息、按年付息、到期一次返本付息
      */
@@ -71,51 +74,51 @@ public class BondPaging {
         this.bondFullName = bondFullName;
     }
 
-    public Double getStartActualIssuance() {
+    public BigDecimal getStartActualIssuance() {
         return startActualIssuance;
     }
 
-    public void setStartActualIssuance(Double startActualIssuance) {
+    public void setStartActualIssuance(BigDecimal startActualIssuance) {
         this.startActualIssuance = startActualIssuance;
     }
 
-    public Double getEndActualIssuance() {
+    public BigDecimal getEndActualIssuance() {
         return endActualIssuance;
     }
 
-    public void setEndActualIssuance(Double endActualIssuance) {
+    public void setEndActualIssuance(BigDecimal endActualIssuance) {
         this.endActualIssuance = endActualIssuance;
     }
 
-    public Double getStartTerm() {
+    public BigDecimal getStartTerm() {
         return startTerm;
     }
 
-    public void setStartTerm(Double startTerm) {
+    public void setStartTerm(BigDecimal startTerm) {
         this.startTerm = startTerm;
     }
 
-    public Double getEndTerm() {
+    public BigDecimal getEndTerm() {
         return endTerm;
     }
 
-    public void setEndTerm(Double endTerm) {
+    public void setEndTerm(BigDecimal endTerm) {
         this.endTerm = endTerm;
     }
 
-    public Double getStartCouponRate() {
+    public BigDecimal getStartCouponRate() {
         return startCouponRate;
     }
 
-    public void setStartCouponRate(Double startCouponRate) {
+    public void setStartCouponRate(BigDecimal startCouponRate) {
         this.startCouponRate = startCouponRate;
     }
 
-    public Double getEndCouponRate() {
+    public BigDecimal getEndCouponRate() {
         return endCouponRate;
     }
 
-    public void setEndCouponRate(Double endCouponRate) {
+    public void setEndCouponRate(BigDecimal endCouponRate) {
         this.endCouponRate = endCouponRate;
     }
 

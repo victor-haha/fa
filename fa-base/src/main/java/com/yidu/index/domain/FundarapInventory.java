@@ -1,33 +1,31 @@
 package com.yidu.index.domain;
 
-import com.yidu.utils.DateUtils;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
+import java.sql.Date;
 
 /**
- * 证劵库存表
- * POJO_Description: SecuritiesInventory
+ * 证劵应收应付库存表
+ * POJO_Description: FundarapInventory
  * @author wh
- * @since 2020-09-09
+ * @since 2020-09-16
  */
-public class SecuritiesInventory implements Serializable{
+public class FundarapInventory implements Serializable{
 
-	private static final long serialVersionUID =  2066767366243467631L;
+	private static final long serialVersionUID =  8905609655057538453L;
 	/**
-	 * 证劵库存Id securitiesInventoryId
+	 * 现金库存Id
 	 */
-	private String securitiesInventoryId;
+	private String fundArapInventoryId;
 
 	/**
-	 * 证劵库存编号ZQKC-yyyy-MM-dd-xxxxx 
+	 * 现金库存编号
 	 */
-	private String sechuritiesInventoryNo;
+	private String fundArapInventoryNo;
 
 	/**
-	 * 证券Id参考的是 股票|债券|银行存款表的主键
+	 * 证券Id
 	 */
 	private String securitiesId;
 
@@ -72,39 +70,24 @@ public class SecuritiesInventory implements Serializable{
 	private String accountName;
 
 	/**
-	 * 单位成本,股票|债券|银行理财产品的单份价值
+	 * 余额
 	 */
-	private BigDecimal price;
+	private BigDecimal balance;
 
 	/**
-	 * 持有份额
+	 * 业务日期
 	 */
-	private BigInteger share;
+	private Date businessDate;
 
 	/**
-	 * 总金额  = 单位净值 * 份额
+	 * 业务类型
 	 */
-	private BigDecimal turnover;
+	private BigInteger businessType;
 
 	/**
-	 * 证劵类型，1股票   2债券   3 银行存款
+	 * 应收应付标识
 	 */
-	private int securitiesType;
-	/**
-	 * 证劵类型字符串格式
-	 */
-	private String securitiesTypeStr;
-
-
-	/**
-	 * 统计日期
-	 */
-	private Date statisticalDate;
-
-	/**
-	 * 统计日期字符串格式
-	 */
-	private String statisticalDateStr;
+	private int flag;
 
 	/**
 	 * 描述
@@ -126,25 +109,25 @@ public class SecuritiesInventory implements Serializable{
 	 */
 	private String remark3;
 
-	public SecuritiesInventory() {
+	public FundarapInventory() {
 
 	}
 
 
-	public String getSecuritiesInventoryId() {
-		return securitiesInventoryId;
+	public String getFundArapInventoryId() {
+		return fundArapInventoryId;
 	}
 
-	public void setSecuritiesInventoryId(String securitiesInventoryId) {
-		this.securitiesInventoryId = securitiesInventoryId;
+	public void setFundArapInventoryId(String fundArapInventoryId) {
+		this.fundArapInventoryId = fundArapInventoryId;
 	}
 
-	public String getSechuritiesInventoryNo() {
-		return sechuritiesInventoryNo;
+	public String getFundArapInventoryNo() {
+		return fundArapInventoryNo;
 	}
 
-	public void setSechuritiesInventoryNo(String sechuritiesInventoryNo) {
-		this.sechuritiesInventoryNo = sechuritiesInventoryNo;
+	public void setFundArapInventoryNo(String fundArapInventoryNo) {
+		this.fundArapInventoryNo = fundArapInventoryNo;
 	}
 
 	public String getSecuritiesId() {
@@ -219,54 +202,36 @@ public class SecuritiesInventory implements Serializable{
 		this.accountName = accountName;
 	}
 
-	public BigDecimal getPrice() {
-		return price;
+	public BigDecimal getBalance() {
+		return balance;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 
-	public BigInteger getShare() {
-		return share;
+	public Date getBusinessDate() {
+		return businessDate;
 	}
 
-	public void setShare(BigInteger share) {
-		this.share = share;
+	public void setBusinessDate(Date businessDate) {
+		this.businessDate = businessDate;
 	}
 
-	public BigDecimal getTurnover() {
-		return turnover;
+	public BigInteger getBusinessType() {
+		return businessType;
 	}
 
-	public void setTurnover(BigDecimal turnover) {
-		this.turnover = turnover;
+	public void setBusinessType(BigInteger businessType) {
+		this.businessType = businessType;
 	}
 
-	public int getSecuritiesType() {
-		return securitiesType;
+	public int getFlag() {
+		return flag;
 	}
 
-	public void setSecuritiesType(int securitiesType) {
-		this.securitiesType = securitiesType;
-		if(securitiesType == 1){
-			this.securitiesTypeStr = "股票";
-		}else if(securitiesType == 2){
-			this.securitiesTypeStr = "债券";
-		}else if(securitiesType == 3){
-			this.securitiesTypeStr = "银行存款";
-		}
-	}
-
-	public Date getStatisticalDate() {
-		return statisticalDate;
-	}
-
-	public void setStatisticalDate(Date statisticalDate) {
-		this.statisticalDate = statisticalDate;
-		if(null != statisticalDate){
-			this.statisticalDateStr = DateUtils.dataToString(statisticalDate,"yyyy-MM-dd HH:mm:ss");
-		}
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 
 	public String getDescription() {
@@ -275,14 +240,6 @@ public class SecuritiesInventory implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getStatisticalDateStr() {
-		return statisticalDateStr;
-	}
-
-	public String getSecuritiesTypeStr() {
-		return securitiesTypeStr;
 	}
 
 	public String getRemark1() {
@@ -312,9 +269,9 @@ public class SecuritiesInventory implements Serializable{
 
 	@Override
 	public String toString() {
-		return " SecuritiesInventory{" +
-				"securitiesInventoryId='" + securitiesInventoryId + '\'' +
-				"sechuritiesInventoryNo='" + sechuritiesInventoryNo + '\'' +
+		return " FundarapInventory{" +
+				"fundArapInventoryId='" + fundArapInventoryId + '\'' +
+				"fundArapInventoryNo='" + fundArapInventoryNo + '\'' +
 				"securitiesId='" + securitiesId + '\'' +
 				"securitiesNo='" + securitiesNo + '\'' +
 				"securitiesName='" + securitiesName + '\'' +
@@ -324,11 +281,10 @@ public class SecuritiesInventory implements Serializable{
 				"accountId='" + accountId + '\'' +
 				"accountNo='" + accountNo + '\'' +
 				"accountName='" + accountName + '\'' +
-				"price='" + price + '\'' +
-				"share='" + share + '\'' +
-				"turnover='" + turnover + '\'' +
-				"securitiesType='" + securitiesType + '\'' +
-				"statisticalDate='" + statisticalDate + '\'' +
+				"balance='" + balance + '\'' +
+				"businessDate='" + businessDate + '\'' +
+				"businessType='" + businessType + '\'' +
+				"flag='" + flag + '\'' +
 				"description='" + description + '\'' +
 				"remark1='" + remark1 + '\'' +
 				"remark2='" + remark2 + '\'' +

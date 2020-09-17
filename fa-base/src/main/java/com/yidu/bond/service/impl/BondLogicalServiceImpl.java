@@ -5,9 +5,10 @@ import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.bond.service.BondLogicalService;
 import com.yidu.capital.domain.CapitalTransfer;
-import com.yidu.capital.domain.CashInventory;
+import com.yidu.deposit.domain.CashInventory;
 import com.yidu.format.LayuiFormat;
 import com.yidu.index.domain.SecuritiesInventory;
+import com.yidu.index.paging.SecuritiesInventoryPaging;
 import com.yidu.utils.DateUtils;
 import com.yidu.utils.IDUtil;
 import com.yidu.utils.NoUtils;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -86,9 +88,9 @@ public class BondLogicalServiceImpl implements BondLogicalService {
         //4.2 按债券交易中的fundId和bondId,联表查询出现金对应的现金库存数据对象
         CashInventory cashInventory = bondLogicalDao.findCashInventory(bondTrade.getFundId(),bondTrade.getBondId());
         if(bondTrade.getTradeFlag()==1){  //流入，现金库存+
-            cashInventory.setCashBalance(cashInventory.getCashBalance()+bondTrade.getTurnover());
+            cashInventory.setCashBalance(cashInventory.getCashBalance().add(bondTrade.getTurnover()));
         }else if(bondTrade.getTradeFlag() == 2){  //流出 现金库存-
-            cashInventory.setCashBalance(cashInventory.getCashBalance()-bondTrade.getTurnover());
+            cashInventory.setCashBalance(cashInventory.getCashBalance().subtract(bondTrade.getTurnover()));
         }
         //4.3 判断此数据是否是今天的数据
             //是今天的数据，修改此对象现金库存数据
@@ -99,9 +101,9 @@ public class BondLogicalServiceImpl implements BondLogicalService {
             flag = bondLogicalDao.updateCashInventory(cashInventory);
         }else{//不是今天的数据，添加今天新的现金库存数据
             //设置现金库存id
-            cashInventory.setCachInventoryId(IDUtil.getUuid());
+            cashInventory.setCashInventoryId(IDUtil.getUuid());
             //设置现金库存编号
-            cashInventory.setCachInventoryNo(NoUtils.getNo("XJKC"));
+            cashInventory.setCashInventoryNo(NoUtils.getNo("XJKC"));
             //修改更改账户统计日期
             cashInventory.setStatisticalDate(new Date());
             //4.3 添加今天新的现金库存数据
@@ -124,7 +126,7 @@ public class BondLogicalServiceImpl implements BondLogicalService {
         //3.2 查询证券库存中是否有同一支基金的同一支债券（有：修改，没有：添加）
         SecuritiesInventory securitiesInventory =  bondLogicalDao.findBondInventory(bondTrade.getFundId(),bondTrade.getBondId());
         //如果securitiesInventory不为空，且交易数据的时间小于今天零点（今天没有数据），则添加
-        if(null == securitiesInventory && securitiesInventory.getStatisticalDate().getTime()<DateUtils.ZeroDate(new Date())){
+        if(null == securitiesInventory || securitiesInventory.getStatisticalDate().getTime()<DateUtils.ZeroDate(new Date())){
             //3.3/查询到账户信息，及单位成本，赋值到证券库存对象中
             securitiesInventory = bondLogicalDao.findSIByFundId(bondTrade.getFundId(),bondTrade.getBondTradeId());
             //设置相关初始信息，及相关数据到证券库存对象
@@ -140,7 +142,7 @@ public class BondLogicalServiceImpl implements BondLogicalService {
             securitiesInventory.setFundNo(bondTrade.getFundNo());
             securitiesInventory.setFundName(bondTrade.getFundName());
             securitiesInventory.setShare(bondTrade.getShare());
-            securitiesInventory.setTurnover(securitiesInventory.getPrice()*bondTrade.getShare());  //注意计算的精度问题
+            securitiesInventory.setTurnover(securitiesInventory.getPrice().multiply(new BigDecimal(bondTrade.getShare())));  //注意计算的精度问题
 
             //3.4添加证券库存数据
             flag = bondLogicalDao.addSecuritiesInventory(securitiesInventory);
@@ -151,14 +153,14 @@ public class BondLogicalServiceImpl implements BondLogicalService {
             //判断是证券(债券)是  买入 or 卖出
             if(bondTrade.getTradeType() == 1){  //买入
                 //持有份额+
-                securitiesInventory.setShare(securitiesInventory.getShare()+bondTrade.getShare());
+                securitiesInventory.setShare(securitiesInventory.getShare().add(bondTrade.getShare()));
                 //总金额+
-                securitiesInventory.setTurnover(securitiesInventory.getTurnover()+bondTrade.getTurnover());//注意计算的精度问题
+                securitiesInventory.setTurnover(securitiesInventory.getTurnover().add(bondTrade.getTurnover()));//注意计算的精度问题
             }else{    //流出
                 //持有份额-
-                securitiesInventory.setShare(securitiesInventory.getShare()-bondTrade.getShare());
+                securitiesInventory.setShare(securitiesInventory.getShare().subtract(bondTrade.getShare()));
                 //总金额+
-                securitiesInventory.setTurnover(securitiesInventory.getTurnover()-bondTrade.getTurnover());//注意计算的精度问题
+                securitiesInventory.setTurnover(securitiesInventory.getTurnover().subtract(bondTrade.getTurnover()));//注意计算的精度问题
             }
             // 3.4 修改证券（债券）库存数据
             flag = bondLogicalDao.updateSecuritiesInventory(securitiesInventory);
@@ -199,5 +201,63 @@ public class BondLogicalServiceImpl implements BondLogicalService {
         bondLogicalDao.addBondTrade(bondTrade);
     }
 
+    /**
+     * 债券计息处理
+     * @param securitiesInventoryId 债券库存id
+     * @return 1：计息成功，0：计息失败
+     */
+    @Override
+    public int interestAccrual(String securitiesInventoryId) {
+
+       // 2往证券应收应付发生表中添加数据
+
+       // 3证券应收应付库存表添加或修改数据
+       return 0;
+    }
+    /**
+     * 查询需要计息的债券库存
+     * @param securitiesInventoryPaging 搜索词条
+     * @return layui格式的集合数据
+     */
+    @Override
+    public LayuiFormat findInterestAccrual(SecuritiesInventoryPaging securitiesInventoryPaging) {
+        //计算分页
+        int limit = securitiesInventoryPaging.getLimit();
+        int page = (securitiesInventoryPaging.getPage()-1)*limit;
+        securitiesInventoryPaging.setPage(page);
+        securitiesInventoryPaging.setLimit(limit);
+        if(null != securitiesInventoryPaging.getEndStatisticalDate() && null != securitiesInventoryPaging.getStartStatisticalDate() ){
+            if(securitiesInventoryPaging.getStartStatisticalDate().getTime()>securitiesInventoryPaging.getEndStatisticalDate().getTime()){
+                //起始值大于终止值，则交换
+                Date param = securitiesInventoryPaging.getStartStatisticalDate();
+                securitiesInventoryPaging.setStartStatisticalDate(securitiesInventoryPaging.getEndStatisticalDate());
+                securitiesInventoryPaging.setEndStatisticalDate(param);
+            }
+        }else{
+            securitiesInventoryPaging.setEndStatisticalDate(new Date());
+            try {
+                securitiesInventoryPaging.setStartStatisticalDate(DateUtils.stringToDate("1900-01-01","yyyy-MM-dd"));
+            } catch (Exception e) {
+                layuiFormat.setCode(1);  //状态码0为查询到数据
+                layuiFormat.setCount(0L);
+                layuiFormat.setMsg("未查询到需要计息的数据哦!");
+                layuiFormat.setData(null);
+                return layuiFormat;
+            }
+        }
+        List<SecuritiesInventory> securitiesInventorys = bondLogicalDao.findInterestAccrual(securitiesInventoryPaging);
+        if (CollectionUtils.isEmpty(securitiesInventorys)){   //集合为空
+            layuiFormat.setCode(1);  //状态码0为查询到数据
+            layuiFormat.setCount(0L);
+            layuiFormat.setMsg("未查询到需要计息数据哦!");
+            layuiFormat.setData(null);
+        }else{
+            layuiFormat.setCode(0);  //状态码0为查询到数据
+            layuiFormat.setCount(bondLogicalDao.findInterestAccrualCount(securitiesInventoryPaging));
+            layuiFormat.setMsg("成功找到数据");
+            layuiFormat.setData(securitiesInventorys);
+        }
+        return layuiFormat;
+    }
 
 }

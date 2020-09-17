@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -79,37 +81,37 @@ public class BondServiceImpl implements BondService {
      */
     private void dispose(BondPaging bondPaging) {
         if(null == bondPaging.getStartActualIssuance()){
-            bondPaging.setStartActualIssuance(0D);
+            bondPaging.setStartActualIssuance(new BigDecimal(0));
         }
         if(null == bondPaging.getStartCouponRate()){
-            bondPaging.setStartCouponRate(0D);
+            bondPaging.setStartCouponRate(new BigDecimal(0));
         }
         if(null == bondPaging.getStartTerm()){
-            bondPaging.setStartTerm(0D);
+            bondPaging.setStartTerm(new BigDecimal(0));
         }
 
         if(null == bondPaging.getEndActualIssuance()){
-            bondPaging.setEndActualIssuance(1000D);
+            bondPaging.setEndActualIssuance(new BigDecimal(1000));
         }
         if(null == bondPaging.getEndCouponRate()){
-            bondPaging.setEndCouponRate(20D);
+            bondPaging.setEndCouponRate(new BigDecimal(20));
         }
         if(null == bondPaging.getEndTerm()){
-            bondPaging.setEndTerm(100D);
+            bondPaging.setEndTerm(new BigDecimal(100));
         }
 
-        if(bondPaging.getStartActualIssuance()>bondPaging.getEndActualIssuance()){
-            Double content = bondPaging.getStartActualIssuance();
+        if(bondPaging.getStartActualIssuance().compareTo(bondPaging.getEndActualIssuance()) == 1){
+            BigDecimal content = bondPaging.getStartActualIssuance();
             bondPaging.setStartActualIssuance(bondPaging.getEndActualIssuance());
             bondPaging.setEndActualIssuance(content);
         }
-        if(bondPaging.getStartCouponRate()>bondPaging.getEndCouponRate()){
-            Double content = bondPaging.getStartCouponRate();
+        if(bondPaging.getStartCouponRate().compareTo(bondPaging.getEndCouponRate()) == 1){
+            BigDecimal content = bondPaging.getStartCouponRate();
             bondPaging.setStartCouponRate(bondPaging.getEndCouponRate());
             bondPaging.setEndCouponRate(content);
         }
-        if(bondPaging.getStartTerm()>bondPaging.getEndTerm()){
-            Double content = bondPaging.getStartTerm();
+        if(bondPaging.getStartTerm().compareTo(bondPaging.getEndTerm()) == 1){
+            BigDecimal content = bondPaging.getStartTerm();
             bondPaging.setStartTerm(bondPaging.getEndTerm());
             bondPaging.setEndTerm(content);
         }

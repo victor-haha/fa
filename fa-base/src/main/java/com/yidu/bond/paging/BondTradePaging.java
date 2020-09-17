@@ -34,11 +34,11 @@ public class BondTradePaging {
     /**
      * 页码
      */
-    private Integer page;
+    private int page;
     /**
      * 每页条数
      */
-    private Integer limit;
+    private int limit;
 
     public String getBondTradeNo() {
         return bondTradeNo;
@@ -88,19 +88,19 @@ public class BondTradePaging {
         this.tradeStatus = tradeStatus;
     }
 
-    public Integer getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    public Integer getLimit() {
+    public int getLimit() {
         return limit;
     }
 
-    public void setLimit(Integer limit) {
+    public void setLimit(int limit) {
         this.limit = limit;
     }
 }

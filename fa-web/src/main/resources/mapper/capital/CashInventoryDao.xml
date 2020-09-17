@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.yidu.capital.dao.CashInventoryDao">
+<mapper namespace="com.yidu.deposit.dao.CashInventoryDao">
     <!--现金库存字段模板-->
     <sql id="cashInventoryColumn">
-        cachInventoryId,
-        cachInventoryNo,
+        cashInventoryId,
+        cashInventoryNo,
         fundId,
         fundNo,
         fundName,
@@ -23,8 +23,8 @@
         select <include refid="cashInventoryColumn"/>
         from t_cash_inventory
         <where>
-            <if test="cachInventoryNo != null and cachInventoryNo != ''">
-                and cachInventoryNo like concat('%',#{cachInventoryNo},'%')
+            <if test="cashInventoryNo != null and cashInventoryNo != ''">
+                and cashInventoryNo like concat('%',#{cashInventoryNo},'%')
             </if>
             <if test="fundNo != null and fundNo != ''">
                 and fundNo like concat('%',#{fundNo},'%')
@@ -40,11 +40,11 @@
     </select>
     <!--模糊加分页查询所有现金库存数据条数-->
     <select id="findCashInventoryCount" resultType="Long" parameterType="CashInventoryPaging">
-        select count(cachInventoryId)
+        select count(cashInventoryId)
         from t_cash_inventory
         <where>
-            <if test="cachInventoryNo != null and cachInventoryNo != ''">
-                and cachInventoryNo like concat('%',#{cachInventoryNo},'%')
+            <if test="cashInventoryNo != null and cashInventoryNo != ''">
+                and cashInventoryNo like concat('%',#{cashInventoryNo},'%')
             </if>
             <if test="fundNo != null and fundNo != ''">
                 and fundNo like concat('%',#{fundNo},'%')
