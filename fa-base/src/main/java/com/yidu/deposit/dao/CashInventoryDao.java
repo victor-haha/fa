@@ -1,17 +1,19 @@
-package com.yidu.capital.service;
+package com.yidu.deposit.dao;
 
 import com.yidu.capital.paging.CashInventoryPaging;
-import com.yidu.capital.domain.CashInventory;
+import com.yidu.deposit.domain.CashInventory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 类的描述: 现金库存业务逻辑接口层
+ * 类的描述:现金库存持久层接口
  *
  * @author wh
- * @since 2020/9/11 14:40
+ * @since 2020/9/11 14:38
  */
-public interface CashInventoryService {
+public interface CashInventoryDao {
+
     /**
      * 模糊加分页查询所有现金库存
      * @param cashInventoryPaging 现金库存对象

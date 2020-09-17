@@ -26,6 +26,5 @@ public class NoUtils {
 
     public static void main(String[] args) {
         String str = getNo("JJKC");
-        System.out.println(str);
     }
 }

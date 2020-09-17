@@ -4,6 +4,8 @@ import com.yidu.utils.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -33,17 +35,17 @@ public class Bond implements Serializable{
 	/**
 	 * 实际发行量(亿元)
 	 */
-	private double actualIssuance;
+	private BigDecimal actualIssuance;
 
 	/**
 	 * 发行价格,发行价格高于票面价值是溢价发行，等于是平价发行、低于叫折价发行
 	 */
-	private double issuePrice;
+	private BigDecimal issuePrice;
 
 	/**
 	 * 票面价值,票面价值一般是100.00
 	 */
-	private double par;
+	private BigDecimal par;
 
 	/**
 	 * 期限(年),债券返本期限
@@ -78,7 +80,7 @@ public class Bond implements Serializable{
 	/**
 	 * 票面利率,债券利息与债券面值的比率，是发行人承诺以后一定时期支付给债券持有人报酬的计算标准
 	 */
-	private double couponRate;
+	private BigDecimal couponRate;
 
 	/**
 	 * 债券全称,
@@ -124,27 +126,27 @@ public class Bond implements Serializable{
 		this.bondShortName = bondShortName;
 	}
 
-	public double getActualIssuance() {
+	public BigDecimal getActualIssuance() {
 		return actualIssuance;
 	}
 
-	public void setActualIssuance(double actualIssuance) {
+	public void setActualIssuance(BigDecimal actualIssuance) {
 		this.actualIssuance = actualIssuance;
 	}
 
-	public double getIssuePrice() {
+	public BigDecimal getIssuePrice() {
 		return issuePrice;
 	}
 
-	public void setIssuePrice(double issuePrice) {
+	public void setIssuePrice(BigDecimal issuePrice) {
 		this.issuePrice = issuePrice;
 	}
 
-	public double getPar() {
+	public BigDecimal getPar() {
 		return par;
 	}
 
-	public void setPar(double par) {
+	public void setPar(BigDecimal par) {
 		this.par = par;
 	}
 
@@ -186,11 +188,11 @@ public class Bond implements Serializable{
 		}
 	}
 
-	public double getCouponRate() {
+	public BigDecimal getCouponRate() {
 		return couponRate;
 	}
 
-	public void setCouponRate(double couponRate) {
+	public void setCouponRate(BigDecimal couponRate) {
 		this.couponRate = couponRate;
 	}
 

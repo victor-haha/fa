@@ -3,10 +3,12 @@ package com.yidu.bond.dao;
 import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.capital.domain.CapitalTransfer;
-import com.yidu.capital.domain.CashInventory;
+import com.yidu.deposit.domain.CashInventory;
 import com.yidu.index.domain.SecuritiesInventory;
+import com.yidu.index.paging.SecuritiesInventoryPaging;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -16,6 +18,7 @@ import java.util.List;
  * @since 2020/9/8 13:08
  */
 public interface BondLogicalDao {
+
     /**
      * 搜索查询所有债券交易数据并分页
      * @param bondTradePaging 搜索分页参数
@@ -114,4 +117,16 @@ public interface BondLogicalDao {
      * @return 是否添加成功 1：成功，0：失败
      */
     int addCashInventory(CashInventory cashInventory);
+    /**
+     * 查询需要计息的债券库存
+     * @param securitiesInventoryPaging 搜索词条
+     * @return layui格式的集合数据
+     */
+    List<SecuritiesInventory> findInterestAccrual(SecuritiesInventoryPaging securitiesInventoryPaging);
+    /**
+     * 查询需要计息的债券库存数量
+     * @param securitiesInventoryPaging 搜索词条
+     * @return layui格式的集合数据
+     */
+    Long findInterestAccrualCount(SecuritiesInventoryPaging securitiesInventoryPaging);
 }

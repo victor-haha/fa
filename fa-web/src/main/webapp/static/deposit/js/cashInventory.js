@@ -70,7 +70,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					fixed:'left', //钉在左侧
 				}, //复选框
                 {
-					field:'cachInventoryId',
+					field:'cashInventoryId',
 					title:'现金库存Id',
 					fixed:'left', //钉在左侧
 					hide: true, //一般情况下不显示ID
@@ -78,7 +78,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					width: 200
                 },
 				{
-					field: 'cachInventoryNo',
+					field: 'cashInventoryNo',
 					title: '现金库存编号',
 					// fixed:'left', //钉在左侧
 					align: "center",

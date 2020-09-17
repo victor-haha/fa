@@ -53,7 +53,6 @@ public class SecuritiesInventoryController {
                 return layuiFormat;
             }
         }
-
         List<SecuritiesInventory> securitiesInventorys = securitiesInventoryService.findAll(securitiesInventoryPaging);
         if (CollectionUtils.isEmpty(securitiesInventorys)){   //集合为空
             layuiFormat.setCode(1);  //状态码0为查询到数据

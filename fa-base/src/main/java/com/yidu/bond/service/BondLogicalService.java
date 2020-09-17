@@ -3,6 +3,9 @@ package com.yidu.bond.service;
 import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.format.LayuiFormat;
+import com.yidu.index.paging.SecuritiesInventoryPaging;
+
+import java.math.BigInteger;
 
 /**
  * 类的描述:债券详细业务的逻辑处理，业务逻辑层接口
@@ -32,4 +35,18 @@ public interface BondLogicalService {
      * @param bondTrade 债券交易数据对象
      */
     void addBondTrade(BondTrade bondTrade);
+
+    /**
+     * 债券计息处理
+     * @param securitiesInventoryId 债券库存id
+     * @return 1：计息成功，0：计息失败
+     */
+    int interestAccrual(String securitiesInventoryId);
+
+    /**
+     * 查询需要计息的债券库存
+     * @param securitiesInventoryPaging 搜索词条
+     * @return layui格式的集合数据
+     */
+    LayuiFormat findInterestAccrual(SecuritiesInventoryPaging securitiesInventoryPaging);
 }

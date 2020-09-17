@@ -6,6 +6,7 @@ import com.yidu.bond.domain.BondTrade;
 import com.yidu.bond.paging.BondTradePaging;
 import com.yidu.bond.service.BondLogicalService;
 import com.yidu.format.LayuiFormat;
+import com.yidu.index.paging.SecuritiesInventoryPaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,8 +52,39 @@ public class BondLogicalController {
         int flag = 0;
         for(String bondTradeId : ids){
             flag =  bondLogicalService.settlementsT(bondTradeId,tradeStatus);
+            if(flag == 0){
+                return "0";
+            }
         }
-        return flag==1 ? "1": "0";
+        return "1";
+    }
+
+    /**
+     * 查询需要计息的债券库存
+     * @param securitiesInventoryPaging 搜索词条
+     * @return layui格式的集合数据
+     */
+    @RequestMapping("/iAList")
+    public LayuiFormat findInterestAccrual(SecuritiesInventoryPaging securitiesInventoryPaging){
+        return bondLogicalService.findInterestAccrual(securitiesInventoryPaging);
+    }
+    /**
+     * 债券计息处理
+     * @param securitiesInventoryIds 债券id
+     * @return 债券交易集合的layui格式数据
+     */
+    @RequestMapping("/interestAccrual")
+    public String interestAccrual(String securitiesInventoryIds){
+        //将传来的多个id转换为String数组
+        String[] ids = securitiesInventoryIds.split(",");
+       int flag = 0;
+        for(String securitiesInventoryId : ids){
+           flag =  bondLogicalService.interestAccrual(securitiesInventoryId);
+            if(flag == 0){
+                return "0";
+            }
+       }
+       return "1";
     }
 
     /**

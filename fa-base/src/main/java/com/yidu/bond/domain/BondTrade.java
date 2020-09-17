@@ -4,6 +4,8 @@ import com.yidu.utils.DateUtils;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -90,7 +92,7 @@ public class BondTrade implements Serializable{
 	/**
 	 * 交易价格(单价),买入或卖出时股票单价
 	 */
-	private double tradePrice;
+	private BigDecimal tradePrice;
 
 	/**
 	 * 交易日期
@@ -100,47 +102,47 @@ public class BondTrade implements Serializable{
 	/**
 	 * 交易数量(份额)，单位：份
 	 */
-	private int share;
+	private BigInteger share;
 
 	/**
 	 * 交易额（总），交易额 = 交易价*交易数量（份额）
 	 */
-	private double turnover;
+	private BigDecimal turnover;
 
 	/**
 	 * 印花费（国家），印花税 = 印花税率*交易额
 	 */
-	private double stampTax;
+	private BigDecimal stampTax;
 
 	/**
 	 * 征管费（国家），征管费 = 征管费率*交易额
 	 */
-	private double managementFees;
+	private BigDecimal managementFees;
 
 	/**
 	 * 过户费（交易所），过户费 = 过户费率*交易额
 	 */
-	private double transferFee;
+	private BigDecimal transferFee;
 
 	/**
 	 * 佣金费用（券商），佣金= 席位费率*交易额
 	 */
-	private double commission;
+	private BigDecimal commission;
 
 	/**
 	 * 经手费（交易所），经手费=经手费率*交易额
 	 */
-	private double brokerage;
+	private BigDecimal brokerage;
 
 	/**
 	 * 总金额，交易额+各种税费
 	 */
-	private double total;
+	private BigDecimal total;
 
 	/**
 	 * 债券利息，冗余字段，参考债券表的票面利率couponRate
 	 */
-	private double couponRate;
+	private BigDecimal couponRate;
 
 	/**
 	 * 交易状态 已结算1  未结算 0
@@ -294,11 +296,11 @@ public class BondTrade implements Serializable{
 		}
 	}
 
-	public double getTradePrice() {
+	public BigDecimal getTradePrice() {
 		return tradePrice;
 	}
 
-	public void setTradePrice(double tradePrice) {
+	public void setTradePrice(BigDecimal tradePrice) {
 		this.tradePrice = tradePrice;
 	}
 
@@ -313,75 +315,75 @@ public class BondTrade implements Serializable{
 		}
 	}
 
-	public int getShare() {
+	public BigInteger getShare() {
 		return share;
 	}
 
-	public void setShare(int share) {
+	public void setShare(BigInteger share) {
 		this.share = share;
 	}
 
-	public double getTurnover() {
+	public BigDecimal getTurnover() {
 		return turnover;
 	}
 
-	public void setTurnover(double turnover) {
+	public void setTurnover(BigDecimal turnover) {
 		this.turnover = turnover;
 	}
 
-	public double getStampTax() {
+	public BigDecimal getStampTax() {
 		return stampTax;
 	}
 
-	public void setStampTax(double stampTax) {
+	public void setStampTax(BigDecimal stampTax) {
 		this.stampTax = stampTax;
 	}
 
-	public double getManagementFees() {
+	public BigDecimal getManagementFees() {
 		return managementFees;
 	}
 
-	public void setManagementFees(double managementFees) {
+	public void setManagementFees(BigDecimal managementFees) {
 		this.managementFees = managementFees;
 	}
 
-	public double getTransferFee() {
+	public BigDecimal getTransferFee() {
 		return transferFee;
 	}
 
-	public void setTransferFee(double transferFee) {
+	public void setTransferFee(BigDecimal transferFee) {
 		this.transferFee = transferFee;
 	}
 
-	public double getCommission() {
+	public BigDecimal getCommission() {
 		return commission;
 	}
 
-	public void setCommission(double commission) {
+	public void setCommission(BigDecimal commission) {
 		this.commission = commission;
 	}
 
-	public double getBrokerage() {
+	public BigDecimal getBrokerage() {
 		return brokerage;
 	}
 
-	public void setBrokerage(double brokerage) {
+	public void setBrokerage(BigDecimal brokerage) {
 		this.brokerage = brokerage;
 	}
 
-	public double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
-	public double getCouponRate() {
+	public BigDecimal getCouponRate() {
 		return couponRate;
 	}
 
-	public void setCouponRate(double couponRate) {
+	public void setCouponRate(BigDecimal couponRate) {
 		this.couponRate = couponRate;
 	}
 
