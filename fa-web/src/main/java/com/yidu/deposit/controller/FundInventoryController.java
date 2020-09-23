@@ -1,10 +1,9 @@
-package com.yidu.fund.controller;
+package com.yidu.deposit.controller;
 
 import com.yidu.deposit.domain.FundInventory;
 import com.yidu.format.LayuiFormat;
-import com.yidu.fund.paging.FundInventoryPaging;
-import com.yidu.fund.service.FundInventoryService;
-import org.ehcache.core.util.CollectionUtil;
+import com.yidu.deposit.paging.FundInventoryPaging;
+import com.yidu.deposit.service.FundInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -20,6 +19,7 @@ import java.util.List;
  * @Date 2020/9/15 21:23
  */
 @Controller
+@RequestMapping("/fundInventory")
 public class FundInventoryController {
     @Autowired
     private FundInventoryService fundInventoryService;

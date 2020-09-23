@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yidu.fund.dao.FundInventoryDao">
+<mapper namespace="com.yidu.deposit.dao.FundInventoryDao">
     <sql id="allCloumn">
         fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description
     </sql>
@@ -39,5 +39,11 @@
         select count(fundInventoryId)
         from t_fund_inventory
         <include refid="dynamicQuery"/>
+    </select>
+    <!--根据基金库存id查询-->
+    <select id="findFundInventoryById" parameterType="String" resultType="fundInventory">
+        select <include refid="allCloumn"/>
+        from t_fund_inventory
+        where fundInventoryId = #{fundInventoryId}
     </select>
 </mapper>

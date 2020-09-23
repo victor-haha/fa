@@ -1,8 +1,8 @@
-package com.yidu.capital.controller;
+package com.yidu.deposit.controller;
 
-import com.yidu.capital.paging.CashInventoryPaging;
-import com.yidu.deposit.domain.CashInventory;
+import com.yidu.deposit.paging.CashInventoryPaging;
 import com.yidu.deposit.service.CashInventoryService;
+import com.yidu.deposit.domain.CashInventory;
 import com.yidu.format.LayuiFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2020/9/11 14:42
  */
 @RestController
-@RequestMapping("/capital")
+@RequestMapping("/deposit")
 public class CashInventoryController {
     @Autowired
     private CashInventoryService cashInventoryService;

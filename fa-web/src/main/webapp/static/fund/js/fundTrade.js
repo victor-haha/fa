@@ -29,13 +29,16 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#fundToolbar', // 开启头部工具栏，并为其绑定左侧模板
 		cellMinWidth: 80, // 全局定义所有常规单元格的最小宽度（默认：60）
-		height:'full',
+		height:'full-50',
 		cols: [
 				[{
-					type: 'numbers'
+					title:'序号',
+					type: 'numbers',
+					fixed:'left'
 				}, // 序号
 				{
-					type: 'checkbox'
+					type: 'checkbox',
+                    fixed:'left'
 
 				}, //复选框
 				{
@@ -51,7 +54,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 					field: 'fundTradeNo',
 					title: '基金交易编号',
 					// unresize: true,
-                    width:'22%',
+                    width:'23%',
 					align: "center"
 				},
 				{
@@ -105,7 +108,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 				{
 					field: 'accountName',
 					title: '账户名',
-                    width:'10%',
+                    width:'20%',
 					// unresize: true,
 					align: "center"
 				},
@@ -323,13 +326,30 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
         // $(".layui-table-body:last table").css("height", $(".layui-table-main")[0].clientHeight+"px")
         $("#dataTable  .layui-table-fixed thead tr").css("height",$("#dataTable thead tr").height() + "px");
         $("#dataTable2  .layui-table-fixed thead tr").css("height",$("#dataTable2 thead tr").height() + "px");
-		$.each($(".layui-table-body:eq(1) table tr"),function (index,data) {
+		$.each($("#dataTable  .layui-table-fixed-l .layui-table-body table tr"),function (index,data) {
+            let right = $("#dataTable  .layui-table-fixed-r .layui-table-body table tr").get(index);
+            $(right).css("height",$(".layui-table-main:first tr").get(index).clientHeight+"px")
 			$(data).css("height",$(".layui-table-main:first tr").get(index).clientHeight+"px")
         })
-		$.each($(".layui-table-body:last table tr"),function (index,data) {
+
+		$.each($("#dataTable2  .layui-table-fixed-l .layui-table-body table tr"),function (index,data) {
+			let right = $("#dataTable2  .layui-table-fixed-r .layui-table-body table tr").get(index);
+            $(right).css("height",$(".layui-table-main:last tr").get(index).clientHeight+"px")
 			$(data).css("height",$(".layui-table-main:last tr").get(index).clientHeight+"px")
         })
     }
+    // function resize(){
+    //     // $("#dataTable .layui-table-fixed thead tr").css("height",$("#dataTable thead tr").height() + "px");
+    //     // $(".layui-table-body:last table").css("height", $(".layui-table-main")[0].clientHeight+"px")
+    //     $("#dataTable  .layui-table-fixed thead tr").css("height",$("#dataTable thead tr").height() + "px");
+    //     $("#dataTable2  .layui-table-fixed thead tr").css("height",$("#dataTable2 thead tr").height() + "px");
+	// 	$.each($(".layui-table-body:eq(1) table tr"),function (index,data) {
+	// 		$(data).css("height",$(".layui-table-main:first tr").get(index).clientHeight+"px")
+    //     })
+	// 	$.each($(".layui-table-body:last table tr"),function (index,data) {
+	// 		$(data).css("height",$(".layui-table-main:last tr").get(index).clientHeight+"px")
+    //     })
+    // }
     // 初始化上传模态框
     var initUploadModal = function(data) {
         // 弹出一个页面层

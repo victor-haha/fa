@@ -58,5 +58,12 @@
         </where>
     </select>
 
+    <!--根据id查询现金库存-->
+    <select id="fundCashInventoryById" parameterType="String" resultType="CashInventory">
+        select <include refid="cashInventoryColumn"/>
+        from t_cash_inventory
+        where cashInventoryId = #{cashInventoryId}
+    </select>
+
 
 </mapper>

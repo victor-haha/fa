@@ -22,7 +22,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 	//----1.基金库存数据表格渲染------------------------------------------------------------------
 	var tablIns=table.render({
 		elem: '#fundInventoryTable',
-		url: '../list', //后期改回获取用户列表的后端程序的url
+		url: '../fundInventory/list', //后期改回获取用户列表的后端程序的url
 		method: 'get',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#fundToolbar', // 开启头部工具栏，并为其绑定左侧模板
@@ -30,6 +30,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 		height:'full',
 		cols: [
 				[{
+					title:'序号',
 					type: 'numbers'
 				}, // 序号
 			 	{
@@ -138,7 +139,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 	form.on('submit(fundInventorySearchBtn)', function(data) {
         // 执行后台代码
 		table.reload('fundInventoryTable', {
-			url: '../list',
+			url: '../fundInventory/list',
 			where: data.field,  // 设定异步数据接口的额外参数，任意设
 			page: {
 				curr: 1 //从第一页开始

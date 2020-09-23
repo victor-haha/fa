@@ -1,10 +1,10 @@
-package com.yidu.fund.service.impl;
+package com.yidu.deposit.service.impl;
 
 
 import com.yidu.deposit.domain.FundInventory;
-import com.yidu.fund.dao.FundInventoryDao;
-import com.yidu.fund.paging.FundInventoryPaging;
-import com.yidu.fund.service.FundInventoryService;
+import com.yidu.deposit.dao.FundInventoryDao;
+import com.yidu.deposit.paging.FundInventoryPaging;
+import com.yidu.deposit.service.FundInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

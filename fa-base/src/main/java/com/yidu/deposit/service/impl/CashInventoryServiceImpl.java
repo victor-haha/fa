@@ -1,9 +1,9 @@
 package com.yidu.deposit.service.impl;
 
-import com.yidu.capital.paging.CashInventoryPaging;
+import com.yidu.deposit.paging.CashInventoryPaging;
 import com.yidu.deposit.dao.CashInventoryDao;
-import com.yidu.deposit.domain.CashInventory;
 import com.yidu.deposit.service.CashInventoryService;
+import com.yidu.deposit.domain.CashInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

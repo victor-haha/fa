@@ -1,4 +1,4 @@
-package com.yidu.fund.paging;
+package com.yidu.deposit.paging;
 
 import java.util.Date;
 

@@ -11,7 +11,8 @@ $(function(){
 //layui初始化表格模组 
 layui.use(['table', 'laydate', 'upload','element'], function() {
 	// 获得模块对象
-    var tId = 'fundTradeTable';
+    var tId = 'feeCalculateTable';
+    var url = '../calcRevenue/fundInventoryList';
 	var table = layui.table;
 	var form = layui.form;
 	var $ = layui.jquery;
@@ -21,219 +22,32 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 	var element = layui.element;
 
 	//----1.基金交易数据表格渲染------------------------------------------------------------------
-    function f(a,b) {
-	var tablIns=table.render({
-		elem: '#'+a,
-		url: '../findAllFundTrade?b='+b, //后期改回获取用户列表的后端程序的url
-		method: 'get',
-		where: {}, // 你额外要携带数据，以键值对的方式存入
-		toolbar: '#fundToolbar', // 开启头部工具栏，并为其绑定左侧模板
-		cellMinWidth: 80, // 全局定义所有常规单元格的最小宽度（默认：60）
-		height:'full',
-		cols: [
-				[{
-					type: 'numbers'
-				}, // 序号
-				{
-					type: 'checkbox'
-
-				}, //复选框
-				{
-					field: 'fundTradeId',
-					title: '基金交易Id',
-					// unresize: true,
-                    hide:true,
-                    width:'20%',
-					align: "center"
-
-				},
-				{
-					field: 'fundTradeNo',
-					title: '基金交易编号',
-					// unresize: true,
-                    width:'22%',
-					align: "center"
-				},
-				{
-					field: 'fundId',
-					title: '基金Id',
-					// unresize: true,
-                    hide:true,
-                    width:'30%',
-					align: "center"
-				},
-				{
-					field: 'fundNo',
-					title: '基金代码',
-					// unresize: true,
-                    width:'20%',
-					align: "center",
-                    hide: true  //一般情况下不显示用户ID
-				},
-				{
-					field: 'fundName',
-					title: '基金名',
-                    width:'20%',
-					// unresize: true,
-					align: "center"
-
-				},
-				{
-					field: 'fundTradeType',
-					title: '基金交易类型',
-					// unresize: true,
-                    width:'12%',
-					align: "center",
-                    templet: "#fundTradeTypeTpl"
-				},
-				{
-					field: 'accountId',
-					title: '账户Id',
-					// unresize: true,
-					hide:true,
-                    width:'15%',
-					align: "center"
-				},
-				{
-					field: 'accountNo',
-					title: '账号',
-					// unresize: true,
-                    hide: true,
-                    width:'30%',
-					align: "center"
-				},
-				{
-					field: 'accountName',
-					title: '账户名',
-                    width:'10%',
-					// unresize: true,
-					align: "center"
-				},
-				{
-					field: 'tradeFlag',
-					title: '交易标识',
-                    width:'7%',
-					// unresize: true,
-					align: "center",
-                    templet: "<span>{{d.tradeFlag == '1' ? '流入' : d.tradeFlag == '2' ? '流出' : d.tradeFlag}}</span>"
-				},
-				{
-					field: 'tradePrice',
-					title: '交易价格',
-                    width:'7%',
-					// unresize: true,
-					align: "center"
-				},
-				{
-					field: 'tradeDateStr',
-					title: '交易日期',
-                    width:'11%',
-                    sort:true,
-					// unresize: true,
-					align: "center"
-				},
-				{
-					field: 'share',
-					title: '交易数量(份额)',
-                    width:'10%',
-					// unresize: true,
-                    Width:'auto',
-                    align: "center"
-				},
-				{
-					field: 'turnover',
-					title: '交易额(总)',
-                    width:'8%',
-					// unresize: true,
-					align: "center"
-				},
-				{
-					field: 'fee',
-					title: '费用',
-					// unresize: true,
-                    width:'8%',
-					align: "center"
-				},
-				{
-					field: 'total',
-					title: '总金额',
-					// unresize: true,
-                    width:'8%',
-					align: "center"
-				},
-				{
-					field: 'tradeStatus',
-					title: '交易状态',
-					// unresize: true,
-					width:'10%',
-					align: "center",
-					sort:true,
-					fixed:'right',
-					templet: '#tradeStatusTpl'
-				}
-			]
-		],
-        defaultToolbar: [{
-            title: '搜索'
-            ,layEvent: 'LAYTABLE_SEARCH'
-            ,icon: 'layui-icon-search'
-        },'filter', 'exports', 'print' ],
-		page: true, // 开启分页
-		limit: 10, // 每页显示的条数
-		limits: [10, 20, 50, 100], // 每页条数的选择项
-		loading: true, // 是否显示加载条(切换分页的时候显示）
-		title: '基金表', // 定义 table 的大标题（在文件导出等地方会用到）
-        text:{none:'被抽干了!没什么东西可以给你了,555!!(ㄒoㄒ)~~'},
-		// 隔行变色
-		even: false,
-		done:function () {
-			resize();
-        }
-	});
-    }
-	//----1.基金交易数据表格渲染------------------------------------------------------------------
-	f('fundTradeTable',0);
-
-
-    f('fundTradeTable2',1);
-
-    FrameWH();
-    function FrameWH() {
-        //获取body高度
-        var h = $('.layui-body').height()-64;
-        //设置tab的高度，
-        $(".layui-tab").css("height",h+"px");
-
-    }
+    element.on('tab',function (data) {
+        tId = data.elem.find(".layui-show table").attr("id");
+		url = data.index === 0 ? '../calcRevenue/fundInventoryList':'../calcRevenue/cashInventoryList';
+        table.resize(tId);
+        resize();
+    });
 
 
 	//----2.头部搜索栏基金交易日期时间选择器--------------------------------------------------------------------
-	laydate.render({
-		elem: '#queryTradeDateStart'
-        ,trigger: 'click'
-	});
 
-	//头部搜索栏基金交易日期时间选择器
-	laydate.render({
-		elem: '#queryTradeDateEnd'
-        ,trigger: 'click'
-	});
 
-	//----3.处理头部条件组合搜素------------------------------------------------------------------
-	form.on('submit(fundSearchBtn)', function(data) {
-	    let b;
-        tId == "fundTradeTable" ? b = 0: b = 1;
+    //----3.处理头部条件组合搜素------------------------------------------------------------------
+    form.on('submit(calcRevenueSearchBtn)', function(data) {
         // 执行后台代码
-		table.reload(tId, {
-			url: '../findAllFundTrade?b='+b,
-			where: data.field,  // 设定异步数据接口的额外参数，任意设
-			page: {
-				curr: 1 //从第一页开始
-			},
-			limit: 10
-		});
-		return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
-	});
+        table.reload(tId, {
+            url: url,
+            where: data.field,  // 设定异步数据接口的额外参数，任意设
+            page: {
+                curr: 1 //从第一页开始
+            },
+            limit: 10
+        });
+        return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+
 	//----3.处理表行修改------------------------------------------------------------------
 	// table.on("tool(fundTableEvent)",function (obj) {
 	// 	var data =  obj.data;
@@ -293,6 +107,16 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
 		};
 	});
 
+
+    $("#reset").click(function () {
+        table.reload(tId, {
+            url:url,
+            where:{
+                fundNo:null,
+                fundName: null,
+            }
+        })
+    });
     // 定义修改交易状态请求方法
     var updateTradeStatus = function(fundTradeIds,tradeStatus) {
         $.ajax({
@@ -353,11 +177,7 @@ layui.use(['table', 'laydate', 'upload','element'], function() {
     };
 
 
-    element.on('tab',function (data) {
-        tId = data.elem.find(".layui-show table").attr("id")
-        table.resize(tId);
-        resize();
-    });
+
 
     //渲染上传模态框
     upload.render({

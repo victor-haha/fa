@@ -74,6 +74,11 @@
         select <include refid="allCloumn"/>
         from t_fund <include refid="pagingQuery"/>
     </select>
+    <!--根据基金id查询基金信息-->
+    <select id="findFundById" parameterType="String" resultType="fund">
+        select <include refid="allCloumn"/>
+        from t_fund where fundId = #{fundId}
+    </select>
     <!--按条件查询-->
     <select id="findFundByCondition" parameterType="fundPaging" resultType="fund">
         select <include refid="allCloumn"/>

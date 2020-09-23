@@ -1,22 +1,20 @@
-package com.yidu.fund.service;
+package com.yidu.deposit.dao;
 
 import com.yidu.deposit.domain.FundInventory;
-import com.yidu.format.LayuiFormat;
-import com.yidu.fund.paging.CalculateRevenuePaging;
-import com.yidu.fund.paging.FundInventoryPaging;
+import com.yidu.deposit.paging.FundInventoryPaging;
 
 import java.util.List;
 
 /**
- * 类的描述：基金库存业务层
+ * 类的描述：基金库存数据访问层
  * @Author 李昊林
- * @Date 2020/9/15 18:26
+ * @Date 2020/9/15 18:30
  */
-public interface FundInventoryService {
+public interface FundInventoryDao {
     /**
      *根据条件查询基金库存
      * @param fundInventoryPaging 基金库存分页对象
-     * @return 基金库存对象集合
+     * @return 返回基金库存对象集合
      */
     List<FundInventory> findFundInventoryByCondition(FundInventoryPaging fundInventoryPaging);
 
@@ -26,4 +24,11 @@ public interface FundInventoryService {
      * @return 基金库存数量
      */
     Long findCountByCondition(FundInventoryPaging fundInventoryPaging);
+
+    /**
+     * 根据基金库存id查询
+     * @param fundInventoryId 基金库存id
+     * @return 基金库存对象
+     */
+    FundInventory findFundInventoryById(String fundInventoryId);
 }

@@ -40,7 +40,6 @@ public class FundTradeController {
     @RequestMapping("/findAllFundTrade")
     @ResponseBody
     public LayuiFormat findFundTradeByCondition(FundTradePaging fundTradePaging,LayuiFormat layuiFormat){
-        System.out.println("控制器" + layuiFormat);
         List<FundTrade> fundTradeList = fundTradeService.findFundTradeByCondition(fundTradePaging);
         if (CollectionUtils.isEmpty(fundTradeList)) {
             layuiFormat.setCode(0);

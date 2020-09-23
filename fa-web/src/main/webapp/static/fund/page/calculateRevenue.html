@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
 		<!-- 引入自定义工具css -->
 		<link rel="stylesheet" href="sys/css/util.css" media="all">
+        <link rel="stylesheet" href="fund/css/calculateRevenue.css">
 		<!-- 引入jqeury -->
         <script src="ui/layui/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
 
@@ -22,10 +23,10 @@
         <script src="fund/js/feeCalculate.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- 引入现金计息js -->
-        <!--<script src="fund/js/cashInterest.js" type="text/javascript" charset="utf-8"></script>-->
+        <script src="fund/js/cashInterest.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- 引入收益计提js -->
-        <!--<script src="fund/js/calculateRevenue.js" type="text/javascript" charset="utf-8"></script>-->
+        <script src="fund/js/calculateRevenue.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
 		<style type="text/css">
@@ -58,7 +59,6 @@
                 border-style: none;
                 padding-left: 1px;
                 background-color: #FFFFFF;
-
             }
             .my-input2{
                 /*text-align: center;*/
@@ -72,8 +72,6 @@
             .cm .layui-edge{
                 right:-15px!important;
             }
-
-
 		</style>
 	</head>
 
@@ -81,95 +79,45 @@
 
 		<div id="content" >
 			<!-- 头部搜索框 -->
-			<!--<div id="search-header" style="margin-bottom: 10px">-->
-				<!--<form class="layui-form">-->
-                    <!--<div class="layui-row">-->
-                        <!--<div class="layui-col-md4">-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">交易编号</label>-->
-                                    <!--<div class="layui-input-inline">-->
-                                        <!--<input id="queryFundTradeNo" type="text" name="fundTradeNo" placeholder="请输入基金交易编号" autocomplete="off" class="layui-input">-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">基金代码</label>-->
-                                    <!--<div class="layui-input-inline">-->
-                                        <!--<input id="queryFundNo" type="text" name="fundNo" placeholder="请输入基金代码" autocomplete="off" class="layui-input">-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">基金名</label>-->
-                                    <!--<div class="layui-input-inline">-->
-                                        <!--<input id="queryFundName" type="text" name="fundName" placeholder="请输入基金名" autocomplete="off" class="layui-input">-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="layui-col-md4">-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">交易类型</label>-->
-                                    <!--<div class="layui-input-inline cm">-->
-                                        <!--<select name="fundTradeType" id="queryFundTradeType">-->
-                                            <!--<option value="">请选择交易类型</option>-->
-                                            <!--<option value="1">申购</option>-->
-                                            <!--<option value="2">认购</option>-->
-                                            <!--<option value="3">赎回</option>-->
-                                        <!--</select>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">总金额</label>-->
-                                    <!--<div class="layui-input-inline" style="width: 100px;">-->
-                                        <!--<input  maxlength="8" type="text" id="queryTotalMin" name="totalMin"   autocomplete="off" class="layui-input my-input2"><input disabled value="元" class="my-input"/>-->
-                                    <!--</div>-->
-                                    <!--<div class="layui-form-mid">~</div>-->
-                                    <!--<div class="layui-input-inline" style="width: 100px;">-->
-                                        <!--<input  maxlength="8" type="text" id="queryTotalMax" name="totalMax"  autocomplete="off" class="layui-input my-input2"><input disabled value="元" class="my-input"/>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="layui-block">-->
-                                <!--<div class="layui-form-item" style="">-->
-                                    <!--<label class="layui-form-label">交易日期</label>-->
-                                    <!--<div class="layui-input-inline" style="width: 100px;">-->
-                                        <!--<input id="queryTradeDateStart" type="text" name="tradeDateStart"  autocomplete="off" class="layui-input">-->
-                                    <!--</div>-->
-                                    <!--<div class="layui-form-mid">~</div>-->
-                                    <!--<div class="layui-input-inline" style="width: 100px;">-->
-                                        <!--<input   type="text" id="queryTradeDateEnd" name="tradeDateEnd"  autocomplete="off" class="layui-input">-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                        <!--</div>-->
-                        <!--<div class="layui-col-md4">-->
-                            <!--<div class="layui-block" style="margin-top: 110px">-->
-                                <!--<label class="layui-form-label"></label>-->
-                                <!--<div class="layui-inline">-->
-                                    <!--<button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="fundSearchBtn">-->
-                                        <!--<i class="layui-icon layui-icon-search"></i>-->
-                                        <!--查询-->
-                                    <!--</button>-->
-                                    <!--<button class="layui-btn my-bg-green3 " type="reset">-->
-                                        <!--<i class="layui-icon layui-icon-refresh"></i>-->
-                                        <!--重置-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-                    <!--</div>-->
-
-                <!--</form>-->
-			<!--</div>-->
+            <div id="search-header">
+                <form class="layui-form" lay-filter="searchForm">
+                    <div class="layui-form-item layui-row">
+                        <div class="layui-col-md8">
+                            <div class="layui-inline">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">基金代码</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryFundNo" type="text" name="fundNo" placeholder="请输入基金代码" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">基金名</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryFundName" type="text" name="fundName" placeholder="请输入基金名" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4">
+                            <div class="layui-block" style="margin-top: 5px">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-inline">
+                                    <button class="layui-btn my-bg-green2 lay-animation" lay-submit="" lay-filter="calcRevenueSearchBtn">
+                                        <i class="layui-icon layui-icon-search"></i>
+                                        查询
+                                    </button>
+                                    <button class="layui-btn my-bg-green3 lay-animation" type="reset" id="reset">
+                                        <i class="layui-icon layui-icon-refresh"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
 
 
@@ -182,14 +130,14 @@
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show" >
-                        <!-- 两费计提数据表格 -->
+                         <!--两费计提数据表格-->
                         <!--<iframe id="main" src="fund/page/fundInventory.html" scrolling="no" frameborder="0" style="width: 100%;height: 100%" ></iframe>-->
                         <div  id="dataTable">
                             <table class="layui-hide" id="feeCalculateTable"  lay-filter="feeCalculateEvent">
                             </table>
                         </div>
                     </div>
-                    <div class="layui-tab-item">
+                    <div class="layui-tab-item ">
                         <!-- 现金计息数据表格 -->
                         <div id="dataTable2">
                             <table class="layui-hide" id="cashInterestTable"  lay-filter="cashInterestEvent">
@@ -204,8 +152,15 @@
 			<script type="text/html" id="feeCalculateToolbar">
 				<div class="layui-btn-container">
 					<span class="btnCont">
-	 					<button title="计提"  lay-event="Accrual" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#x1005;</i>计提</button>
-						<!--<button title="导入"  lay-event="upload" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe62f;</i>导入</button>-->
+	 					<button title="计提"  lay-event="accrual" class=" layui-btn layui-btn-bgcolor layui-btn-sm lay-animation"><i class="layui-icon">&#x1005;</i>计提</button>
+					</span>
+				</div>
+			</script>
+			<!-- 现金计息头部工具栏 -->
+			<script type="text/html" id="cashInterestToolbar">
+				<div class="layui-btn-container">
+					<span class="btnCont">
+	 					<button title="计息"  lay-event="interest" class=" layui-btn layui-btn-bgcolor layui-btn-sm lay-animation"><i class="layui-icon">&#x1005;</i>计息</button>
 					</span>
 				</div>
 			</script>

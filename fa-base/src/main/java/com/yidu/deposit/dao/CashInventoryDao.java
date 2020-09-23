@@ -1,8 +1,7 @@
 package com.yidu.deposit.dao;
 
-import com.yidu.capital.paging.CashInventoryPaging;
+import com.yidu.deposit.paging.CashInventoryPaging;
 import com.yidu.deposit.domain.CashInventory;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,7 +22,14 @@ public interface CashInventoryDao {
     /**
      * 模糊加分页查询所有现金库存数量
      * @param cashInventoryPaging 现金库存对象
-     * @return  金库存数据条数
+     * @return  现金库存数据条数
      */
     Long findCashInventoryCount(CashInventoryPaging cashInventoryPaging);
+
+    /**
+     * 根据id查询现金库存
+     * @param cashInventoryId 现金库存id
+     * @return 现金库存对象
+     */
+    CashInventory fundCashInventoryById(String cashInventoryId);
 }

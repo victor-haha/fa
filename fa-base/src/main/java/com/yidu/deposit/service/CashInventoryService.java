@@ -1,13 +1,12 @@
 package com.yidu.deposit.service;
 
-import com.yidu.capital.paging.CashInventoryPaging;
+import com.yidu.deposit.paging.CashInventoryPaging;
 import com.yidu.deposit.domain.CashInventory;
 
 import java.util.List;
 
 /**
  * 类的描述: 现金库存业务逻辑接口层
- *
  * @author wh
  * @since 2020/9/11 14:40
  */

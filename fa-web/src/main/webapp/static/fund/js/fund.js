@@ -29,6 +29,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		height:'full',
 		cols: [
 				[{
+					title:'序号',
 					type: 'numbers'
 				}, // 序号
 				{
@@ -93,7 +94,8 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'trusteeFee',
 					title: '托管费',
 					unresize: true,
-					align: "center"
+					align: "center",
+                    templet:'<span>{{d.trusteeFee + "‰"}}</span>'
 				},
 				{
 					field: 'billingDays',
@@ -106,7 +108,8 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					title: '管理费率',
 					unresize: true,
                     Width:'auto',
-                    align: "center"
+                    align: "center",
+					templet:'<span>{{d.managementFee + "‰"}}</span>'
 				},
 				{
 					field: 'managerId',
@@ -228,7 +231,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 						icon: 3 //图标，可输入范围0~6
 					});
 				} else if(checkStatus.data[0].usable == 'N') {
-					layer.msg("该用户被禁用了哦！！", {
+					layer.msg("该基金被禁用了哦！！", {
 						icon: 4 //图标，可输入范围0~6
 					});
 				} else {

@@ -106,6 +106,13 @@
         where t1.statisticalDate = t2.maxdate
         and fundId = #{fundId}
     </select>
+    <!--<select id="findLastFIByFundId" parameterType="string" resultType="fundInventory">-->
+        <!--select fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description-->
+        <!--from t_fund_inventory-->
+        <!--where fundId = #{fundId}-->
+        <!--order by statisticalDate desc-->
+        <!--limit 1;-->
+    <!--</select>-->
 
     <!--根据基金id和统计时间查询现金库存-->
     <select id="findCashInventoryByIdAndStatisticalDate" parameterType="map" resultType="cashInventory">
@@ -122,7 +129,9 @@
 
     <!--修改现金库存-->
     <update id="updateCashInventory" parameterType="cashInventory">
-        update t_cash_inventory set cashBalance = #{cashBalance},statisticalDate=#{statisticalDate} where cashInventoryId = #{cashInventoryId}
+        update t_cash_inventory
+        set cashBalance = #{cashBalance},statisticalDate=#{statisticalDate}
+        where cashInventoryId = #{cashInventoryId}
     </update>
 
     <!--根据基金id查询现金库存中指定基金的最后一次库存数据-->
