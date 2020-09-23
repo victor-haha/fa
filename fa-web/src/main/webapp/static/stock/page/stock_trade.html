@@ -7,7 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- 设置项目基准路径 -->
-		<base href="/static/" />
+		<base href="/fa/static/" />
 		<!-- 引入layui的css -->
 		<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
 		<!-- 引入自定义工具css -->
@@ -27,7 +27,7 @@
 				text-align: center;
 				height: auto;
 				white-space: normal;
-			    }
+			}
 			#hideBtn{
 				position: absolute;
 				left: 49%;
@@ -55,79 +55,83 @@
 				width: 100%;
 				height: 90%;
 			}
+			.layui-table-cell {
+				text-overflow:ellipsis;
+				white-space:nowrap;
+				overflow:hidden;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div id="content">
-			<!-- 头部搜索框 -->
-			<div id="search-header">
-				<div id="hideBtn"><i class="layui-icon">&#xe61a;</i></div>
-				<form class="layui-form" lay-filter="searchForm" method="post">
-					<div class="layui-form-item layui-row" >
-						<div class="layui-col-md4">
-							<div class="layui-form-item">
-								<label class="layui-form-label">交易编号</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="stockTradeNo" placeholder="股票交易编号" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">基金名称</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="fundName" placeholder="基金名称" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">股票名称</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="stockName" placeholder="股票名称" autocomplete="off" class="layui-input">
-								</div>
+	<div id="content">
+		<!-- 头部搜索框 -->
+		<div id="search-header">
+			<div id="hideBtn"><i class="layui-icon">&#xe61a;</i></div>
+			<form class="layui-form" lay-filter="searchForm" method="post">
+				<div class="layui-form-item layui-row" >
+					<div class="layui-col-md4">
+						<div class="layui-form-item">
+							<label class="layui-form-label">交易编号</label>
+							<div class="layui-input-inline">
+								<input  type="text" name="stockTradeNo" placeholder="股票交易编号" autocomplete="off" class="layui-input">
 							</div>
 						</div>
-						<div class="layui-col-md5">
-							<div class="layui-form-item">
-								<label class="layui-form-label">交易状态</label>
-								<div class="layui-input-inline">
-									<select name="tradeStatus">
-										<option value="">请选择</option>
-										<option value="1">已结算</option>
-										<option value="0">未结算</option>
-									</select>
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">基金经理</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="managerName" placeholder="基金经理" autocomplete="off" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label">券商名</label>
-								<div class="layui-input-inline">
-									<input  type="text" name="brokerName" placeholder="券商名" autocomplete="off" class="layui-input">
-								</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">基金名称</label>
+							<div class="layui-input-inline">
+								<input  type="text" name="fundName" placeholder="基金名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
-						<div class="layui-col-md3" style="margin-top: 100px;">
-							<div class="layui-form-item">
-								<label class="layui-form-label"></label>
-								<div class="layui-input-inline">
-									<button class="layui-btn my-bg-green2 " lay-submit lay-filter="SearchBtn">
-										<i class="layui-icon layui-icon-search"></i>
-										查询
-									</button>
-									<button class="layui-btn my-bg-green3 " type="reset">
-										<i class="layui-icon layui-icon-refresh"></i>
-										重置
-									</button>
-								</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">股票名称</label>
+							<div class="layui-input-inline">
+								<input  type="text" name="stockName" placeholder="股票名称" autocomplete="off" class="layui-input">
 							</div>
 						</div>
 					</div>
-
-				</form>
-			</div>
+					<div class="layui-col-md5">
+						<div class="layui-form-item">
+							<label class="layui-form-label">交易状态</label>
+							<div class="layui-input-inline">
+								<select name="tradeStatus">
+									<option value="">请选择</option>
+									<option value="1">已结算</option>
+									<option value="0">未结算</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">基金经理</label>
+							<div class="layui-input-inline">
+								<input  type="text" name="managerName" placeholder="基金经理" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">券商名</label>
+							<div class="layui-input-inline">
+								<input  type="text" name="brokerName" placeholder="券商名" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+					<div class="layui-col-md3" style="margin-top: 100px;">
+						<div class="layui-form-item">
+							<label class="layui-form-label"></label>
+							<div class="layui-input-inline">
+								<button class="layui-btn my-bg-green2 " lay-submit lay-filter="SearchBtn">
+									<i class="layui-icon layui-icon-search"></i>
+									查询
+								</button>
+								<button class="layui-btn my-bg-green3 " type="reset">
+									<i class="layui-icon layui-icon-refresh"></i>
+									重置
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 			<!-- 数据表格 -->
 			<div id="dataTable">
 				<table class="layui-hide" id="stockTable" lay-filter="stockTableEvent">

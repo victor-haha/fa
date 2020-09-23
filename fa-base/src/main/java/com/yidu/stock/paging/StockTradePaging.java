@@ -2,7 +2,6 @@ package com.yidu.stock.paging;
 
 /**
  * 类的描述:股票交易数据搜索分页字段
- *
  * @author 江北
  * @since 2020/9/11 13:02
  */

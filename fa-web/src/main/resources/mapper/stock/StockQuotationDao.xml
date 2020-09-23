@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.stock.dao.StockQuotationDao">
+
+    <!--股票行情数据表字段模板-->
+    <sql id="stockQuotationColumn">
+        stockQuotationId,stockId,stockName,stockCode,classCode,increase,raisAndFall,openingPrice,closingPrice,tradeDate,description
+    </sql>
+
+    <!--股票行情数据表插入数据‘占位符’ 字段模板-->
+    <sql id="insertColumn">
+        #{stockQuotationId},
+        #{stockId},
+        #{stockName},
+        #{stockCode},
+        #{classCode},
+        #{increase},
+        #{raisAndFall},
+        #{openingPrice},
+        #{closingPrice},
+        #{tradeDate},
+        #{description}
+    </sql>
+
+    <sql id="whereCaulse">
+        <where>
+            <if test="stockTradeNo != null and stockTradeNo != ''">
+                and stockTradeNo like concat('%',#{stockTradeNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="stockName != null and stockName != ''">
+                and stockName like concat('%',#{stockName},'%')
+            </if>
+            <if test="managerName != null and managerName != ''">
+                and managerName like concat('%',#{managerName},'%')
+            </if>
+            <if test="brokerName != null and brokerName != ''">
+                and brokerName like concat('%',#{brokerName},'%')
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+        </where>
+    </sql>
+
+
+    <!--按条件查询股票行情数据查询-->
+    <select id="findStockQuotation" resultType="StockQuotation" parameterType="StockQuotationPaging">
+        select * from t_stock_quotation
+        <include refid="whereCaulse"></include>
+        limit #{page},#{limit}
+    </select>
+
+    <!--搜索查询所有股票行情数据条数-->
+    <select id="findStockQuotationCount" resultType="Long" parameterType="StockQuotationPaging">
+        select count(stockId) from t_stock_quotation
+        <include refid="whereCaulse"></include>
+    </select>
+
+    <!--添加股票行情数据-->
+    <insert id="addStockQuotation" parameterType="StockQuotation">
+        insert into t_stock_quotation(<include refid="stockQuotationColumn"/>) value(<include refid="insertColumn"/> );
+    </insert>
+
+</mapper>

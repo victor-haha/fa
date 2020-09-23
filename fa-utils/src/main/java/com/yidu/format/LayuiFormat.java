@@ -4,6 +4,8 @@ package com.yidu.format;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
+
 
 /**
  * 类的描述:Layui格式类
@@ -13,16 +15,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class LayuiFormat {
-    private Integer code;
+    private int code;
     private String msg;
     private Long count;
     private Object data;
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

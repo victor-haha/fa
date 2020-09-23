@@ -19,53 +19,56 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 
 
 	//下拉搜索框设置
-	// var hideBtn = $("#hideBtn");
-	// var flag = false;
-	// var search_header = $("#search-header");
-	// search_header.css("top",-search_header.height());
-	// hideBtn.click(function () {
-	// 	let height = search_header.height();
-	// 	if(flag){
-	// 		search_header.animate({
-	// 			"top":-height
-	// 		},"fast","linear");
-	// 		flag = false;
-	// 	}else {
-	// 		search_header.animate({
-	// 			"top":0
-	// 		},"fast","linear");
-	// 		flag = true;
-	// 	}
-	//
-	// });
+	var hideBtn = $("#hideBtn");
+	var flag = false;
+	var search_header = $("#search-header");
+	search_header.css("top",-search_header.height());
+	hideBtn.click(function () {
+		let height = search_header.height();
+		if(flag){
+			search_header.animate({
+				"top":-height
+			},"fast","linear");
+			flag = false;
+		}else {
+			search_header.animate({
+				"top":0
+			},"fast","linear");
+			flag = true;
+		}
 
 
+
+		/*if(flag){
+		}
+		search_header.css("top",-height);*/
+	});
 	//----1.数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#bondTable',
-		url: '../deposit/list', //后期改回获取用户列表的后端程序的url
+		url: '../capital/list', //后期改回获取用户列表的后端程序的url
 		method: 'post',
 		height: 'full-10',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
-		toolbar: 'true', // 开启头部工具栏，并为其绑定左侧模板
+		toolbar: '#userToolbar', // 开启头部工具栏，并为其绑定左侧模板
 		page: true, // 开启分页
 		limit: 10, // 每页显示的条数
 		limits: [5,10, 20, 50, 100], // 每页条数的选择项
 		loading: true, // 是否显示加载条(切换分页的时候显示）
-		title: '现金库存表', // 定义 table 的大标题（在文件导出等地方会用到）
+		title: '债券交易表', // 定义 table 的大标题（在文件导出等地方会用到）
 		id: 'bondTable', // 设定容器唯一 id
-        defaultToolbar: [{
-            title: '搜索'
-            ,layEvent: 'LAYTABLE_SEARCH'
-            ,icon: 'layui-icon-search'
-        },'filter', 'exports', 'print' ],
 		// 隔行变色
 		even: false,
 		cols: [
 				[{
-					title:'序号',
-					type: 'numbers'
+					title:'序列',
+					type: 'numbers',
+					fixed:'left', //钉在左侧
 				}, // 序号
+				{
+					type: 'checkbox',
+					fixed:'left', //钉在左侧
+				}, //复选框
                 {
 					field:'cashInventoryId',
 					title:'现金库存Id',
@@ -141,7 +144,6 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'description',
 					title: '描述',
 					align: "center",
-                    hide: true,
 					width: 150
 				}
 
@@ -181,21 +183,21 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	//----3.处理头部条件组合搜素------------------------------------------------------------------
 	form.on('submit(SearchBtn)', function(data) {
 		//将搜索下列框收回
-		// let height = search_header.height();
-		// if(flag){
-		// 	search_header.animate({
-		// 		"top":-height
-		// 	},"fast","linear");
-		// 	flag = false;
-		// }else {
-		// 	search_header.animate({
-		// 		"top":0
-		// 	},"fast","linear");
-		// 	flag = true;
-		// }
+		let height = search_header.height();
+		if(flag){
+			search_header.animate({
+				"top":-height
+			},"fast","linear");
+			flag = false;
+		}else {
+			search_header.animate({
+				"top":0
+			},"fast","linear");
+			flag = true;
+		}
 		// 搜索并刷新数据表格
 		table.reload('bondTable', {
-			url: '../deposit/list', //
+			url: '../capital/list', //
 			where: data.field,
 			page: {
 				curr: 1 //从第一页开始
@@ -237,10 +239,6 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 				alert("sd");
 				// addBondTrader();
 				break;
-            case 'LAYTABLE_SEARCH':
-                laytablesearch();
-                layer.close(ltips);
-                break;
 			case 'updateUser':
 				// 选择的数据数量
 				if(checkStatus.data.length > 1) {
@@ -304,7 +302,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		settlements(obj.value, this.checked == true ? 'Y' : 'N');
 	});
 
-    var ltips=layer.tips("为你定制的搜索^_^","[title='搜索']",{tips:[2,'#1211115e'],time:3000,shadeClose:true});
+
 	// 定义弃用或还原的方法
 	var settlements = function(bondTradeIds, tradeStatus) {
 		// 定义提示信息, 状态

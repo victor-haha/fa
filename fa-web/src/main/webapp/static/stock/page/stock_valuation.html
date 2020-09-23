@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>用户管理</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- 设置项目基准路径 -->
+	<base href="/fa/static/" />
+	<!-- 引入layui的css -->
+	<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
+	<!-- 引入自定义工具css -->
+	<link rel="stylesheet" href="sys/css/util.css" media="all">
+	<!-- 引入jqeury -->
+	<!--<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>-->
+
+	<!-- 引入layui的js -->
+	<script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- 引入股票行情js -->
+	<script src="stock/js/stock_quotation.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
+	<style type="text/css">
+		.layui-table-cell {
+			text-align: center;
+			height: auto;
+			white-space: normal;
+		}
+		#hideBtn{
+			position: absolute;
+			left: 49%;
+			top: 100%;
+			width: 30px;
+			height: 30px;
+			border-radius: 0 0 20% 20%;
+			border: 1px solid #d9d1dc;
+			background-color: #a6a6a6;
+			text-align: center;
+			line-height: 30px;
+			color: #fff;
+			font-size: 21px;
+			z-index: 1000;
+			cursor: pointer;
+		}
+		#search-header{
+			position: absolute;
+			width: 98%;
+			z-index: 999;
+			animation-delay:0.5s;
+			-webkit-animation-delay:0.5s; /* Safari 和 Chrome */
+		}
+		.align-center{
+			width: 100%;
+			height: 90%;
+		}
+	</style>
+</head>
+
+<body>
+<div id="content">
+	<!-- 头部搜索框 -->
+	<div id="search-header">
+		<div id="hideBtn"><i class="layui-icon">&#xe61a;</i></div>
+		<form class="layui-form" lay-filter="searchForm" method="post">
+			<div class="layui-form-item layui-row" >
+				<div class="layui-col-md4">
+					<div class="layui-form-item">
+						<label class="layui-form-label">交易编号</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="stockTradeNo" placeholder="股票交易编号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">基金名称</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="fundName" placeholder="基金名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">股票名称</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="stockName" placeholder="股票名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md5">
+					<div class="layui-form-item">
+						<label class="layui-form-label">交易状态</label>
+						<div class="layui-input-inline">
+							<select name="tradeStatus">
+								<option value="">请选择</option>
+								<option value="1">已结算</option>
+								<option value="0">未结算</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">基金经理</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="managerName" placeholder="基金经理" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">券商名</label>
+						<div class="layui-input-inline">
+							<input  type="text" name="brokerName" placeholder="券商名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-md3" style="margin-top: 100px;">
+					<div class="layui-form-item">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-inline">
+							<button class="layui-btn my-bg-green2 " lay-submit lay-filter="SearchBtn">
+								<i class="layui-icon layui-icon-search"></i>
+								查询
+							</button>
+							<button class="layui-btn my-bg-green3 " type="reset">
+								<i class="layui-icon layui-icon-refresh"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+			<li class="layui-this">股票行情</li>
+			<li>股票估值</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<div class="layui-tab-content">
+					<!-- 数据表格 -->
+					<div id="dataTable">
+						<table class="layui-hide" id="stockQuotationTable" lay-filter="stockQuotationEvent">
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="layui-tab-item">
+				<div class="layui-tab-content">
+					<!-- 数据表格 -->
+					<div id="dataTable2">
+						<table class="layui-hide" id="stockValuationTable" lay-filter="stockQuotationEvent">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- 头部工具栏 -->
+	<script type="text/html" id="stockQuotationToolbar">
+		<div class="layui-btn-container">
+					<span class="btnCont">
+						<button type="button" title="上传Excel导入"  lay-event="addStockQuotation" class=" layui-btn my-bg-green2 layui-btn-sm "><i class="layui-icon">&#xe681;</i>上传Excel导入</button>
+						<!--<button type="button" title="弃用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>弃用</button>-->
+						<!--<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>-->
+					</span>
+		</div>
+	</script>
+	<script type="text/html" id="checkboxTpl">
+		<span {{d.usable == '1' ? 'class="useable font-color  my-bg-green"': 'class="useable font-color  my-bg-red1"'}} >
+		{{d.usable=='1'?'可用':'弃用'}}
+		</span>
+	</script>
+
+</div>
+</body>
+
+<div class="layui-upload-drag align-center" id="addStockQuotation" style="display: none">
+
+	<i class="layui-icon"></i>
+	<p>点击上传，或将文件拖拽到此处</p>
+	<div class="layui-hide" id="uploadDemoView">
+	</div>
+	<!--<h3>SpringMvc文件上传</h3>
+    <form action="../bond/poi" method="post" enctype="multipart/form-data">
+        选择文件上传：<input type="file" name="upload"/><br>
+        <input type="submit" value="上传">
+    </form>-->
+</div>
+
+</html>

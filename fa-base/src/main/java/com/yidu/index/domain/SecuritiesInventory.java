@@ -3,6 +3,8 @@ package com.yidu.index.domain;
 import com.yidu.utils.DateUtils;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -72,17 +74,17 @@ public class SecuritiesInventory implements Serializable{
 	/**
 	 * 单位成本,股票|债券|银行理财产品的单份价值
 	 */
-	private double price;
+	private BigDecimal price;
 
 	/**
 	 * 持有份额
 	 */
-	private int share;
+	private BigInteger share;
 
 	/**
 	 * 总金额  = 单位净值 * 份额
 	 */
-	private double turnover;
+	private BigDecimal turnover;
 
 	/**
 	 * 证劵类型，1股票   2债券   3 银行存款
@@ -217,27 +219,27 @@ public class SecuritiesInventory implements Serializable{
 		this.accountName = accountName;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	public int getShare() {
+	public BigInteger getShare() {
 		return share;
 	}
 
-	public void setShare(int share) {
+	public void setShare(BigInteger share) {
 		this.share = share;
 	}
 
-	public double getTurnover() {
+	public BigDecimal getTurnover() {
 		return turnover;
 	}
 
-	public void setTurnover(double turnover) {
+	public void setTurnover(BigDecimal turnover) {
 		this.turnover = turnover;
 	}
 

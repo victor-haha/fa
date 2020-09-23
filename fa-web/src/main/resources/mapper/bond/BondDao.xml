@@ -75,7 +75,7 @@
     </select>
     <!--添加债券数据-->
     <insert id="addBond" parameterType="Bond">
-        insert into t_bond(<include refid="allColumn"/>) value (#{bondId},#{bondCode},#{bondShortName},#{actualIssuance},#{issuePrice},#{par},#{term},#{paymentFrequency},#{valueDate},#{expireDate},#{couponRate},#{bondFullName},#{description})
+        insert BigIntegero t_bond(<include refid="allColumn"/>) value (#{bondId},#{bondCode},#{bondShortName},#{actualIssuance},#{issuePrice},#{par},#{term},#{paymentFrequency},#{valueDate},#{expireDate},#{couponRate},#{bondFullName},#{description})
     </insert>
     <!--修改债券数据-->
     <update id="updateBond" parameterType="Bond">

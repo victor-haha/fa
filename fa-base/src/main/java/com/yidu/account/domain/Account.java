@@ -4,6 +4,7 @@ import com.yidu.utils.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -38,7 +39,7 @@ public class Account implements Serializable{
 	/**
 	 * 存款利率,年利率
 	 */
-	private double depositRate;
+	private BigDecimal depositRate;
 
 	/**
 	 * 开户银行
@@ -121,11 +122,11 @@ public class Account implements Serializable{
 		this.depositType = depositType;
 	}
 
-	public double getDepositRate() {
+	public BigDecimal getDepositRate() {
 		return depositRate;
 	}
 
-	public void setDepositRate(double depositRate) {
+	public void setDepositRate(BigDecimal depositRate) {
 		this.depositRate = depositRate;
 	}
 

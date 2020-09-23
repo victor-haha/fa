@@ -1,24 +1,23 @@
-package com.yidu.bond.paging;
+package com.yidu.stock.paging;
 
 /**
- * 类的描述:债券交易数据搜索分页字段
- *
- * @author wh
- * @since 2020/9/6 13:02
+ * 类的描述:股票行情条件查询分页字段
+ * @author 江北
+ * @since 2020/9/22
  */
-public class BondTradePaging {
+public class StockQuotationPaging {
     /**
-     * 债券交易编号
+     * 股票交易编号
      */
-    private String bondTradeNo;
+    private String stockTradeNo;
     /**
      * 基金名称
      */
     private String fundName;
     /**
-     * 债券名称
+     * 股票名称
      */
-    private String bondName;
+    private String stockName;
     /**
      * 基金经理
      */
@@ -34,18 +33,18 @@ public class BondTradePaging {
     /**
      * 页码
      */
-    private int page;
+    private Integer page;
     /**
      * 每页条数
      */
-    private int limit;
+    private Integer limit;
 
-    public String getBondTradeNo() {
-        return bondTradeNo;
+    public String getStockTradeNo() {
+        return stockTradeNo;
     }
 
-    public void setBondTradeNo(String bondTradeNo) {
-        this.bondTradeNo = bondTradeNo;
+    public void setStockTradeNo(String stockTradeNo) {
+        this.stockTradeNo = stockTradeNo;
     }
 
     public String getFundName() {
@@ -56,12 +55,12 @@ public class BondTradePaging {
         this.fundName = fundName;
     }
 
-    public String getBondName() {
-        return bondName;
+    public String getStockName() {
+        return stockName;
     }
 
-    public void setBondName(String bondName) {
-        this.bondName = bondName;
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
     }
 
     public String getManagerName() {
@@ -88,19 +87,19 @@ public class BondTradePaging {
         this.tradeStatus = tradeStatus;
     }
 
-    public int getPage() {
+    public Integer getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(Integer page) {
         this.page = page;
     }
 
-    public int getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 }

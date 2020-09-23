@@ -18,6 +18,16 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	var upload = layui.upload;
 
 
+
+	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+	layui.use('element', function(){
+		var element = layui.element;
+
+		//…
+	});
+
+
+
 	//下拉搜索框设置
 	var hideBtn = $("#hideBtn");
 	var flag = false;
@@ -45,112 +55,129 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	});
 	//----1.数据表格渲染------------------------------------------------------------------
 	table.render({
-		elem: '#bondTable',
-		url: '../capital/list', //后期改回获取用户列表的后端程序的url
+		elem: '#stockQuotationTable',
+		url: '../stockQuotation/list', //后期改回获取用户列表的后端程序的url
 		method: 'post',
 		height: 'full-10',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
-		toolbar: '#userToolbar', // 开启头部工具栏，并为其绑定左侧模板
+		toolbar: '#stockQuotationToolbar', // 开启头部工具栏，并为其绑定左侧模板
+		// cellMinWidth: 80, // 全局定义所有常规单元格的最小宽度（默认：60）
+		cellMaxWidth: 200,
 		page: true, // 开启分页
 		limit: 10, // 每页显示的条数
 		limits: [5,10, 20, 50, 100], // 每页条数的选择项
 		loading: true, // 是否显示加载条(切换分页的时候显示）
-		title: '债券交易表', // 定义 table 的大标题（在文件导出等地方会用到）
-		id: 'bondTable', // 设定容器唯一 id
+		title: '股票交易表', // 定义 table 的大标题（在文件导出等地方会用到）
+		id: 'stockQuotationTable', // 设定容器唯一 id
 		// 隔行变色
 		even: false,
 		cols: [
-				[{
-					title:'序列',
-					type: 'numbers',
-					fixed:'left', //钉在左侧
-				}, // 序号
+			[{
+				title:'序列',
+				type: 'numbers',
+				// fixed:'left', //钉在左侧
+			}, // 序号
 				{
 					type: 'checkbox',
-					fixed:'left', //钉在左侧
 				}, //复选框
-                {
-					field:'cachInventoryId',
-					title:'现金库存Id',
-					fixed:'left', //钉在左侧
-					hide: true, //一般情况下不显示ID
-                    align:'center',
-					width: 200
-                },
 				{
-					field: 'cachInventoryNo',
-					title: '现金库存编号',
-					// fixed:'left', //钉在左侧
-					align: "center",
-                    minWidth: 150
+					field:'stockQuotationId',
+					title:'股票行情编号',
+					hide: true, //一般情况下不显示ID
+					align:'center',
+					width: 200
 				},
 				{
-					field: 'fundId',
-					title: '基金Id',
-					fixed:'left',
+					field: 'stockId',
+					title: '股票编号',
+					align: "center",
+					width: 200
+				},
+				{
+					field: 'stockName',
+					title: '股票名',
 					hide: true,
 					align: "center",
 					width: 100
 				},
 				{
-					field: 'fundNo',
-					title: '基金代码',
+					field: 'stockCode',
+					title: '股票代码',
 					sort: true,
 					align: "center",
 					width: 160
 				},
 				{
-					field: 'fundName',
-					title: '基金名称',
+					field: 'classCode',
+					title: '股票分类标记',
 					sort: true,
 					align: "center",
 					width: 200
 				},
 				{
-					field: 'accountId',
-					title: '账户Id',
+					field: 'increase',
+					title: '涨幅',
 					sort: true,
 					hide: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'accountNo',
-					title: '账号',
+					field: 'raisAndFall',
+					title: '涨跌',
 					sort: true,
 					align: "center",
 					width: 130
 				},
 				{
-					field: 'accountName',
-					title: '账户名',
-                    align: "center",
+					field: 'openingPrice',
+					title: '开盘价',
+					align: "center",
 					width: 140
 				},
 				{
-					field: 'cashBalance',
-					title: '现金余额',
+					field: 'closingPrice',
+					title: '收盘价',
 					align: "center",
-					sort: true,
+					hide: true,
 					width: 130
 				},
 				{
-					field: 'statisticalDateStr',
-					title: '统计日期',
+					field: 'tradeDate',
+					title: '交易日期',
 					align: "center",
-					width: 130
+					templet: function(data) {
+						return formatChinaDate(data);
+					},
+					width: 200
 				},
 				{
 					field: 'description',
-					title: '描述',
+					title: '备注',
 					align: "center",
-					width: 150
-				}
-
+					width: 120
+				},
 			]
 		]
 	});
-
+	//拖拽上传
+	upload.render({
+		elem: '#addStockQuotation'
+		,url: '../stockQuotation/poi' //改成您自己的上传接口https://httpbin.org/post
+		,accept: 'file' //普通文件
+		,done: function(data){
+			if(data == 1){
+				layer.closeAll(); //导入数据成功关闭弹出层
+				layer.msg('导入数据成功！');
+				// 刷新数据表格
+				table.reload('stockQuotationTable', {
+					url: '../stockQuotation/list'
+				});
+			}else{
+				layer.msg("导入数据出错(检查文件格式是否正确)！！");
+			}
+		}
+	});
 	//----2.时间选择器--------------------------------------------------------------------
 	laydate.render({
 		elem: '#addExpireDate'
@@ -162,15 +189,15 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	});
 
 // 初始化新增模态框
-	var addBondTrader = function() {
+	var addStockQuotation = function() {
 		// 弹出一个页面层
 		layer.open({
 			type: 1, // 基本层类型0~4，1为页面层
 			title: 'Excel导入数据', // 标题
-			skin: "layui-layer-molv",
+			skin: 'layui-layer-molv',
 			anim: 2, // 弹出动画
 			area: ["100%","100%"], //自适应宽高 只写一个参数就是表示宽度，高度会自适应 // 宽高 只写一个参数就是表示宽度，高度会自适应
-			content: $("#addBondTrader"), // 文本、html都行
+			content: $('#addStockQuotation'), // 文本、html都行
 			resize: false, // 是否允许拉伸
 			end: function() { // 弹出层销毁时的回调函数（不论何种方式，只要关闭了就执行）
 				//发送请求查询所有数据
@@ -179,6 +206,15 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 
 	};
+
+	//修改日期格式（年，月，日）
+	function formatChinaDate(data) {
+		console.log(data);
+		var oIssueDate = data.tradeDate;
+		var oDate = new Date(oIssueDate);
+		var sIssueDate = oDate.getFullYear() + "年" + (oDate.getMonth() + 1) + "月" + oDate.getDate() + "日";
+		return sIssueDate;
+	}
 
 	//----3.处理头部条件组合搜素------------------------------------------------------------------
 	form.on('submit(SearchBtn)', function(data) {
@@ -196,8 +232,8 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 			flag = true;
 		}
 		// 搜索并刷新数据表格
-		table.reload('bondTable', {
-			url: '../capital/list', //
+		table.reload('stockTable', {
+			url: '../stockQuotation/list', //
 			where: data.field,
 			page: {
 				curr: 1 //从第一页开始
@@ -213,12 +249,12 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		var data =  obj.data;
 		console.log(data);
 		if (obj.event == "update"){
-            initUpdateUserModal(data);
+			initUpdateUserModal(data);
 		}
-    });
+	});
 
 	// 用户列表头部工具栏添加|修改|删除(逻辑删除)|恢复按钮的事件句柄绑定
-	table.on('toolbar(bondTableEvent)', function(obj) {
+	table.on('toolbar(stockQuotationEvent)', function(obj) {
 		//获取当前表格选中状态和选中的一行dom元素
 		// checkElem = table.checkStatus(obj.tr);
 		// 获取当前表格选中状态和选中的数据
@@ -234,31 +270,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		// 定义一个要删除的所有资源ID的字符串
 		let idStr = "";
 		switch(obj.event) {
-			case 'sd':
-				// 弹出新增模态框
-				alert("sd");
-				// addBondTrader();
-				break;
-			case 'updateUser':
-				// 选择的数据数量
-				if(checkStatus.data.length > 1) {
-					layer.msg("最多只能修改一行数据哦！！", {
-						icon: 4 //图标，可输入范围0~6
-					});
-				} else if(checkStatus.data.length < 1) {
-					layer.msg("请选择要修改的数据哦！！", {
-						icon: 4 //图标，可输入范围0~6
-					});
-				} else if(checkStatus.data[0].usable == '0') {
-					layer.msg("该用户被弃用了哦！！", {
-						icon: 4 //图标，可输入范围0~6
-					});
-				} else {
-					// 弹出修改模态框，传递当前选中的一行数据过去
-					initUpdateUserModal(checkStatus.data[0]);
-				}
-				break;
-			case 'settlements':  //结算
+			/*case 'settlements':  //结算
 				// 当前选中行的数据
 				var data = checkStatus.data;
 				//判断是否有选中
@@ -285,14 +297,14 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 						return;
 					}
 					// 拿出用户ID进行拼接
-					idStr += data[i].bondTradeId + ",";
+					idStr += data[i].stockQuotationId + ",";
 				}
 				// 截取掉因为拼接产生的多余的一个逗号
 				idStr = idStr.substring(0, idStr.length - 1);
 				settlements(idStr, '1');
-				break;
-			case 'addBondTrader':
-				addBondTrader();
+				break;*/
+			case 'addStockQuotation':
+				addStockQuotation();
 		};
 	});
 
@@ -304,7 +316,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 
 
 	// 定义弃用或还原的方法
-	var settlements = function(bondTradeIds, tradeStatus) {
+	var settlements = function(stockQuotationIds, tradeStatus) {
 		// 定义提示信息, 状态
 		var msg;
 		if(tradeStatus == '1') {
@@ -317,9 +329,9 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		$.ajax({
 			async: false, // 默认为true，false表示同步，如果当前请求没有返回则不执行后续代码
 			type: "post",
-			url:'../bondTrade/settlements' ,//  /
+			url:'../stockQuotation/settlements' ,//  /
 			data: {
-				bondTradeIds:bondTradeIds,
+				stockQuotationIds:stockQuotationIds,
 				tradeStatus:tradeStatus
 			},
 			success: function(data) {
@@ -333,8 +345,8 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					});
 				}
 				// 刷新数据表格
-				table.reload('bondTable', {
-					url: '../bondTrade/list'
+				table.reload('stockTable', {
+					url: '../stockQuotation/list'
 				});
 			}
 		});
