@@ -30,7 +30,7 @@
 	/*margin-right:0;*/
 	width: 192px;
 }
-.layui-btn:hover {
+.layui-layer-molv .layui-btn:hover {
 	opacity: 1;
 	filter: alpha(opacity=80);
 	color: #FFFFFF;
@@ -121,18 +121,19 @@ body {
 .layui-table td, .layui-table th {
 	font-size: 16px;
 }
+
 @keyframes shake {
 	10%, 90% {
 		transform: translate3d(-1px, 0, 0);
 	}
 	20%, 80% {
-		transform: translate3d(2px, 0, 0);
+		transform: translate3d(3px, 0, 0);
 	}
 	30%, 50%, 70% {
-		transform: translate3d(-4px, 0, 0);
+		transform: translate3d(-3px, 0, 0);
 	}
 	40%, 60% {
-		transform: translate3d(4px, 0, 0);
+		transform: translate3d(3px, 0, 0);
 	}
 }
 .useable {
@@ -149,7 +150,7 @@ body {
 }
 .layui-btn-container .layui-btn-bgcolor{
 	background-image: linear-gradient(0deg,#fd3ca7,#000000) !important;
-	animation: foo-top 200ms ease-in-out infinite, foo-left 200ms linear infinite;
+	/*animation: foo-top 200ms ease-in-out infinite, foo-left 200ms linear infinite;*/
 	position: relative;
 }
 

@@ -1,28 +1,26 @@
 package com.yidu.deposit.domain;
 
-import com.yidu.utils.DateUtils;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 类的描述:现金库存POJO
+ * 类的描述:现金应收应付库存POJO
  * @author 李昊林
- * @date 2020-09-11
+ * @date 2020-09-18
  */
-public class CashInventory implements Serializable{
+public class CasharapInventory implements Serializable{
 
-	private static final long serialVersionUID =  1996055074908653612L;
+	private static final long serialVersionUID =  8583412743049350036L;
 	/**
-	 * 现金库存Id
+	 * 现金应收应付库存Id
 	 */
-	private String cashInventoryId;
+	private String cachArapInventoryId;
 
 	/**
-	 * 现金库存编号
+	 * 现金应收应付库存编号
 	 */
-	private String cashInventoryNo;
+	private String cachArapInventoryNo;
 
 	/**
 	 * 基金Id
@@ -55,18 +53,24 @@ public class CashInventory implements Serializable{
 	private String accountName;
 
 	/**
-	 * 现金余额
+	 * 余额
 	 */
-	private BigDecimal cashBalance;
+	private BigDecimal balance;
 
 	/**
-	 * 统计日期
+	 * 业务日期
 	 */
-	private Date statisticalDate;
+	private Date businessDate;
+
 	/**
-	 * 格式化统计日期
+	 * 业务类型
 	 */
-	private String statisticalDateStr;
+	private int businessType;
+
+	/**
+	 * 应收应付标识
+	 */
+	private int flag;
 
 	/**
 	 * 描述
@@ -74,25 +78,25 @@ public class CashInventory implements Serializable{
 	private String description;
 
 
-	public CashInventory() {
+	public CasharapInventory() {
 
 	}
 
 
-	public String getCashInventoryId() {
-		return cashInventoryId;
+	public String getCachArapInventoryId() {
+		return cachArapInventoryId;
 	}
 
-	public void setCashInventoryId(String cashInventoryId) {
-		this.cashInventoryId = cashInventoryId;
+	public void setCachArapInventoryId(String cachArapInventoryId) {
+		this.cachArapInventoryId = cachArapInventoryId;
 	}
 
-	public String getCashInventoryNo() {
-		return cashInventoryNo;
+	public String getCachArapInventoryNo() {
+		return cachArapInventoryNo;
 	}
 
-	public void setCashInventoryNo(String cashInventoryNo) {
-		this.cashInventoryNo = cashInventoryNo;
+	public void setCachArapInventoryNo(String cachArapInventoryNo) {
+		this.cachArapInventoryNo = cachArapInventoryNo;
 	}
 
 	public String getFundId() {
@@ -143,21 +147,36 @@ public class CashInventory implements Serializable{
 		this.accountName = accountName;
 	}
 
-	public BigDecimal getCashBalance() {
-		return cashBalance;
+	public BigDecimal getBalance() {
+		return balance;
 	}
 
-	public void setCashBalance(BigDecimal cashBalance) {
-		this.cashBalance = cashBalance;
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 
-	public Date getStatisticalDate() {
-		return statisticalDate;
+	public Date getBusinessDate() {
+		return businessDate;
 	}
 
-	public void setStatisticalDate(Date statisticalDate) {
-		this.statisticalDate = statisticalDate;
-		this.statisticalDateStr= DateUtils.dataToString(statisticalDate,"yyyy-MM-dd");
+	public void setBusinessDate(Date businessDate) {
+		this.businessDate = businessDate;
+	}
+
+	public int getBusinessType() {
+		return businessType;
+	}
+
+	public void setBusinessType(int businessType) {
+		this.businessType = businessType;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 
 	public String getDescription() {
@@ -172,17 +191,19 @@ public class CashInventory implements Serializable{
 
 	@Override
 	public String toString() {
-		return "CashInventory{" +
-				"cashInventoryId='" + cashInventoryId + '\'' +
-				",cashInventoryNo='" + cashInventoryNo + '\'' +
+		return "CasharapInventory{" +
+				"cachArapInventoryId='" + cachArapInventoryId + '\'' +
+				",cachArapInventoryNo='" + cachArapInventoryNo + '\'' +
 				",fundId='" + fundId + '\'' +
 				",fundNo='" + fundNo + '\'' +
 				",fundName='" + fundName + '\'' +
 				",accountId='" + accountId + '\'' +
 				",accountNo='" + accountNo + '\'' +
 				",accountName='" + accountName + '\'' +
-				",cashBalance='" + cashBalance + '\'' +
-				",statisticalDate='" + statisticalDate + '\'' +
+				",balance='" + balance + '\'' +
+				",businessDate='" + businessDate + '\'' +
+				",businessType='" + businessType + '\'' +
+				",flag='" + flag + '\'' +
 				",description='" + description + '\'' +
 				'}';
 	}

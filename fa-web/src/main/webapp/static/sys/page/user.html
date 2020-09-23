@@ -36,7 +36,8 @@
 			<!-- 头部搜索框 -->
 			<div id="search-header">
 				<form class="layui-form">
-					<div class="layui-row">
+					<div class="layui-form-item">
+						<div class="layui-row">
 						<div class="layui-col-md12">
 							<div class="layui-form-item" style="">
 								<div class="layui-inline">
@@ -73,11 +74,11 @@
 							<div class="layui-inline" style="float: right;margin-right:10px;">
 								<label class="layui-form-label"></label>
 								<div class="layui-input-inline">
-									<button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="userSearchBtn">
+									<button class="layui-btn my-bg-green2 lay-animation" lay-submit="" lay-filter="userSearchBtn">
 										<i class="layui-icon layui-icon-search"></i>
 										查询
 									</button>
-									<button class="layui-btn my-bg-green3 " type="reset">
+									<button class="layui-btn my-bg-green3 lay-animation" type="reset" id="reset">
 										<i class="layui-icon layui-icon-refresh"></i>
 										重置
 									</button>
@@ -86,6 +87,7 @@
 						</div>
 					</div>
 				</div>
+					</div>
 				</form>
 			</div>
 			<!-- 数据表格 -->
@@ -205,10 +207,10 @@
 				<div class="layui-btn-container">
 
 					<span class="btnCont">
-	 					<button type="button" title="添加"  lay-event="addUser" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe61f;</i>添加</button>
-						<button type="button" title="修改"  lay-event="updateUser" class=" layui-btn layui-btn-warm layui-btn-sm "><i class="layui-icon">&#xe642</i>修改 </button>
-						<button title="禁用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>禁用 </button>
-						<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>
+	 					<button type="button" title="添加"  lay-event="addUser" class=" layui-btn layui-btn-bgcolor layui-btn-sm lay-animation "><i class="layui-icon">&#xe61f;</i>添加</button>
+						<button type="button" title="修改"  lay-event="updateUser" class=" layui-btn layui-btn-warm layui-btn-sm lay-animation"><i class="layui-icon">&#xe642</i>修改 </button>
+						<button title="禁用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm lay-animation"><i class="layui-icon">&#xe702;</i>禁用 </button>
+						<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm lay-animation"><i class="layui-icon">&#xe666;</i>恢复 </button>
 					</span>
 				</div>
 			</script>

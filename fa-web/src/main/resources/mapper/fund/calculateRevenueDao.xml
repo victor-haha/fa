@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.fund.dao.CalculateRevenueDao">
+    <sql id="FIallCloumn">
+        fundInventoryId, fundInventoryNo, fundId, fundNo, fundName, share, balance, statisticalDate, description
+    </sql>
+    <sql id="CIallCloumn">
+        cashInventoryId, cashInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, cashBalance, statisticalDate,  description
+    </sql>
+    <sql id="FIdynamicQuery">
+        <where>
+            <if test="fundInventoryNo != null and fundInventoryNo != ''">
+                fundInventoryNo = #{fundInventoryNo}
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="fundName != null and fundName != '%%'">
+                and fundName like #{fundName}
+            </if>
+            <if test="statisticalDateStart != null and statisticalDateStart != '' and statisticalDateEnd != null and statisticalDateEnd != ''">
+                and statisticalDate between #{statisticalDateStart} and #{statisticalDateEnd}
+            </if>
+                and accrualStatus = 0
+        </where>
+    </sql>
+
+    <sql id="CIdynamicQuery">
+        <where>
+            <if test="cashInventoryNo != null and cashInventoryNo != ''">
+                and cashInventoryNo like concat('%',#{cashInventoryNo},'%')
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo like concat('%',#{fundNo},'%')
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName like concat('%',#{fundName},'%')
+            </if>
+            <if test="accountNo != null and accountNo != ''">
+                and accountNo like concat('%',#{accountNo},'%')
+            </if>
+                and  interestStatus = 0
+        </where>
+    </sql>
+
+    <sql id="queryPaging">
+        <if test="page != null and limit != null">
+            limit #{page},#{limit}
+        </if>
+    </sql>
+    <!--按条件查询所有未计提基金库存-->
+    <select id="findAllFIByConditionForNotAccrual" parameterType="fundInventoryPaging" resultType="fundInventory">
+        select  <include refid="FIallCloumn"/>
+        from t_fund_inventory
+        <include refid="FIdynamicQuery"/>
+        <include refid="queryPaging"/>
+
+    </select>
+    <!--按条件统计未计提基金库存数量-->
+    <select id="findCountByConditionForNotAccrual" parameterType="fundInventoryPaging" resultType="Long">
+        select count(fundInventoryId)
+        from t_fund_inventory
+        <include refid="FIdynamicQuery"/>
+    </select>
+    <!--修改基金库存表的计提状态-->
+    <update id="updateAccrualStatus" parameterType="String">
+        update t_fund_inventory set accrualStatus = 1
+        where fundInventoryId = #{fundInventoryId};
+    </update>
+
+    <!--按条件查询所有未计息现金库存-->
+    <select id="findAllCIByConditionForNotInterest" parameterType="cashInventoryPaging" resultType="cashInventory">
+        select  <include refid="CIallCloumn"/>
+        from t_cash_inventory
+        <include refid="CIdynamicQuery"/>
+        <include refid="queryPaging"/>
+
+    </select>
+    <!--按条件统计未计息现金库存数量-->
+    <select id="findCountByConditionForNotInterest" parameterType="cashInventoryPaging" resultType="Long">
+        select count(cashInventoryId)
+        from t_cash_inventory
+        <include refid="CIdynamicQuery"/>
+    </select>
+    <!--修改现金库存表的计息状态-->
+    <update id="updateInterestStatus" parameterType="String">
+        update t_cash_inventory set interestStatus = 1
+        where cashInventoryId = #{cashInventoryId};
+    </update>
+
+
+    <!--添加现金应收应付数据-->
+    <insert id="addCashArap" parameterType="cashArap">
+        insert into t_cash_arap(cashARAPId, cashARAPNo, fundId, fundNo, fundName, accountId, accountNo, accountName, arapAmount, arapDate, arapFlag, arapType)
+        values(#{cashArapId},#{ cashArapNo},#{ fundId},#{ fundNo},#{ fundName},#{ accountId},#{ accountNo},#{ accountName},#{ arapAmount},#{ arapDate},#{ arapFlag},#{ arapType})
+    </insert>
+
+    <!--根据基金id查询账户信息-->
+    <select id="findAccountByFundId" parameterType="string" resultType="account">
+        select accountId,accountNo,accountName
+        from t_account
+        where fundId = #{fundId}
+    </select>
+
+    <!--根据基金id及业务类型查询现金应收应付库存中指定基金当天的库存数据-->
+    <select id="findCARAPIByFundIdAndBusinessType" parameterType="map" resultType="casharapInventory">
+        select cachARAPInventoryId, cachARAPInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, balance, businessDate, businessType, flag, description
+        from t_casharap_inventory
+        where to_days(businessDate) = to_days(#{businessDate}) and fundId = #{fundId} and businessType = #{businessType}
+    </select>
+
+    <!--添加现金应收应付库存-->
+    <insert id="addCasharapInventory" parameterType="casharapInventory">
+        insert  into t_casharap_inventory(cachARAPInventoryId, cachARAPInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, balance, businessDate, businessType, flag, description)
+        values(#{cachArapInventoryId},#{ cachArapInventoryNo},#{ fundId},#{ fundNo},#{ fundName},#{ accountId},#{ accountNo},#{ accountName},#{ balance},#{ businessDate},#{ businessType},#{ flag},#{ description})
+    </insert>
+
+    <!--修改现金应收应付库存-->
+    <update id="updateCasharapInventory" parameterType="casharapInventory">
+        update t_casharap_inventory
+        set balance = #{balance},businessDate = #{businessDate}
+        where cachARAPInventoryId = #{cachArapInventoryId}
+    </update>
+    <!--查询最近日期的指定基金指定业务的现金应收应付库存数据-->
+    <select id="findCARAPIByLatestDateWithFundIdAndBusinessType" parameterType="map" resultType="casharapInventory">
+        select cachARAPInventoryId, cachARAPInventoryNo, fundId, fundNo, fundName, accountId, accountNo, accountName, balance, businessDate, businessType, flag, description
+        from t_casharap_inventory
+        where fundId = #{fundId} and businessType = #{businessType}
+        order by businessDate desc
+        limit 1
+    </select>
+
+</mapper>

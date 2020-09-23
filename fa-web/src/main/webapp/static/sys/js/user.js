@@ -6,6 +6,9 @@
  * 实际引入的模块有：table、form、jquery、layer、laypage、laytpl、util，7个js文件
  * 所以我仅仅初始化了table模块，却能获得form、jquery、layer的模块对象
  */
+$(function () {
+
+
 //layui初始化表格模组 
 layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	// 获得模块对象
@@ -18,7 +21,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	var upload = layui.upload;
 
 	//----1.用户数据表格渲染------------------------------------------------------------------
-	table.render({
+	var tableIns=table.render({
 		elem: '#userTable',
 		url: '../findAllUser', //后期改回获取用户列表的后端程序的url
 		method: 'get',
@@ -63,7 +66,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					field: 'telephone',
 					title: '用户电话',
 					unresize: true,
-                    width:130,
+                    width:150,
 					align: "center"
 				},
 				{
@@ -100,7 +103,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 					title: '创建时间',
 					unresize: true,
 					align: "center",
-					width: 160
+					width: 200
 				},
 				{
                     field: 'usable',
@@ -157,6 +160,17 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 		});
 		return false; // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
 	});
+
+	$("#reset").click(function () {
+        tableIns.reload({
+            url: '../findUserByCondition',
+            where:{
+                userName:null,
+                gender: null,
+                usable: null,
+            }
+        })
+    })
 	//----3.处理表行修改------------------------------------------------------------------
 	table.on("tool(userTableEvent)",function (obj) {
 		var data =  obj.data;
@@ -475,3 +489,4 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 	});
 });
 
+})

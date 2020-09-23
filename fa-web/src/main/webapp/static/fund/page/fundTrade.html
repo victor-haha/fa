@@ -74,9 +74,10 @@
 
 		<div id="content" >
 			<!-- 头部搜索框 -->
-			<div id="search-header" style="margin-bottom: 10px">
+			<div id="search-header" >
 				<form class="layui-form">
-                    <div class="layui-row">
+                    <div class="layui-form-item">
+                        <div class="layui-row">
                         <div class="layui-col-md4">
                             <div class="layui-block">
                                 <div class="layui-form-item" style="">
@@ -147,11 +148,11 @@
                             <div class="layui-block" style="margin-top: 110px">
                                 <label class="layui-form-label"></label>
                                 <div class="layui-inline">
-                                    <button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="fundSearchBtn">
+                                    <button class="layui-btn my-bg-green2 lay-animation" lay-submit="" lay-filter="fundSearchBtn">
                                         <i class="layui-icon layui-icon-search"></i>
                                         查询
                                     </button>
-                                    <button class="layui-btn my-bg-green3 " type="reset">
+                                    <button class="layui-btn my-bg-green3 lay-animation" type="reset">
                                         <i class="layui-icon layui-icon-refresh"></i>
                                         重置
                                     </button>
@@ -160,7 +161,7 @@
                         </div>
 
                     </div>
-
+                    </div>
                 </form>
 			</div>
 
@@ -210,8 +211,8 @@
 			<script type="text/html" id="fundToolbar">
 				<div class="layui-btn-container">
 					<span class="btnCont">
-	 					<button title="结算"  lay-event="settlement" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#x1005;</i>结算</button>
-						<button title="导入"  lay-event="upload" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe62f;</i>导入</button>
+	 					<button title="结算"  lay-event="settlement" class=" layui-btn layui-btn-normal layui-btn-sm lay-animation"><i class="layui-icon">&#x1005;</i>结算</button>
+						<button title="导入"  lay-event="upload" class=" layui-btn layui-btn-bgcolor layui-btn-sm lay-animation"><i class="layui-icon">&#xe62f;</i>导入</button>
 					</span>
 				</div>
 			</script>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>基金库存数据</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- 设置项目基准路径 -->
+		<base href="/fa/static/"/>
+		<!-- 引入layui的css -->
+		<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
+		<!-- 引入自定义工具css -->
+		<link rel="stylesheet" href="sys/css/util.css" media="all">
+		<!-- 引入jqeury -->
+        <script src="ui/layui/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 引入layui的js -->
+		<script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 引入用户js -->
+		<script src="deposit/js/fundInventory.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
+		<style type="text/css">
+			.layui-table-cell {
+				text-align: center;
+				height: auto;
+				white-space: normal;
+            }
+            .my-width150{
+                width:158px !important;
+            }
+            .my-input{
+                width: 228px !important;
+            }
+		</style>
+	</head>
+
+	<body>
+
+		<div id="content" >
+			<!-- 头部搜索框 -->
+			<div id="search-header">
+				<form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-row">
+                        <div class="layui-col-md4">
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">库存编号</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryFundInventoryNo" type="text" name="fundInventoryNo" placeholder="请输入基金库存编号" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">基金代码</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryFundNo" type="text" name="fundNo" placeholder="请输入基金代码" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4">
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">基金名</label>
+                                    <div class="my-input layui-input-inline ">
+                                        <input id="queryFundName" type="text" name="fundName" placeholder="请输入基金名" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">统计日期</label>
+                                    <div class="layui-input-inline" style="width: 100px;margin-right: 10px;">
+                                        <input id="queryStatisticalDateStart" type="text" name="statisticalDateStart"  autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">~</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input   type="text" id="queryStatisticalDateEnd" name="statisticalDateEnd"  autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4">
+                            <div class="layui-block" style="margin-top: 55px">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-inline">
+                                    <button class="layui-btn my-bg-green2 lay-animation" lay-submit="" lay-filter="fundInventorySearchBtn">
+                                        <i class="layui-icon layui-icon-search"></i>
+                                        查询
+                                    </button>
+                                    <button class="layui-btn my-bg-green3 lay-animation" type="reset">
+                                        <i class="layui-icon layui-icon-refresh"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </form>
+			</div>
+
+
+
+
+            <!-- 数据表格 -->
+            <div  id="dataTable">
+                <table class="layui-hide" id="fundInventoryTable"  lay-filter="fundInventoryTableEvent">
+                </table>
+            </div>
+
+
+
+
+			<!--<script type="text/html" id="tradeStatusTpl">-->
+				<!--<span {{d.tradeStatus =='1' ? 'class="tradeStatus font-color  my-bg-green"': 'class="tradeStatus font-color  my-bg-red1"'}} >-->
+				<!--{{d.tradeStatus=='1'?'已结算':'未结算'}}-->
+				<!--</span>-->
+			<!--</script>-->
+            <!--<script type="text/html" id="fundTradeTypeTpl">-->
+                <!--<span>{{d.fundTradeType == '1' ? '申购' : d.fundTradeType == '2' ? '认购' : d.fundTradeType == '3' ? '赎回' : d.fundTradeType}}</span>-->
+            <!--</script>-->
+
+		</div>
+	</body>
+
+</html>

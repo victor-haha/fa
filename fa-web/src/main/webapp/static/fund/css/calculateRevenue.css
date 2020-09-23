@@ -1,0 +1,22 @@
+#dataTable {
+    overflow: hidden;
+    border-radius: 0px;
+    box-shadow: none;
+    background: #eee;
+    transition: all 0.2s;
+}
+
+#dataTable:hover {
+    box-shadow: none;
+}
+#tabData {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #ddd;
+    background: #eee;
+    transition: all 0.2s;
+    margin-top:0px;
+}
+#tabData:hover {
+    box-shadow: 0px 0px 15px #ccc;
+}

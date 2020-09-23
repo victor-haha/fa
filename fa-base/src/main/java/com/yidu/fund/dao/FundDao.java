@@ -25,6 +25,13 @@ public interface FundDao {
     List<Fund> findAllFundWithPage(FundPaging fundPaging);
 
     /**
+     * 根据基金id查询基金信息
+     * @param fundId 基金id
+     * @return 基金对象
+     */
+    Fund findFundById(String fundId);
+
+    /**
      * 根据条件查询基金信息
      * @param fundPaging 查询条件
      * @return 基金对象集合
