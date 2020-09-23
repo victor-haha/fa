@@ -22,7 +22,7 @@ layui.use(['table', 'laydate', 'util', 'upload'], function() {
 //----1.用户数据表格渲染------------------------------------------------------------------
 	table.render({
 		elem: '#stockTable',
-		url: '/findAllStock', //后期改回获取用户列表的后端程序的url
+		url: '../stock/findAllStock', //后期改回获取用户列表的后端程序的url
 		method: 'get',
 		where: {}, // 你额外要携带数据，以键值对的方式存入
 		toolbar: '#stockToolbar',

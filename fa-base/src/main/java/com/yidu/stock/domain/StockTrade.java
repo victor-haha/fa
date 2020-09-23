@@ -78,7 +78,7 @@ public class StockTrade {
     /**
      * 交易数量(份额)
      */
-    private BigInteger share;
+    private Integer share;
     /**
      * 交易额(总)
      */
@@ -244,11 +244,11 @@ public class StockTrade {
         this.tradeDate = tradeDate;
     }
 
-    public BigInteger getShare() {
+    public Integer getShare() {
         return share;
     }
 
-    public void setShare(BigInteger share) {
+    public void setShare(Integer share) {
         this.share = share;
     }
 

@@ -116,7 +116,7 @@ public class StockLogicalServiceImpl implements StockLogicalService {
             securitiesInventory = stockLogicalDao.findSIByFundId(stockTrade.getFundId(),stockTrade.getStockTradeId());
             //设置相关初始信息，及相关数据到证券库存对象
             securitiesInventory.setSecuritiesInventoryId(IDUtil.getUuid());
-            securitiesInventory.setSechuritiesInventoryNo(NoUtils.getNo("ZQJS"));
+            securitiesInventory.setSechuritiesInventoryNo(NoUtils.getNo("GPJS"));
             securitiesInventory.setSecuritiesType(1);//1:股票，2:债券，3:银行存款
             securitiesInventory.setStatisticalDate(new Date());
             securitiesInventory.setDescription("股票交易数据清算");
@@ -138,12 +138,12 @@ public class StockLogicalServiceImpl implements StockLogicalService {
             //判断是证券(债券)是  买入 or 卖出
             if(stockTrade.getTradeType() == 1){  //买入
                 //持有份额+
-                securitiesInventory.setShare(securitiesInventory.getShare().add(stockTrade.getShare()));
+                securitiesInventory.setShare(securitiesInventory.getShare()+(stockTrade.getShare()));
                 //总金额+
                 securitiesInventory.setTurnover(securitiesInventory.getTurnover().add(stockTrade.getTurnover()));//注意计算的精度问题
             }else{    //流出
                 //持有份额-
-                securitiesInventory.setShare(securitiesInventory.getShare().subtract(stockTrade.getShare()));
+                securitiesInventory.setShare(securitiesInventory.getShare()-(stockTrade.getShare()));
                 //总金额+
                 securitiesInventory.setTurnover(securitiesInventory.getTurnover().subtract(stockTrade.getTurnover()));//注意计算的精度问题
             }

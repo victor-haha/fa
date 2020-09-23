@@ -5,7 +5,7 @@ import com.yidu.stock.domain.StockTrade;
 import com.yidu.stock.paging.StockTradePaging;
 
 /**
- * 类的描述:股票详细业务的逻辑处理，业务逻辑层接口
+ * 类的描述:股票交易业务的逻辑处理
  *
  * @author 江北
  * @since 2020/9/11 13:06

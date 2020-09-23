@@ -4,7 +4,7 @@ package com.yidu.stock.controller;
 import com.alibaba.excel.EasyExcel;
 
 import com.yidu.format.LayuiFormat;
-import com.yidu.stock.controller.Listener.DataListener;
+import com.yidu.stock.Listener.DataListener;
 import com.yidu.stock.domain.StockTrade;
 import com.yidu.stock.paging.StockTradePaging;
 import com.yidu.stock.service.StockLogicalService;
@@ -69,8 +69,9 @@ public class StockLogicalController {
     @RequestMapping("/poi")
     public String addStockTrade(@RequestParam MultipartFile file) {
         try {
-
+            System.out.println(file);
             InputStream InputStream = file.getInputStream();
+            System.out.println(InputStream);
             EasyExcel.read(InputStream, StockTrade.class,new DataListener(stockLogicalService)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();

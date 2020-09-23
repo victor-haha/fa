@@ -1,11 +1,11 @@
 package com.yidu.stock.paging;
 
 /**
- * 类的描述:股票交易数据搜索分页字段
+ * 类的描述:股票行情条件查询分页字段
  * @author 江北
- * @since 2020/9/11 13:02
+ * @since 2020/9/22
  */
-public class StockTradePaging {
+public class StockQuotationPaging {
     /**
      * 股票交易编号
      */
