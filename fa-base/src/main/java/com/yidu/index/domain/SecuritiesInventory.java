@@ -125,6 +125,18 @@ public class SecuritiesInventory implements Serializable{
 	 * 备用字段
 	 */
 	private String remark3;
+    /**
+     * 计息状态  0未计息  1已计息
+     */
+	private Integer tradeStatus;
+
+	public Integer getTradeStatus() {
+		return tradeStatus;
+	}
+
+	public void setTradeStatus(Integer tradeStatus) {
+		this.tradeStatus = tradeStatus;
+	}
 
 	public SecuritiesInventory() {
 

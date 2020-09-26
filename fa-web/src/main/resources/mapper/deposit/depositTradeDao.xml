@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.deposit.dao.DepositTradeDao">
+    <!-- 银行交易数据所有字段的sql片段 -->
+    <sql id="allCpulumn">
+        depositId,depositNo,fundId,fundNo,fundName,outAccountId,outAccountNo,outAccountName,inAccountId,inAccountNo,inAccountName
+        ,tradeType,tradeFlag,businessDate,businessType,money,interestRate,endDate,tradeStatus,description
+    </sql>
+    <!-- 银行交易数据条件查询的sql片段 -->
+    <sql id="conditionQueryStatement">
+        <where>
+            <if test="depositId != null and depositId != ''">
+                depositId = #{depositId}
+            </if>
+            <if test="depositNo != null and depositNo != ''">
+                and depositNo = #{depositNo}
+            </if>
+            <if test="fundId != null and fundId != ''">
+                and fundId = #{fundId}
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName = #{fundName}
+            </if>
+            <if test="outAccountId != null and outAccountId != ''">
+                and outAccountId = #{outAccountId}
+            </if>
+            <if test="outAccountNo != null and outAccountNo != ''">
+                and outAccountNo = #{outAccountNo}
+            </if>
+            <if test="outAccountName != null and outAccountName != ''">
+                and outAccountName = #{outAccountName}
+            </if>
+            <if test="inAccountId != null and inAccountId != ''">
+                and inAccountId = #{inAccountId}
+            </if>
+            <if test="inAccountNo != null and inAccountNo != ''">
+                and inAccountNo = #{inAccountNo}
+            </if>
+            <if test="inAccountName != null and inAccountName != ''">
+                and inAccountName = #{inAccountName}
+            </if>
+            <if test="tradeType != null and tradeType != ''">
+                and tradeType = #{tradeType}
+            </if>
+            <if test="tradeFlag != null and tradeFlag != ''">
+                and tradeFlag = #{tradeFlag}
+            </if>
+            <if test="businessDate != null">
+                and businessDate = #{businessDate}
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and businessType = #{businessType}
+            </if>
+            <if test="money != null and money != ''">
+                and money = #{money}
+            </if>
+            <if test="interestRate != null and interestRate != ''">
+                and interestRate = #{interestRate}
+            </if>
+            <if test="endDate != null">
+                and endDate = #{endDate}
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                and tradeStatus = #{tradeStatus}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+        </where>
+    </sql>
+    <!-- 分页查询的sql片段 -->
+    <sql id="limitStatement" >
+        limit
+        <choose>
+            <when test="page==null">
+                0
+            </when>
+            <otherwise>#{page}</otherwise>
+        </choose>
+        ,
+        <choose>
+            <when test="limit==null">
+                10
+            </when>
+            <otherwise>#{limit}</otherwise>
+        </choose>
+    </sql>
+    <!-- 银行交易数据根据条件动态修改的sql片段 -->
+    <sql id="dynamicUpdate">
+        <set>
+            <if test="depositNo != null and depositNo != ''">
+                depositNo = #{depositNo},
+            </if>
+            <if test="fundId != null and fundId != ''">
+                fundId = #{fundId},
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                fundNo = #{fundNo},
+            </if>
+            <if test="fundName != null and fundName != ''">
+                fundName = #{fundName},
+            </if>
+            <if test="outAccountId != null and outAccountId != ''">
+                outAccountId = #{outAccountId},
+            </if>
+            <if test="outAccountNo != null and outAccountNo != ''">
+                outAccountNo = #{outAccountNo},
+            </if>
+            <if test="outAccountName != null and outAccountName != ''">
+                outAccountName = #{outAccountName},
+            </if>
+            <if test="inAccountId != null and inAccountId != ''">
+                inAccountId = #{inAccountId},
+            </if>
+            <if test="inAccountNo != null and inAccountNo != ''">
+                inAccountNo = #{inAccountNo},
+            </if>
+            <if test="inAccountName != null and inAccountName != ''">
+                inAccountName = #{inAccountName},
+            </if>
+            <if test="tradeType != null and tradeType != ''">
+                tradeType = #{tradeType},
+            </if>
+            <if test="tradeFlag != null and tradeFlag != ''">
+                tradeFlag = #{tradeFlag},
+            </if>
+            <if test="businessDate != null">
+                businessDate = #{businessDate},
+            </if>
+            <if test="businessType != null and businessType != ''">
+                businessType = #{businessType},
+            </if>
+            <if test="money != null and money != ''">
+                money = #{money},
+            </if>
+            <if test="interestRate != null and interestRate != ''">
+                interestRate = #{interestRate},
+            </if>
+            <if test="endDate != null">
+                endDate = #{endDate},
+            </if>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                tradeStatus = #{tradeStatus},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+        </set>
+    </sql>
+    <!-- 资金调拨表所有字段 -->
+    <sql id="allCpulumn1">
+        capitalTransferId,capitalTransferNo,fundId,fundNo,fundName,accountId,
+        accountNo,accountName,transferAmount,transferDate,transferFlag,transferType
+    </sql>
+    <!-- 证券库存表所有字段 -->
+    <sql id="allCpulumn2">
+        securitiesInventoryId,sechuritiesInventoryNo,securitiesId,securitiesNo,securitiesName,fundId,fundNo,
+        fundName,accountId,accountNo,accountName,price,share,turnover,securitiesType,statisticalDate,tradeStatus,description
+    </sql>
+    <!-- 现金库存表所有字段 -->
+    <sql id="allCpulumn3">
+        cashInventoryId,cashInventoryNo,fundId,fundNo,fundName,accountId,accountNo,accountName,cashBalance,statisticalDate,description
+    </sql>
+
+
+    <!-- 1.添加存款交易数据 -->
+    <insert id="addDeposit" parameterType="DepositTrade">
+        insert into t_deposit_trade(<include refid="allCpulumn"/>)
+        values (#{depositId},#{depositNo},#{fundId},#{fundNo},#{fundName},#{outAccountId},#{outAccountNo},#{outAccountName},#{inAccountId},#{inAccountNo},#{inAccountName},#{tradeType},#{tradeFlag},#{businessDate},#{businessType},#{money},#{interestRate},#{endDate},#{tradeStatus},#{description})
+    </insert>
+    <!-- 2.1.查询满足条件的银行交易数据数量 -->
+    <select id="countDepositTradeByCondition" parameterType="DepositTradePaging" resultType="long">
+        select count(depositId)
+        from t_deposit_trade
+        <include refid="conditionQueryStatement"/>
+    </select>
+    <!-- 2.2.查询满足条件的银行交易数据 -->
+    <select id="findDepositByCondition" parameterType="DepositTradePaging" resultType="DepositTrade">
+        select <include refid="allCpulumn"/>
+        from t_deposit_trade
+        <include refid="conditionQueryStatement"/>
+        <include refid="limitStatement"/>
+    </select>
+    <!-- 3.1.修改银行交易数据状态 -->
+    <update id="updateTransactionStatus" parameterType="map">
+        update t_deposit_trade <include refid="dynamicUpdate"/>
+        where depositId = #{depositId}
+    </update>
+    <!-- 3.2.1.添加资金调拨数据 -->
+    <insert id="addBankTreasurer" parameterType="DepositTrade">
+        insert into t_capital_transfer(<include refid="allCpulumn1"/>)
+        values (#{capitalTransferId},#{capitalTransferNo},#{fundId},#{fundNo},#{fundName},#{accountId},
+        #{accountNo},#{accountName},#{transferAmount},#{transferDate},#{transferFlag},#{transferType})
+    </insert>
+    <!-- 3.2.2.根据ID查询银行交易数据 -->
+    <select id="findDepositById" parameterType="String" resultType="DepositTrade">
+        select <include refid="allCpulumn"/>
+        from t_deposit_trade
+        where depositId = #{depositId}
+    </select>
+    <!-- 3.3.1.根据条件查询满足的证券库存数据 -->
+    <select id="findSecuritiesInventoryByCondition" parameterType="map" resultType="SecuritiesInventory">
+        select <include refid="allCpulumn2"/>
+        from t_securities_inventory
+        where statisticalDate >= #{statisticalDate}
+        and accountId = #{accountId}
+        and fundId = #{fundId}
+        and securitiesName = #{securitiesName}
+        and securitiesType = #{securitiesType}
+
+    </select>
+    <!-- 3.3.2.添加证券库存数据 -->
+    <insert id="addSecuritiesInventory" parameterType="SecuritiesInventory">
+        insert into t_securities_inventory(<include refid="allCpulumn2"/>)
+        values (#{securitiesInventoryId},#{sechuritiesInventoryNo},#{securitiesId},#{securitiesNo},#{securitiesName},#{fundId},
+        #{fundNo},#{fundName},#{accountId},#{accountNo},#{accountName},#{price},#{share},#{turnover},#{securitiesType},#{statisticalDate},#{tradeStatus},#{description})
+    </insert>
+    <!-- 3.3.3.修改对应的证券库存数据 -->
+    <update id="updateSecuritiesInventory" parameterType="map">
+        update t_securities_inventory set turnover=#{turnover},statisticalDate=#{statisticalDate}
+        where securitiesInventoryId = #{securitiesInventoryId}
+    </update>
+    <!-- 3.4.1.查询满足条件的现金库存数据 -->
+    <select id="findCashInventoryByCondition" parameterType="map" resultType="CashInventory">
+        select <include refid="allCpulumn3"/>
+        from t_cash_inventory
+        where fundId = #{fundId} and statisticalDate >= #{statisticalDate}
+    </select>
+    <!-- 3.4.2.查询最近一条现金库存数据 -->
+    <select id="findCashInventoryByFundId" parameterType="String" resultType="CashInventory">
+        select <include refid="allCpulumn3"/>
+        from t_cash_inventory
+        where fundId = #{fundId}
+        and accountId = #{accountId}
+        having statisticalDate = (SELECT MAX(statisticalDate) FROM t_cash_inventory)
+    </select>
+    <!-- 3.4.3.添加现金库存数据 -->
+    <insert id="addCashInventory" parameterType="CashInventory">
+        insert into t_cash_inventory(<include refid="allCpulumn3"/>)
+        values (#{cashInventoryId},#{cashInventoryNo},#{fundId},#{fundNo},#{fundName},#{accountId},#{accountNo},#{accountName},#{cashBalance},#{statisticalDate},#{description})
+    </insert>
+    <!-- 3.4.4.修改今天的现金库存数据 -->
+    <update id="updateCashInventory" parameterType="map">
+        update t_cash_inventory set cashBalance = #{cashBalance},statisticalDate = #{statisticalDate}
+        where cashInventoryId = #{cashInventoryId}
+    </update>
+</mapper>
+

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>用户管理</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- 设置项目基准路径 -->
+		<base href="/fa/static/" />
+		<!-- 引入layui的css -->
+		<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
+		<!-- 引入自定义工具css -->
+		<link rel="stylesheet" href="account/css/util.css" media="all">
+		<!-- 引入jqeury -->
+		 <!--<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<!-- 引入layui的js -->
+		<script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 引入用户js -->
+		<script src="account/js/account.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
+		<style type="text/css">
+			.layui-table-cell {
+				text-align: center;
+				height: auto;
+				white-space: normal;
+			    }
+			#hideBtn{
+				position: absolute;
+				left: 49%;
+				top: 100%;
+				width: 30px;
+				height: 30px;
+				border-radius: 0 0 20% 20%;
+				border: 1px solid #d9d1dc;
+				background-color: #a6a6a6;
+				text-align: center;
+				line-height: 30px;
+				color: #fff;
+				font-size: 21px;
+				z-index: 1000;
+				cursor: pointer;
+			}
+			#search-header{
+				position: absolute;
+				width: 98%;
+				z-index: 999;
+				animation-delay:0.5s;
+				-webkit-animation-delay:0.5s; /* Safari 和 Chrome */
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="content">
+			<!-- 头部搜索框 -->
+			<div id="search-header">
+				<div id="hideBtn"><i class="layui-icon">&#xe61a;</i></div>
+				<form class="layui-form">
+					<div class="layui-form-item" style="">
+						<div class="layui-inline">
+							<label class="layui-form-label">账户名</label>
+							<div class="layui-input-inline">
+								<input id="queryAccountName" type="text" name="accountName" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">存款类型</label>
+							<div class="layui-input-inline">
+								<input id="queryDepositType" type="text" name="depositType" placeholder="请输入存款类型" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label">开户银行</label>
+							<div class="layui-input-inline">
+								<input id="queryBankName" type="text" name="bankName" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<!--<div class="layui-inline">
+							<label class="layui-form-label">用户性别</label>
+							<div class="layui-input-inline">
+								<select name="userSex" id="queryUserSex">
+									<option value="">请选择</option>
+									<option value="1">男</option>
+									<option value="0">女</option>
+								</select>
+							</div>
+						</div>-->
+						<!--<div class="layui-inline">
+							<label class="layui-form-label">是否可用</label>
+							<div class="layui-input-inline">
+								<select name="usable" id="queryusable">
+									<option value="">请选择</option>
+									<option value="Y">可用</option>
+									<option value="N">禁用</option>
+								</select>
+							</div>
+						</div>-->
+						<div class="layui-inline">
+							<label class="layui-form-label"></label>
+							<div class="layui-input-inline">
+								<button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="accountSearchBtn">
+		            	            <i class="layui-icon layui-icon-search"></i>
+                                    查询
+		                        </button>
+								<button class="layui-btn my-bg-green3 " type="reset">
+		            	            <i class="layui-icon layui-icon-refresh"></i>
+		            	            重置
+		                        </button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- 数据表格 -->
+			<div id="dataTable">
+				<table class="layui-hide" id="accountTable" lay-filter="accountTableEvent">
+				</table>
+			</div>
+
+			<!-- 添加模态框 -->
+			<div id="addAccountModal" class="popFormModal">
+				<!-- 这里手动加表单样式 -->
+				<form id="addAccountForm" lay-filter="addAccountForm" class="layui-form layui-form-pane" action="">
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">账号</label>
+						<div class="layui-input-block">
+							<input type="text" name=accountNo lay-verify="required" lay- placeholder="请输入账号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">账户名</label>
+						<div class="layui-input-block">
+							<input type="text" name="accountName" lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款类型</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositType" id="depositType" lay-verify="required" placeholder="输入存款类型" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款利率</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositRate"  lay-verify="required" placeholder="输入存款利率" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户银行</label>
+						<div class="layui-input-block">
+							<input type="text" name="bankName"  lay-verify="required" placeholder="输入开户银行" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户时间</label>
+						<div class="layui-input-block">
+							<input type="text" name="openDate" id="addOpenDate" lay-verify="required" placeholder="输入开户时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					&lt;!&ndash;<div class="layui-form-item">
+						<label class="layui-form-label">用户性别</label>
+						<div class="layui-input-block">
+							<select name="gender">
+								<option value="">请选择</option>
+								<option value="1">男</option>
+								<option value="0">女</option>
+							</select>
+						</div>
+					</div>&ndash;&gt;
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">账户描述</label>
+						<div class="layui-input-block">
+							<textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>-->
+					<div class="layui-form-item">
+						<label class="layui-form-label">账户Id</label>
+						<div class="layui-input-block">
+							<input type="text" name=accountId lay-verify="required" placeholder="请输入账户Id" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">账号</label>
+						<div class="layui-input-block">
+							<input type="text" name="accountNo" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">账户名</label>
+						<div class="layui-input-block">
+							<input type="text" name="accountName" lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款类型</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositType" lay-verify="required" placeholder="请输入存款类型" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款利率</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositRate" lay-verify="required" placeholder="请输入存款利率" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户银行</label>
+						<div class="layui-input-block">
+							<input type="text" name="bankName" lay-verify="required" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户时间</label>
+						<div class="layui-input-block">
+							<input type="text" name="openDate" id="addOpenDate" lay-verify="required" placeholder="请输入开户时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金Id</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundId" lay-verify="required" placeholder="请输入所属基金Id" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金名</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundName" lay-verify="required" placeholder="请输入所属基金名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金代码</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundNo" lay-verify="required" placeholder="请输入所属基金代码" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">用户性别</label>
+						<div class="layui-input-block">
+							<select name="gender">
+								<option value="">请选择</option>
+								<option value="1">男</option>
+								<option value="0">女</option>
+							</select>
+						</div>
+					</div>-->
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否可用</label>
+						<div class="layui-input-block">
+							<select name="usable">
+								<option value="">请选择</option>
+								<option value="Y">可用</option>
+								<option value="N">禁用</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">描述</label>
+						<div class="layui-input-block">
+							<textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<div class="layui-input-block" style="text-align: right;">
+							<button class="layui-btn my-bg-green layui-btn-sm " type="submit" lay-filter="updateAccountBtn" lay-submit>立即提交</button>
+						</div>
+					</div>-->
+					<div class="layui-form-item">
+						<div class="layui-input-block" style="text-align: right;">
+							<button class="layui-btn my-bg-green layui-btn-sm " type="submit" lay-filter="addAccountBtn" lay-submit>立即提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
+			<!-- 修改模态框 -->
+			<div id="updateAccountModal" class="popFormModal">
+				<!-- 这里手动加表单样式 -->
+				<form id="updateAccountForm" lay-filter="updateAccountForm" class="layui-form layui-form-pane" action="">
+					<input type="hidden" name="accountId" lay-verify="required" placeholder="请输入现金账户ID" autocomplete="off" class="layui-input">
+					<input type="hidden" name="_method" value="PUT" />
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">账户Id</label>
+						<div class="layui-input-block">
+							<input type="text" name=accountId lay-verify="required" placeholder="请输入账户Id" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">账号</label>
+						<div class="layui-input-block">
+							<input type="text" name="accountNo" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">账户名</label>
+						<div class="layui-input-block">
+							<input type="text" name="accountName" lay-verify="required" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款类型</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositType" lay-verify="required" placeholder="请输入存款类型" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">存款利率</label>
+						<div class="layui-input-block">
+							<input type="text" name="depositRate" lay-verify="required" placeholder="请输入存款利率" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户银行</label>
+						<div class="layui-input-block">
+							<input type="text" name="bankName" lay-verify="required" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">开户时间</label>
+						<div class="layui-input-block">
+							<input type="text" name="openDate" id="updateOpenDate" lay-verify="required" placeholder="请输入开户时间" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金Id</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundId" lay-verify="required" placeholder="请输入所属基金Id" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金名</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundName" lay-verify="required" placeholder="请输入所属基金名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">所属基金代码</label>
+						<div class="layui-input-block">
+							<input type="text" name="fundNo" lay-verify="required" placeholder="请输入所属基金代码" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<!--<div class="layui-form-item">
+						<label class="layui-form-label">用户性别</label>
+						<div class="layui-input-block">
+							<select name="gender">
+								<option value="">请选择</option>
+								<option value="1">男</option>
+								<option value="0">女</option>
+							</select>
+						</div>
+					</div>-->
+					<div class="layui-form-item">
+						<label class="layui-form-label">是否可用</label>
+						<div class="layui-input-block">
+							<select name="usable">
+								<option value="">请选择</option>
+								<option value="Y">可用</option>
+								<option value="N">禁用</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">描述</label>
+						<div class="layui-input-block">
+							<textarea name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block" style="text-align: right;">
+							<button class="layui-btn my-bg-green layui-btn-sm " type="submit" lay-filter="updateAccountBtn" lay-submit>立即提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- 头部工具栏 -->
+			<script type="text/html" id="accountToolbar">
+				<div class="layui-btn-container">
+					<span class="btnCont">
+	 					<button type="button" title="添加"  lay-event="addAccount" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe61f;</i>添加</button>
+						<button type="button" title="修改"  lay-event="updateAccount" class=" layui-btn layui-btn-warm layui-btn-sm "><i class="layui-icon">&#xe642</i>修改 </button>
+						<button title="禁用"  lay-event="frozenRecord" class=" layui-btn layui-btn-danger layui-btn-sm "><i class="layui-icon">&#xe702;</i>禁用 </button>
+						<button title="恢复"  lay-event="restoreRecord" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#xe666;</i>恢复 </button>
+					</span>
+				</div>
+			</script>
+
+
+			<script type="text/html" id="checkboxTpl">
+				<span {{d.usable =='Y' ? 'class="useable font-color  my-bg-green"': 'class="useable font-color  my-bg-red1"'}} >
+				{{d.usable=='Y'?'可用':'禁用'}}
+				</span>
+			</script>
+
+		</div>
+	</body>
+
+</html>

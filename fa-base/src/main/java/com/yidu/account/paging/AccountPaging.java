@@ -1,17 +1,21 @@
-package com.yidu.manage.domain;
+package com.yidu.account.paging;
+
+import com.yidu.utils.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 类的描述:账户POJO
- * @author 李昊林
- * @date 2020-09-11
+ * 现金账户表
+ * POJO_Description: Account
+ * @author wh
+ * @since 2020-09-03
  */
-public class Account implements Serializable{
+public class AccountPaging implements Serializable{
 
-	private static final long serialVersionUID =  3217196075455838954L;
+	private static final long serialVersionUID =  5272645263686060606L;
 	/**
 	 * 账户Id
 	 */
@@ -45,7 +49,12 @@ public class Account implements Serializable{
 	/**
 	 * 开户时间
 	 */
+	@DateTimeFormat( pattern ="yyyy-MM-dd HH:mm:ss")
 	private Date openDate;
+	/**
+	 * 开户时间字符串格式
+	 */
+	private String openDateStr;
 
 	/**
 	 * 所属基金Id,参考基金表主键
@@ -53,9 +62,17 @@ public class Account implements Serializable{
 	private String fundId;
 
 	/**
-	 * 所属基金编号
+	 * 所属基金代码
 	 */
 	private String fundNo;
+
+	public String getFundNo() {
+		return fundNo;
+	}
+
+	public void setFundNo(String fundNo) {
+		this.fundNo = fundNo;
+	}
 
 	/**
 	 * 所属基金名
@@ -68,12 +85,45 @@ public class Account implements Serializable{
 	private String description;
 
 	/**
-	 * 是否可用
+	 * 状态，用于逻辑删除
 	 */
 	private String usable;
 
+	/**
+	 * 页数
+	 */
+	private Integer page;
+	/**
+	 * 页面大小
+	 */
+	private Integer limit;
 
-	public Account() {
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public String getUsable() {
+		return usable;
+	}
+
+	public void setUsable(String usable) {
+		this.usable = usable;
+	}
+
+
+	public AccountPaging() {
 
 	}
 
@@ -132,6 +182,7 @@ public class Account implements Serializable{
 
 	public void setOpenDate(Date openDate) {
 		this.openDate = openDate;
+		this.openDateStr = DateUtils.dataToString(openDate,"yyyy-MM-dd HH:mm:ss");
 	}
 
 	public String getFundId() {
@@ -140,14 +191,6 @@ public class Account implements Serializable{
 
 	public void setFundId(String fundId) {
 		this.fundId = fundId;
-	}
-
-	public String getFundNo() {
-		return fundNo;
-	}
-
-	public void setFundNo(String fundNo) {
-		this.fundNo = fundNo;
 	}
 
 	public String getFundName() {
@@ -166,32 +209,27 @@ public class Account implements Serializable{
 		this.description = description;
 	}
 
-	public String getUsable() {
-		return usable;
+	public String getOpenDateStr() {
+		return openDateStr;
 	}
-
-	public void setUsable(String usable) {
-		this.usable = usable;
-	}
-
-
 
 	@Override
 	public String toString() {
-		return "Account{" +
+		return "AccountPaging{" +
 				"accountId='" + accountId + '\'' +
-				",accountNo='" + accountNo + '\'' +
-				",accountName='" + accountName + '\'' +
-				",depositType='" + depositType + '\'' +
-				",depositRate='" + depositRate + '\'' +
-				",bankName='" + bankName + '\'' +
-				",openDate='" + openDate + '\'' +
-				",fundId='" + fundId + '\'' +
-				",fundNo='" + fundNo + '\'' +
-				",fundName='" + fundName + '\'' +
-				",description='" + description + '\'' +
-				",usable='" + usable + '\'' +
+				", accountNo='" + accountNo + '\'' +
+				", accountName='" + accountName + '\'' +
+				", depositType='" + depositType + '\'' +
+				", depositRate=" + depositRate +
+				", bankName='" + bankName + '\'' +
+				", openDate=" + openDate +
+				", openDateStr='" + openDateStr + '\'' +
+				", fundId='" + fundId + '\'' +
+				", fundName='" + fundName + '\'' +
+				", description='" + description + '\'' +
+				", usable='" + usable + '\'' +
+				", page=" + page +
+				", limit=" + limit +
 				'}';
 	}
-
 }

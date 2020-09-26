@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>存款交易数据</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- 设置项目基准路径 -->
+		<base href="/fa/static/"/>
+		<!-- 引入layui的css -->
+		<link rel="stylesheet" href="ui/layui/css/layui.css" media="all">
+		<!-- 引入自定义工具css -->
+		<link rel="stylesheet" href="deposit/css/deposit.css" media="all">
+		<!-- 引入jqeury -->
+		 <!--<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>-->
+
+		<!-- 引入layui的js -->
+		<script src="ui/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 引入存款交易js -->
+		<script src="deposit/js/deposit.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- 解决图片展示表格框样式问题，如显示不完整，优先级等... -->
+		<style type="text/css">
+			.layui-table-cell {
+				text-align: center;
+				height: auto;
+				white-space: normal;
+			    }
+            .my-width150{
+                width:158px !important;
+            }
+			.cw .layui-input-block {
+                margin-left:158px;
+            }
+			.cw .layui-form-select .layui-edge {
+				right: 2%;
+			}
+
+            .my-input{
+                margin-left:-22px;
+                width:20px;
+                height:34.99px;
+                display: inline;
+                border-bottom-right-radius: 2px !important;
+                border-top-right-radius: 2px !important;
+                border-width: 1px;
+                border-style: solid;
+                border-style: none;
+                padding-left: 1px;
+                background-color: #FFFFFF;
+
+            }
+            .my-input2{
+                /*text-align: center;*/
+                display:inline;
+                margin-right: 0px;
+            }
+            /*头部搜索栏交易类型样式*/
+            .cm .layui-select-title,.cm .layui-anim-upbit{
+                width:225px!important;
+            }
+            .cm .layui-edge{
+                right:-15px!important;
+            }
+            #hideBtn{
+                position: absolute;
+                left: 49%;
+                top: 100%;
+                width: 30px;
+                height: 30px;
+                border-radius: 0 0 20% 20%;
+                border: 1px solid #d9d1dc;
+                background-color: #a6a6a6;
+                text-align: center;
+                line-height: 30px;
+                color: #fff;
+                font-size: 21px;
+                z-index: 1000;
+                cursor: pointer;
+            }
+            #search-header{
+                position: absolute;
+                width: 98%;
+                z-index: 999;
+                animation-delay:0.5s;
+                -webkit-animation-delay:0.5s; /* Safari 和 Chrome */
+            }
+
+		</style>
+	</head>
+
+	<body>
+
+		<div id="content" >
+			<!-- 头部搜索框 -->
+			<div id="search-header" style="margin-bottom: 10px">
+                <div id="hideBtn"><i class="layui-icon">&#xe61a;</i></div>
+				<form class="layui-form">
+                    <div class="layui-row">
+                        <div class="layui-col-md4">
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">存款流水号</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryDepositNo" type="text" name="depositNo" placeholder="请输入存款流水号" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">基金代码</label>
+                                    <div class="layui-input-inline">
+                                        <input id="queryFundNo" type="text" name="fundNo" placeholder="请输入基金代码" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="layui-col-md4">
+                            <div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">交易类型</label>
+                                    <div class="layui-input-inline cm">
+                                        <select name="tradeType" id="queryDeposiType">
+                                            <option value="">请选择交易类型</option>
+                                            <option value="1">定存</option>
+                                            <option value="2">定存回收</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-block">
+                                    <div class="layui-form-item" style="">
+                                        <label class="layui-form-label">基金名</label>
+                                        <div class="layui-input-inline">
+                                            <input id="queryFundName" type="text" name="fundName" placeholder="请输入基金名" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">总金额</label>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input  maxlength="8" type="text" id="queryTotalMin" name="totalMin"   autocomplete="off" class="layui-input my-input2"><input disabled value="元" class="my-input"/>
+                                    </div>
+                                    <div class="layui-form-mid">~</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input  maxlength="8" type="text" id="queryTotalMax" name="totalMax"  autocomplete="off" class="layui-input my-input2"><input disabled value="元" class="my-input"/>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <!--<div class="layui-block">
+                                <div class="layui-form-item" style="">
+                                    <label class="layui-form-label">交易日期</label>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input id="queryTradeDateStart" type="text" name="tradeDateStart"  autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">~</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input   type="text" id="queryTradeDateEnd" name="tradeDateEnd"  autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>-->
+
+                        </div>
+                        <div class="layui-col-md4">
+                            <div class="layui-block" style="margin-top: 54px">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-inline">
+                                    <button class="layui-btn my-bg-green2 " lay-submit="" lay-filter="fundSearchBtn">
+                                        <i class="layui-icon layui-icon-search"></i>
+                                        查询
+                                    </button>
+                                    <button class="layui-btn my-bg-green3 " type="reset">
+                                        <i class="layui-icon layui-icon-refresh"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+			</div>
+
+
+
+
+            <!--选项卡-->
+           	<div id="tabData" class="layui-tab layui-tab-card " lay-filter="dataTable">
+				<ul class="layui-tab-title">
+					<li class="layui-this">未结算</li>
+					<li>已结算</li>
+				</ul>
+				<div class="layui-tab-content" style="height: 100px;">
+					<div class="layui-tab-item layui-show">
+                        <!-- 数据表格 -->
+                        <div id="dataTable">
+                            <table class="layui-hide" id="depositTradeTable"  lay-filter="depositTableEvent">
+                            </table>
+                        </div>
+					</div>
+					<div class="layui-tab-item">
+                        <!-- 数据表格 -->
+                        <div id="dataTable2">
+                            <table class="layui-hide" id="depositTradeTable2"  lay-filter="depositTableEvent">
+                            </table>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+            <!-- 上传模态框 -->
+            <div id="upload"  class="popFormModal">
+                <fieldset  class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                    <legend>Excel批量导入</legend>
+                </fieldset>
+                <div  class="layui-upload-drag" id="test10">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                    <div class="layui-hide" id="uploadDemoView">
+                        <hr>
+                        <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                    </div>
+                </div>
+            </div>
+
+			<!-- 头部工具栏 -->
+			<script type="text/html" id="depositToolbar">
+				<div class="layui-btn-container">
+					<span class="btnCont">
+	 					<button title="结算"  lay-event="settlement" class=" layui-btn layui-btn-normal layui-btn-sm "><i class="layui-icon">&#x1005;</i>结算</button>
+						<button title="导入"  lay-event="upload" class=" layui-btn layui-btn-bgcolor layui-btn-sm "><i class="layui-icon">&#xe62f;</i>导入</button>
+					</span>
+				</div>
+			</script>
+
+
+			<script type="text/html" id="tradeStatusTpl">
+				<span {{d.tradeStatus =='1' ? 'class="tradeStatus font-color  my-bg-green"': 'class="tradeStatus font-color  my-bg-red1"'}} >
+				{{d.tradeStatus=='1'?'已结算':'未结算'}}
+				</span>
+			</script>
+            <script type="text/html" id="tradeStatusTpl2">
+                <span >
+                {{d.tradeType=='1'?'定存':'定存回收'}}
+                </span>
+            </script>
+            <script type="text/html" id="tradeStatusTpl3">
+                <span >
+                {{d.tradeFlag=='1'?'流入':'流出'}}
+                </span>
+            </script>
+            <script type="text/html" id="tradeStatusTpl4">
+                <span >
+                    {{d.businessType=='1'?'三天':d.businessType=='2'?'七天':'三十天'}}
+                </span>
+            </script>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.account.dao.AccountDao">
+    <!--所有字段-->
+    <sql id="allColumn">
+      accountId,accountNo, accountName, depositType, depositRate, bankName, openDate, fundId, fundNo, fundName,description,usable
+    </sql>
+    <!-- 全条件查询的sql片段 -->
+    <sql id="conditionQueryStatement">
+        <where>
+            <if test="accountId != null and accountId != ''">
+                accountId = #{accountId}
+            </if>
+            <if test="accountNo != null and accountNo != ''">
+                and accountNo = #{accountNo}
+            </if>
+            <if test="accountName != null and accountName != ''">
+                and accountName like '%${accountName}%'
+            </if>
+            <if test="depositType != null and depositType != ''">
+                and depositType = #{depositType}
+            </if>
+            <if test="depositRate != null and depositRate != ''">
+                and depositRate = #{depositRate}
+            </if>
+            <if test="bankName != null and bankName != ''">
+                and bankName = #{bankName}
+            </if>
+            <if test="openDate != null">
+                and openDate = #{openDate}
+            </if>
+            <if test="fundId != null and fundId != ''">
+                and fundId = #{fundId}
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                and fundNo = #{fundNo}
+            </if>
+            <if test="fundName != null and fundName != ''">
+                and fundName = #{fundName}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="usable !=null and usable != ''">
+                and usable = #{usable}
+            </if>
+        </where>
+    </sql>
+    <!-- 分页语句的sql片段-->
+    <sql id="limitStatement" >
+        limit
+        <choose>
+            <when test="page==null">
+                0
+            </when>
+            <otherwise>#{page}</otherwise>
+        </choose>
+        ,
+        <choose>
+            <when test="limit==null">
+                10
+            </when>
+            <otherwise>#{limit}</otherwise>
+        </choose>
+    </sql>
+    <!--根据条件动态修改-->
+    <sql id="dynamicUpdate">
+        <set>
+            <if test="accountNo != null and accountNo != ''">
+                accountNo=#{accountNo},
+            </if>
+            <if test="accountName != null and accountName != ''">
+                accountName=#{accountName},
+            </if>
+            <if test="depositType != null and depositType != ''">
+                depositType = #{depositType},
+            </if>
+            <if test="depositRate != null and depositRate != ''">
+                depositRate = #{depositRate},
+            </if>
+            <if test="bankName != null and bankName != ''">
+                bankName = #{bankName},
+            </if>
+            <if test="openDate != null">
+                openDate = #{openDate},
+            </if>
+            <if test="fundId != null and fundId != ''">
+                fundId = #{fundId},
+            </if>
+            <if test="fundNo != null and fundNo != ''">
+                fundNo = #{fundNo},
+            </if>
+            <if test="fundName != null and fundName != ''">
+                fundName = #{fundName},
+            </if>
+            <if test="usable != null and usable != ''">
+                usable = #{usable},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+        </set>
+    </sql>
+    <!-- 1.根据条件查询满足条件的现金账户数量 -->
+    <select id="countAccountByCondition" parameterType="map" resultType="long">
+        select count(accountId)
+        from t_account
+        <include refid="conditionQueryStatement"/>
+    </select>
+
+    <!-- 2.根据条件查询满足条件的现金账户，并分页 -->
+    <select id="findAccountByConditionWithPaging" parameterType="map" resultType="Account">
+        select <include refid="allColumn"/>
+        from t_account
+        <include refid="conditionQueryStatement"/>
+        <include refid="limitStatement"/>
+    </select>
+
+    <!-- 3.添加现金账户 -->
+    <insert id="addAccount" parameterType="Account">
+        insert into t_account(<include refid="allColumn"/>)
+        values(#{accountId},#{accountNo},#{accountName},#{depositType},#{depositRate},#{bankName},#{openDate},#{fundId},#{fundNo},#{fundName},#{description},#{usable})
+    </insert>
+
+    <!-- 4.修改现金账户 -->
+    <update id="updateAccount" parameterType="Account">
+        update t_account <include refid="dynamicUpdate"/> where accountId = #{accountId}
+    </update>
+
+    <!-- 5.修改现金账户可以状态 -->
+    <update id="updateAccountStatus" parameterType="Map">
+        update t_account <include refid="dynamicUpdate"/> where accountId = #{accountId}
+    </update>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//En"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.deposit.dao.DepositInterestAccrualDao">
+    <!-- 银行交易数据所有字段的sql片段 -->
+    <sql id="allCpulumn">
+        depositId,depositNo,fundId,fundNo,fundName,outAccountId,outAccountNo,outAccountName,inAccountId,inAccountNo,inAccountName
+        ,tradeType,tradeFlag,businessDate,businessType,money,interestRate,endDate,tradeStatus,description
+    </sql>
+    <!-- 证券库存表中所有字段sql片段 -->
+    <sql id="allFields">
+        securitiesInventoryId,sechuritiesInventoryNo,securitiesId,securitiesNo,securitiesName,fundId,fundNo,fundName,
+        accountId,accountNo,accountName,price,share,turnover,securitiesType,statisticalDate,description,tradeStatus
+    </sql>
+    <!-- 动态条件查询证券交易数据sql片段 -->
+    <sql id="conditionQueryStatement">
+        <where>
+            <if test="securitiesInventoryId != null and securitiesInventoryId != ''">
+                securitiesInventoryId = #{securitiesInventoryId}
+            </if>
+            <if test="tradeStatus == 0">
+                and tradeStatus =#{tradeStatus}
+            </if>
+            <if test="tradeStatus == 1">
+                and tradeStatus =#{tradeStatus}
+            </if>
+            <if test="securitiesType != null and securitiesType != ''">
+                and securitiesType = #{securitiesType}
+            </if>
+            <if test="accountId != null and accountId != ''">
+                and accountId = #{accountId}
+            </if>
+            <if test="fundId != null and fundId != ''">
+                and fundId = #{fundId}
+            </if>
+        </where>
+    </sql>
+    <!-- 分页查询的sql片段 -->
+    <sql id="limitStatement" >
+        limit
+        <choose>
+            <when test="page==null">
+                0
+            </when>
+            <otherwise>#{page}</otherwise>
+        </choose>
+        ,
+        <choose>
+            <when test="limit==null">
+                10
+            </when>
+            <otherwise>#{limit}</otherwise>
+        </choose>
+    </sql>
+    <!-- 动态修改证券库存表 -->
+    <sql id="dynamicUpdate">
+        <set>
+            <if test="tradeStatus != null and tradeStatus != ''">
+                tradeStatus = #{tradeStatus}
+            </if>
+        </set>
+    </sql>
+    <!-- 证券应收应付所有字段 -->
+    <sql id="allCpulumn2">
+        securitiesARAPId,securitiesARAPNo,fundId,fundNo,fundName,accountId,
+        accountNo,accountName,securitiesId,securitiesNo,securitiesName,
+        arapAmount,arapDate,arapFlag,arapType
+    </sql>
+    <!-- 证券应收应付库存表所有字段 -->
+    <sql id="allCpulumn3">
+        securitiesARAPInventoryId,securitiesARAPInventoryNo,securitiesId,securitiesNo,securitiesName,
+        fundId,fundNo,fundName,accountId,accountNo,accountName,balance,businessDate,businessType,
+        flag,description
+    </sql>
+
+    <!-- 1.1.查询满足条件的证券库存数据数量 -->
+    <select id="countDepositInterestAccrualByCondition" parameterType="SecuritiesInventoryPaging" resultType="long">
+        select count(securitiesInventoryId) from t_securities_inventory
+        <include refid="conditionQueryStatement"/>
+    </select>
+    <!-- 1.2.查询满足条就的证券库存数据 -->
+    <select id="findSecuritiesInventoryByCondition" parameterType="SecuritiesInventoryPaging" resultType="SecuritiesInventory">
+        select <include refid="allFields"/>
+        from t_securities_inventory
+        <include refid="conditionQueryStatement"/>
+        <include refid="limitStatement"/>
+    </select>
+    <!-- 2.1.1修改证券库存中银行存款计息状态 -->
+    <update id="updateDepositInterestAccrualStatus" parameterType="Map">
+        update t_securities_inventory <include refid="dynamicUpdate"/>
+        where securitiesInventoryId = #{securitiesInventoryId}
+    </update>
+    <!-- 2.1.2根据证券库存Id查询数据 -->
+    <select id="findSecuritiesInventoryById" parameterType="String" resultType="SecuritiesInventory">
+        select <include refid="allFields"/>
+        from t_securities_inventory
+        where securitiesInventoryId = #{securitiesInventoryId}
+    </select>
+    <!-- 2.2.1.根据银行交易数据ID查询交易数据 -->
+    <select id="findDepositTradeById" parameterType="String" resultType="DepositTrade">
+        select <include refid="allCpulumn"/>
+        from t_deposit_trade
+        where depositId = #{depositId}
+    </select>
+    <!-- 2.2.2添加证券应收应付表数据 -->
+    <insert id="addDepositInterestAccrual" parameterType="SecuritiesArap">
+        insert into t_securities_arap(<include refid="allCpulumn2"/>)
+        values (#{securitiesARAPId},#{securitiesARAPNo},#{fundId},#{fundNo},#{fundName},#{accountId},
+        #{accountNo},#{accountName},#{securitiesId},#{securitiesNo},#{securitiesName},
+        #{arapAmount},#{arapDate},#{arapFlag},#{arapType})
+    </insert>
+    <!-- 2.3.1根据条件查询证券应收应付库存表中今天的数据数据 -->
+    <select id="findSecuritiesarapInventoryByCondition" parameterType="Map" resultType="SecuritiesarapInventory">
+        select <include refid="allCpulumn3"/>
+        from t_securitiesarap_inventory
+        where securitiesId = #{securitiesId}
+        and fundId = #{fundId}
+        and accountId = #{accountId}
+        and businessDate >=#{businessDate}
+    </select>
+    <!-- 2.3.2添加证券应收应付库存数据 -->
+    <insert id="addSecuritiesarapInventory" parameterType="SecuritiesarapInventory">
+        insert into t_securitiesarap_inventory(<include refid="allCpulumn3"/>)
+        values (#{securitiesARAPInventoryId},#{securitiesARAPInventoryNo},#{securitiesId},#{securitiesNo},#{securitiesName},
+        #{fundId},#{fundNo},#{fundName},#{accountId},#{accountNo},#{accountName},#{balance},#{businessDate},#{businessType},
+        #{flag},#{description})
+    </insert>
+    <!-- 2.3.3修改证券应收应付库存数据 -->
+    <update id="updateSecuritiesarapInventory" parameterType="Map">
+        update t_securitiesarap_inventory set balance = #{balance},businessDate = #{businessDate}
+        where securitiesARAPInventoryId = #{securitiesARAPInventoryId}
+    </update>
+    <!-- 2.3.44查询证券应收应付最近的一条数据 -->
+    <select id="findSecuritiesarapInventoryById" parameterType="String" resultType="SecuritiesarapInventory">
+        select <include refid="allCpulumn3"/>
+        from t_securitiesarap_inventory
+        where securitiesId = #{securitiesId}
+        and fundId = #{fundId}
+        and accountId = #{accountId}
+        having businessDate = (select max(businessDate) from t_securitiesarap_inventory)
+    </select>
+</mapper>
+
+
